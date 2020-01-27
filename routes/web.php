@@ -26,24 +26,13 @@ Route::get('/admin', function(){
 
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
 
-// Route::get('/post/{id}', ['as'=>'home.post', 'uses'=>'AdminPostsController@post']);
+Route::get('/admin', function(){
 
-// Route::group(['middleware'=>'admin'], function(){
+    return view('layouts.admin');
+})->name('dashboard');
 
-//     Route::get('/admin', function(){
+Route::resource('admin/users', 'UserController');
 
-//         return view('layouts.admin');
-//     })->name('dashboard');
+Route::resource('/media', 'MediaController');
 
-//     Route::resource('admin/users', 'AdminUsersController');
-
-//     Route::resource('admin/posts', 'AdminPostsController');
-
-//     Route::resource('admin/categories', 'AdminCategoriesController');
-
-//     Route::resource('admin/media', 'AdminMediaController');
-
-//     Route::resource('admin/comments', 'PostCommentsController');
-
-//     Route::resource('admin/comment/replies', 'CommentRepliesController');
-// });
+Route::resource('admin/roles', 'RoleController');

@@ -43,27 +43,6 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#postmanagement" aria-expanded="true" aria-controls="postmanagement">
-            <i class="fas fa-fw fa-cog"></i>
-            <span>Post Management</span>
-        </a>
-        <div id="postmanagement" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-            {{-- <h6 class="collapse-header">Custom Components:</h6> --}}
-            <a class="collapse-item" href="{{ route('posts.index') }}">View Posts</a>
-            <a class="collapse-item" href="{{ route('posts.create') }}">Create Post</a>
-            <a class="collapse-item" href="{{ route('comments.index') }}">Manage Comments</a>
-            </div>
-        </div>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('categories.index') }}">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Categories</span></a>
-      </li>
-
-    <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#mediamanagement" aria-expanded="true" aria-controls="mediamanagement">
             <i class="fas fa-fw fa-cog"></i>
             <span>Media Management</span>
