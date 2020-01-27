@@ -33,7 +33,7 @@
                         </div>
                         <div class="form-group">
                             <input id="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Password">
-                            
+
                             @error('password')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -90,6 +90,6 @@
 
         </div>
 
-      </div>
+    </div>
 </div>
 @endsection
