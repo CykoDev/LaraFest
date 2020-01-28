@@ -16,7 +16,6 @@
         <tr>
         <th>ID</th>
         <th>Image</th>
-        <th>File Name</th>
         <th>Created At</th>
         <th>Updated At</th>
         <td>Delete</td>
@@ -27,8 +26,7 @@
             @foreach($photos as $photo)
             <tr>
                 <td><small>{{ $photo->id }}</small></td>
-                <td><img src='{{ $photo->file }}' class="rounded" width=50 height=40></td>
-                <td><small>{{ $photo->file }}</small></td>
+                <td><img src='{{ $photo->path }}' class="rounded" width=120 height=90></td>
                 <td><small>{{ $photo->created_at->diffForHumans() }}</small></td>
                 <td><small>{{ $photo->updated_at->diffForHumans() }}</small></td>
                 <td>
