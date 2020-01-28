@@ -8,7 +8,7 @@
         <h1 class="h3 mb-0 text-gray-800">Create User</h1>
     </div>
 
-    {!! Form::open(['method'=>'POST', 'action'=>'AdminUsersController@store', 'files'=>true]) !!}
+    {!! Form::open(['method'=>'POST', 'action'=>'UserController@store', 'files'=>true]) !!}
 
         <div class="form-group">
             {!! Form::label('name', 'Name: ') !!}

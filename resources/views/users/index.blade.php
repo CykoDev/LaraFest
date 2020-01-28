@@ -33,7 +33,7 @@
             @foreach($users as $user)
             <tr>
                 <td>{{ $user->id }}</td>
-                <td><img src='{{ is_null($user->photo) ? $user->defaultImage : $user->photo->file }}' class="rounded-circle" width=40 height=40></td>
+                <td><img src='{{ is_null($user->photo) ? $user->defaultImage : $user->photo->path }}' class="rounded-circle" width=40 height=40></td>
                 <td><a href="{{ route('users.edit', $user->id) }}">{{ $user->name }}</a></td>
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->role->name }}</td>

@@ -32,7 +32,7 @@
                 <td><small>{{ $photo->created_at->diffForHumans() }}</small></td>
                 <td><small>{{ $photo->updated_at->diffForHumans() }}</small></td>
                 <td>
-                    {!! Form::open(['method'=>'DELETE', 'action'=>['AdminMediaController@destroy', $photo->id]]) !!}
+                    {!! Form::open(['method'=>'DELETE', 'action'=>['MediaController@destroy', $photo->id]]) !!}
 
                     {!! Form::submit('Delete', ['class'=>'btn btn-danger text-sm rounded px-2 py-1']) !!}
 

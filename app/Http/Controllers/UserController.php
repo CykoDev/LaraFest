@@ -3,6 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\http\Requests\UsersCreateRequest;
+use App\http\Requests\UsersUpdateRequest;
+use Illuminate\Support\Facades\Session;
+use App\User;
+use App\Role;
+use App\Photo;
 
 class UserController extends Controller
 {
@@ -14,6 +20,9 @@ class UserController extends Controller
     public function index()
     {
         //
+
+        $users = User::all();
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -24,6 +33,9 @@ class UserController extends Controller
     public function create()
     {
         //
+
+        $roles = Role::pluck('name', 'id')->all();
+        return view('users.create', compact('roles'));
     }
 
     /**
@@ -32,9 +44,28 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UsersCreateRequest $request)
     {
         //
+
+        if(trim($request->password) == '' ) {
+            $input = $request->except('password');
+        }
+        else {
+            $input = $request->all();
+        }
+        if($file = $request->file('photo_id')) {
+
+            $name = time() . $file->getClientOriginalName();
+            $file->move('img', $name);
+            $photo = Photo::create([
+                'path' => $name,
+                'type' => 'user_photo',
+                ]);
+            $input['photo_id'] = $photo->id;
+        }
+        User::create($input);
+        return redirect(route('users.index'));
     }
 
     /**
@@ -57,6 +88,10 @@ class UserController extends Controller
     public function edit($id)
     {
         //
+
+        $user = User::findOrFail($id);
+        $roles = Role::pluck('name', 'id')->all();
+        return view('users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -66,9 +101,41 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UsersUpdateRequest $request, $id)
     {
         //
+
+        if(trim($request->password) == '') {
+            $input = $request->except('password');
+        }
+        else {
+            $input = $request->all();
+        }
+        $user = User::findOrFail($id);
+
+        if($file = $request->file('photo_id')){
+
+            $name = time().$file->getClientOriginalName();
+            $file->move('img', $name);
+            $photo = Photo::create([
+                'path' => $name,
+                'type' => 'user_photo',
+                ]);
+            $input['photo_id'] = $photo->id;
+
+            if($user->photo){
+
+                unlink(public_path() . $user->photo->path);
+                Photo::findOrFail($user->photo->id)->delete();
+            }
+        }
+
+        $user->update($input);
+        Session::flash('status', [
+            'class' => 'success',
+            'message' => 'User successfully updated',
+        ]);
+        return redirect(route('users.index'));
     }
 
     /**
@@ -80,5 +147,17 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+
+        $user = User::findOrFail($id);
+        if($user->photo){
+            unlink(public_path() . $user->photo->path);
+            Photo::findOrFail($user->photo->id)->delete();
+        }
+        $user->delete();
+        Session::flash('status', [
+            'class' => 'danger',
+            'message' => 'User successfully deleted',
+        ]);
+        return redirect(route('users.index'));
     }
 }
