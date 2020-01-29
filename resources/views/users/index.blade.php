@@ -34,7 +34,7 @@
             <tr>
                 <td>{{ $user->id }}</td>
                 <td><img src='{{ is_null($user->photo) ? $user->defaultImage : $user->photo->path }}' class="rounded-circle" width=40 height=40></td>
-                <td><a href="{{ route('users.edit', $user->id) }}">{{ $user->name }}</a></td>
+                <td><a href="{{ route('users.edit', $user->slug) }}">{{ $user->name }}</a></td>
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->role->name }}</td>
                 <td>{{ $user->is_active ? 'Active' : 'Not Active' }}</td>
