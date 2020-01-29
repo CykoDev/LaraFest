@@ -33,6 +33,6 @@ Route::get('/admin', function(){
 
 Route::resource('admin/users', 'UserController');
 
-Route::resource('/media', 'MediaController');
+Route::resource('media', 'MediaController');
 
-Route::resource('admin/roles', 'RoleController');
+Route::resource('roles', 'RoleController');

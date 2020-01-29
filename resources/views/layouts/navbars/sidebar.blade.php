@@ -31,7 +31,7 @@
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#usermanagement" aria-expanded="true" aria-controls="usermanagement">
             <i class="fas fa-fw fa-cog"></i>
-            <span>User Management</span>
+            <span>Manage Users</span>
         </a>
         <div id="usermanagement" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
@@ -43,9 +43,15 @@
     </li>
 
     <li class="nav-item">
+        <a class="nav-link" href="{{ route('roles.index') }}">
+        <i class="fas fa-fw fa-table"></i>
+        <span>Manage Roles</span></span></a>
+    </li>
+
+    <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#mediamanagement" aria-expanded="true" aria-controls="mediamanagement">
             <i class="fas fa-fw fa-cog"></i>
-            <span>Media Management</span>
+            <span>Manage Media</span>
         </a>
         <div id="mediamanagement" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">

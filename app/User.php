@@ -19,7 +19,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role_id', 'is_active', 'photo_id'
+        'name', 'email', 'password', 'role_id', 'is_active', 'photo_id', 'profile_completed_at'
     ];
 
     /**
@@ -40,13 +40,45 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    /*
+    *--------------------------------------------------------------------------
+    * Middleware Functions
+    *--------------------------------------------------------------------------
+    */
+
     public function isAdmin() {
 
-        if($this->role->name == 'administrator' && $this->is_active == 1){
+        if($this->role->name == 'admin' && $this->is_active == 1){
 
             return true;
         }
+        return false;
+    }
 
+    public function isModerator() {
+
+        if($this->role->name == 'moderator' && $this->is_active == 1){
+
+            return true;
+        }
+        return false;
+    }
+
+    public function isMonitor() {
+
+        if($this->role->name == 'monitor' && $this->is_active == 1){
+
+            return true;
+        }
+        return false;
+    }
+
+    public function isApplicant() {
+
+        if($this->role->name == 'applicant' && $this->is_active == 1){
+
+            return true;
+        }
         return false;
     }
 
@@ -81,18 +113,5 @@ class User extends Authenticatable implements MustVerifyEmail
     public function photo(){
 
         return $this->belongsTo('App\Photo');
-    }
-
-    public function posts(){
-
-        return $this->hasMany('App\Post');
-    }
-
-    public function comments(){
-        return $this->hasMany('App\Comment');
-    }
-
-    public function replies(){
-        return $this->hasMany('App\CommentReply');
     }
 }
