@@ -8,6 +8,7 @@ use App\http\Requests\UsersUpdateRequest;
 use Illuminate\Support\Facades\Session;
 use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 use App\User;
 use App\Role;
@@ -176,5 +177,11 @@ class UserController extends Controller
     public function exportMonitors()
     {
         return Excel::download(new MonitorsExport, 'monitor users.xlsx');
+    }
+
+    public function generatepdf(){
+
+        $pdf = PDF::loadView('pdf.test');
+        return $pdf->download('testfile.pdf');
     }
 }

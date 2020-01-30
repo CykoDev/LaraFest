@@ -37,4 +37,8 @@ Route::resource('media', 'MediaController');
 
 Route::resource('roles', 'RoleController');
 
+// test routes
+
 Route::get('users/export/', 'UserController@exportAllUsers');
+
+Route::get('pdf/download', 'UserController@generatepdf');
