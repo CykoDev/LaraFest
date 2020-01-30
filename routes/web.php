@@ -36,3 +36,5 @@ Route::resource('admin/users', 'UserController');
 Route::resource('media', 'MediaController');
 
 Route::resource('roles', 'RoleController');
+
+Route::get('users/export/', 'UserController@exportAllUsers');
