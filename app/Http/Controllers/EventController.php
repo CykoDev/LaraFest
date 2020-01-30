@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Photo;
 
-class MediaController extends Controller
+class EventController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +13,7 @@ class MediaController extends Controller
      */
     public function index()
     {
-        $photos = Photo::all();
-        return view('media.index', compact('photos'));
+        //
     }
 
     /**
@@ -25,7 +23,7 @@ class MediaController extends Controller
      */
     public function create()
     {
-        return view('media.create');
+        //
     }
 
     /**
@@ -36,13 +34,41 @@ class MediaController extends Controller
      */
     public function store(Request $request)
     {
-        $file = $request->file('file');
-        $name = time() . $file->getClientOriginalName();
-        $file->move('img', $name);
-        $photo = Photo::create([
-            'path' => $name,
-            'type' => 'uncategorized',
-            ]);
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
     }
 
     /**
@@ -53,9 +79,6 @@ class MediaController extends Controller
      */
     public function destroy($id)
     {
-        $photo = Photo::findOrFail($id);
-        unlink(public_path().$photo->path);
-        $photo->delete();
-        return redirect(route('media.index'));
+        //
     }
 }
