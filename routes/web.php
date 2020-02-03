@@ -22,7 +22,7 @@ Route::get('/', function(){
 
 Route::get('/dashboard', ['as'=>'dashboard', 'uses'=>'HomeController@index']);
 
-Route::resource('admin/users', 'UserController');
+Route::resource('users', 'UserController');
 
 Route::resource('media', 'MediaController');
 

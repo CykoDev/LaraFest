@@ -28,7 +28,7 @@ class VerificationController extends Controller
      */
     public function redirectTo() {
 
-        return redirect(route('home'));
+        return route('dashboard');
     }
 
     /**

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\User;
+use App\Role;
 
 class HomeController extends Controller
 {
@@ -28,13 +30,30 @@ class HomeController extends Controller
             $user = Auth::user();
             switch(true) {
                 case $user->isAdmin():
-                    return view('home.admin');
+
+                    $users = User::all();
+                    $roles = Role::all();
+
+                    for($i=0; $i < 12; $i++){
+
+                        $userMonthCount[$i+1] = User::whereMonth('created_at', $i+1)->count();
+                    }
+                    return view('home.admin', compact(
+                        'users', 'userMonthCount', 'roles',
+                    ));
+                    break;
                 case $user->isModerator():
+
                     return view('home.moderator');
+                    break;
                 case $user->isMonitor():
+
                     return view('home.monitor');
+                    break;
                 default:
+
                     return view('home.viewer');
+                    break;
             }
         }
         else {

@@ -15,7 +15,7 @@
             'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
             'data' => $users->count(),
         ])
-        @include('layouts.components.card', [
+        {{-- @include('layouts.components.card', [
             'textclass' => 'success',
             'title' => 'Posts',
             'faIcon' => '<i class="fas fa-book-open fa-2x text-gray-300"></i>',
@@ -32,7 +32,7 @@
             'title' => 'Comments',
             'faIcon' => '<i class="fas fa-bullhorn fa-2x text-gray-300"></i>',
             'data' => $comments->count() + $replies->count(),
-        ])
+        ]) --}}
     </div>
 
     <div class="row">
