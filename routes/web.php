@@ -13,23 +13,14 @@
 
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes(['verify' => true]);
 
-Route::get('/admin', function(){
+Route::get('/', function(){
 
-    return view('layouts.admin');
-})->name('dashboard');
+    return view('welcome');
+})->name('home');
 
-Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
-
-Route::get('/admin', function(){
-
-    return view('layouts.admin');
-})->name('dashboard');
+Route::get('/dashboard', ['as'=>'dashboard', 'uses'=>'HomeController@index']);
 
 Route::resource('admin/users', 'UserController');
 
