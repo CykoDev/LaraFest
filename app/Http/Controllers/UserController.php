@@ -17,6 +17,17 @@ use App\Photo;
 class UserController extends Controller
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('admin')->only('edit', 'store', 'destroy', 'update', 'create');
+        $this->middleware('monitor')->only('index', 'show');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use App\User;
+use App\Role;
 
 class UsersTableSeeder extends Seeder
 {
@@ -13,15 +14,12 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        //
-
-        User::truncate();
-
-    	User::create([
-            'name'          => 'supahot',
-            'role_id'       => '2',
-            'email'         => 'supahot@a.aa',
-            'password'      => 'aaaaaaaa',
+        User::create([
+            'name'              => 'supahot',
+            'role_id'           => Role::whereName('administrator')->firstOrFail()->id,
+            'email'             => 'supahot@a.aa',
+            'email_verified_at' => now(),
+            'password'          => 'aaaaaaaa',
         ]);
     }
 }
