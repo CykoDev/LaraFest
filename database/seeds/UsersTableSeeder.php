@@ -16,7 +16,7 @@ class UsersTableSeeder extends Seeder
     {
         User::create([
             'name'              => 'supahot',
-            'role_id'           => Role::whereName('administrator')->firstOrFail()->id,
+            'role_id'           => Role::whereName('admin')->firstOrFail()->id,
             'email'             => 'supahot@a.aa',
             'email_verified_at' => now(),
             'password'          => 'aaaaaaaa',

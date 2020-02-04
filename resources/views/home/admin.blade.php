@@ -15,24 +15,6 @@
             'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
             'data' => $users->count(),
         ])
-        {{-- @include('layouts.components.card', [
-            'textclass' => 'success',
-            'title' => 'Posts',
-            'faIcon' => '<i class="fas fa-book-open fa-2x text-gray-300"></i>',
-            'data' => $posts->count(),
-        ])
-        @include('layouts.components.card', [
-            'textclass' => 'warning',
-            'title' => 'Categories',
-            'faIcon' => '<i class="fas fa-file-alt fa-2x text-gray-300"></i>',
-            'data' => $categories->count(),
-        ])
-        @include('layouts.components.card', [
-            'textclass' => 'info',
-            'title' => 'Comments',
-            'faIcon' => '<i class="fas fa-bullhorn fa-2x text-gray-300"></i>',
-            'data' => $comments->count() + $replies->count(),
-        ]) --}}
     </div>
 
     <div class="row">
@@ -141,7 +123,7 @@
         callbacks: {
             label: function(tooltipItem, chart) {
             var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-            return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
+            return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
             }
         }
         }
