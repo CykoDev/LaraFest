@@ -22,11 +22,15 @@ Route::get('/', function(){
 
 Route::get('/dashboard', ['as'=>'dashboard', 'uses'=>'HomeController@index']);
 
-Route::resource('users', 'UserController');
+Route::group(['middleware'=>'verified'], function(){
 
-Route::resource('media', 'MediaController');
+    Route::resource('users', 'UserController');
 
-Route::resource('roles', 'RoleController');
+    Route::resource('roles', 'RoleController');
+
+    Route::resource('media', 'MediaController');
+    Route::post('media/bulk-delete', ['as'=>'media.destroyMany', 'uses'=>'MediaController@destroyMany']);
+});
 
 // test routes
 

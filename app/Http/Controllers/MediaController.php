@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Photo;
 
 class MediaController extends Controller
@@ -52,7 +53,7 @@ class MediaController extends Controller
         $file->move('img', $name);
         $photo = Photo::create([
             'path' => $name,
-            'type' => 'uncategorized',
+            'uploaded_by_user_id' => Auth::user()->id,
             ]);
     }
 
@@ -83,7 +84,7 @@ class MediaController extends Controller
             $photos = Photo::findOrFail($request->checkBoxArray);
             foreach($photos as $photo){
 
-                unlink(public_path().$photo->file);
+                unlink(public_path().$photo->path);
                 $photo->delete();
             }
             return redirect(route('media.index'));

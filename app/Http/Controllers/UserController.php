@@ -8,6 +8,7 @@ use App\http\Requests\UsersUpdateRequest;
 use Illuminate\Support\Facades\Session;
 use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
 use PDF;
 
 use App\User;
@@ -70,6 +71,7 @@ class UserController extends Controller
             $photo = Photo::create([
                 'path' => $name,
                 'type' => 'user_photo',
+                'uploaded_by_user_id' => Auth::user()->id,
                 ]);
             $input['photo_id'] = $photo->id;
         }
@@ -126,6 +128,7 @@ class UserController extends Controller
             $photo = Photo::create([
                 'path' => $name,
                 'type' => 'user_photo',
+                'uploaded_by_user_id' => Auth::user()->id,
                 ]);
             $input['photo_id'] = $photo->id;
 
