@@ -9,12 +9,16 @@
     </div>
 
 
-    {!! Form::open(['method'=>'POST', 'action'=>'MediaController@destroyMany']) !!}
+    {!! Form::open(['method'=>'POST', 'action'=>'MediaController@manageMany']) !!}
 
     @component('layouts.components.datatable')
     @slot('title')
         All Images
-        {!! Form::submit('Delete', ['name'=>'deleteMany', 'class'=>'btn btn-danger py-0 px-1 ml-5']) !!}
+
+        {!! Form::button('<i class="far fa-trash-alt"></i>',
+            ['type' => 'submit', 'value'=>'deleteMany', 'name'=>'deleteMany', 'class'=>'btn btn-danger py-0 px-2 ml-5 mr-2']) !!}
+        {!! Form::button('<i class="fas fa-file-archive"></i> + <i class="fas fa-download"></i>',
+            ['type' => 'submit', 'value'=>'downloadZipMany', 'name'=>'downloadZipMany', 'class'=>'btn btn-primary py-0 px-2 mr-2']) !!}
     @endslot
     @slot('headings')
         <tr>
@@ -36,7 +40,11 @@
             <tr>
                 <td>{!! Form::checkbox('checkBoxArray[]', $photo->id, null,  ['class'=>'checkBoxes']) !!}</td>
                 <td><small>{{ $photo->id }}</small></td>
-                <td><img src='{{ $photo->path }}' class="rounded" width=50 height=40></td>
+                <td>
+                    <a href="{{ $photo->path }}" target="_blank">
+                        <img src='{{ $photo->path }}' class="rounded" width=50 height=40>
+                    </a>
+                </td>
                 <td><small>{{ File::mimeType(public_path().$photo->path) }}</small></td>
                 <td><small>{{ $photo->getSize() }}</small></td>
                 <td><small>{{ str_replace('_', ' ', $photo->type) }}</small></td>
@@ -44,7 +52,12 @@
                 <td><small>{{ $photo->created_at->diffForHumans() }}</small></td>
                 <td><small>{{ $photo->updated_at->diffForHumans() }}</small></td>
                 <td>
-                    {{-- <a href="{{ Storage::disk('local_public')->url($photo->path, 'aaa.jpeg') }}" download><small>Download</small></a> --}}
+                    <a href="{{ route('download', bin2hex($photo->path)) }}">
+                        <i class="fas fa-download text-primary mr-3"></i>
+                    </a>
+                    <a href="{{ route('delete', bin2hex($photo->id)) }}">
+                        <i class="far fa-trash-alt text-danger"></i>
+                    </a>
                 </td>
             </tr>
             @endforeach

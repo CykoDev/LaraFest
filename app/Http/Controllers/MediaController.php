@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Photo;
 
 class MediaController extends Controller
@@ -16,7 +17,7 @@ class MediaController extends Controller
     public function __construct()
     {
         $this->middleware('monitor')->only('index');
-        $this->middleware('moderator')->except('index');
+        $this->middleware('moderator')->except('index', 'download', 'downloadZip');
     }
 
     /**
@@ -68,26 +69,47 @@ class MediaController extends Controller
         $photo = Photo::findOrFail($id);
         unlink(public_path().$photo->path);
         $photo->delete();
-        return redirect(route('media.index'));
+        return redirect()->back();
     }
 
-    public function destroyMany(Request $request){
+    public function delete($id)
+    {
+        $photo = Photo::findOrFail(hex2bin($id));
+        unlink(public_path().$photo->path);
+        $photo->delete();
+        return redirect()->back();
+    }
 
-        if(isset($request->delete)){
+    public function download($filepath)
+    {
+        $path = hex2bin($filepath);
+        return response()->download(public_path().$path, substr($path, 5));
+    }
 
-            // $this->destroy($request->photo_id);
-            return $request->photo_id;
-            return redirect(route('media.index'));
-        }
-        elseif (isset($request->deleteMany) && !empty($request->checkBoxArray)) {
+    public function downloadZip($filepath){
 
-            $photos = Photo::findOrFail($request->checkBoxArray);
-            foreach($photos as $photo){
+    }
 
-                unlink(public_path().$photo->path);
-                $photo->delete();
+    public function manageMany(Request $request){
+
+        if (!empty($request->checkBoxArray)) {
+
+            if (isset($request->deleteMany)) {
+
+                $photos = Photo::findOrFail($request->checkBoxArray);
+                foreach($photos as $photo){
+
+                    unlink(public_path().$photo->path);
+                    $photo->delete();
+                }
+                return redirect(route('media.index'));
             }
-            return redirect(route('media.index'));
+            elseif (isset($request->downloadZipMany)) {
+                return 'a';
+            }
+            else {
+                return redirect(route('media.index'));
+            }
         }
         else {
             return redirect(route('media.index'));
