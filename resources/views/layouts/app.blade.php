@@ -36,7 +36,7 @@
         @endauth
 
         <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content-wrapper" class="d-flex flex-column pb-5">
 
             <!-- Main Content -->
             <div id="content">
@@ -47,12 +47,6 @@
         </div>
 
     </div>
-
-    @auth
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
-    @endauth
 
     <script src="{{ asset('js/libs.js') }}"></script>
 

@@ -10,6 +10,9 @@
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Users</h1>
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-download fa-sm text-white-50"></i> Generate Excel
+        </a>
     </div>
 
     @component('layouts.components.datatable')
@@ -34,7 +37,7 @@
             <tr>
                 <td>{{ $user->id }}</td>
                 <td><img src='{{ is_null($user->photo) ? $user->defaultImage : $user->photo->path }}' class="rounded-circle" width=40 height=40></td>
-                <td><a href="{{ route('users.edit', $user->id) }}">{{ $user->name }}</a></td>
+                <td><a href="{{ route('users.edit', $user->slug) }}">{{ $user->name }}</a></td>
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->role->name }}</td>
                 <td>{{ $user->is_active ? 'Active' : 'Not Active' }}</td>

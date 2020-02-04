@@ -6,10 +6,12 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
+    use Sluggable;
 
     protected $defaultImage = 'defaultUser.png';
 
@@ -40,6 +42,21 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name',
+                'onUpdate' => true,
+            ]
+        ];
+    }
+
     /*
     *--------------------------------------------------------------------------
     * Middleware Functions
@@ -48,38 +65,62 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function isAdmin() {
 
-        if($this->role->name == 'admin' && $this->is_active == 1){
+        if($this->role){
 
-            return true;
+            if($this->role->name == 'admin' && $this->is_active == 1){
+
+                return true;
+            }
+            return false;
         }
-        return false;
+        else {
+            return false;
+        }
     }
 
     public function isModerator() {
 
-        if($this->role->name == 'moderator' && $this->is_active == 1){
+        if($this->role){
 
-            return true;
+            if($this->role->name == 'moderator' && $this->is_active == 1){
+
+                return true;
+            }
+            return false;
         }
-        return false;
+        else {
+            return false;
+        }
     }
 
     public function isMonitor() {
 
-        if($this->role->name == 'monitor' && $this->is_active == 1){
+        if($this->role){
 
-            return true;
+            if($this->role->name == 'monitor' && $this->is_active == 1){
+
+                return true;
+            }
+            return false;
         }
-        return false;
+        else {
+            return false;
+        }
     }
 
     public function isApplicant() {
 
-        if($this->role->name == 'applicant' && $this->is_active == 1){
+        if($this->role){
 
-            return true;
+            if($this->role->name == 'applicant' && $this->is_active == 1){
+
+                return true;
+            }
+            return false;
         }
-        return false;
+        else {
+            return false;
+        }
     }
 
 

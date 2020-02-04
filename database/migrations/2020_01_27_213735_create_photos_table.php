@@ -16,7 +16,8 @@ class CreatePhotosTable extends Migration
         Schema::create('photos', function (Blueprint $table) {
             $table->bigIncrements('id')->unsigned()->index();
             $table->string('path');
-            $table->string('type')->nullable();
+            $table->string('type')->default('uncategorized');
+            $table->unsignedBigInteger('uploaded_by_user_id')->index();
             $table->timestamps();
         });
     }

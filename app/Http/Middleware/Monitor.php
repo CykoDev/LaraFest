@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class Monitor
 {
@@ -15,6 +16,14 @@ class Monitor
      */
     public function handle($request, Closure $next)
     {
-        return $next($request);
+        if(Auth::check()){
+
+            if (Auth::user()->isAdmin() || Auth::user()->isModerator() || Auth::user()->isMonitor()){
+
+                return $next($request);
+            }
+        }
+
+        return redirect(404);
     }
 }

@@ -18,13 +18,13 @@ class RolesTableSeeder extends Seeder
         Role::truncate();
 
         Role::create([
-            'name'          => 'applicant',
-            'description'   => 'Users registering for the festival.',
-        ]);
-
-    	Role::create([
             'name'          => 'admin',
             'description'   => 'Application owner, has all privileges.',
+        ]);
+
+        Role::create([
+            'name'          => 'applicant',
+            'description'   => 'Users registering for the festival.',
         ]);
 
         Role::create([

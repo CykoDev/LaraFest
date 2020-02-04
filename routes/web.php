@@ -13,26 +13,30 @@
 
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes(['verify' => true]);
 
-Route::get('/admin', function(){
+Route::get('/', function(){
 
-    return view('layouts.admin');
-})->name('dashboard');
+    return view('welcome');
+})->name('home');
 
-Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
+Route::get('/dashboard', ['as'=>'dashboard', 'uses'=>'HomeController@index']);
 
-Route::get('/admin', function(){
+Route::get('/media/delete/{filepath}', ['as'=>'delete', 'uses'=>'MediaController@delete']);
+Route::get('/media/download/{filepath}', ['as'=>'download', 'uses'=>'MediaController@download']);
 
-    return view('layouts.admin');
-})->name('dashboard');
+Route::group(['middleware'=>'verified'], function(){
 
-Route::resource('admin/users', 'UserController');
+    Route::resource('users', 'UserController');
 
-Route::resource('media', 'MediaController');
+    Route::resource('roles', 'RoleController');
 
-Route::resource('roles', 'RoleController');
+    Route::resource('media', 'MediaController');
+    Route::post('media/bulk-manage', ['as'=>'media.manageMany', 'uses'=>'MediaController@manageMany']);
+});
+
+// test routes
+
+Route::get('users/export/', 'UserController@exportAllUsers');
+
+Route::get('pdf/download', 'UserController@generatepdf');
