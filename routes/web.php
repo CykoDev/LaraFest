@@ -28,15 +28,22 @@ Route::get('/media/download/{filepath}', ['as'=>'download', 'uses'=>'MediaContro
 Route::group(['middleware'=>'verified'], function(){
 
     Route::resource('users', 'UserController');
+    Route::get('/users-role/{role}', ['as'=>'users.index-role', 'uses'=>'UserController@indexRole']);
 
     Route::resource('roles', 'RoleController');
 
     Route::resource('media', 'MediaController');
     Route::post('media/bulk-manage', ['as'=>'media.manageMany', 'uses'=>'MediaController@manageMany']);
+
+    Route::post('export/users', 'UserController@exportAllUsers');
+    Route::post('export/applicants', 'UserController@exportApplicants');
+    Route::post('export/admins', 'UserController@exportAdmins');
+    Route::post('export/monitors', 'UserController@exportMonitors');
+    Route::post('export/moderators', 'UserController@exportModerators');
 });
 
 // test routes
 
-Route::get('users/export/', 'UserController@exportAllUsers');
+
 
 Route::get('pdf/download', 'UserController@generatepdf');

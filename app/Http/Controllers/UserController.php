@@ -6,10 +6,15 @@ use Illuminate\Http\Request;
 use App\http\Requests\UsersCreateRequest;
 use App\http\Requests\UsersUpdateRequest;
 use Illuminate\Support\Facades\Session;
-use App\Exports\UsersExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 use PDF;
+
+use App\Exports\UsersExport;
+use App\Exports\AdminsExport;
+use App\Exports\ApplicantsExport;
+use App\Exports\ModeratorsExport;
+use App\Exports\MonitorsExport;
 
 use App\User;
 use App\Role;
@@ -37,6 +42,13 @@ class UserController extends Controller
     {
         $users = User::all();
         return view('users.index', compact('users'));
+    }
+
+    public function indexRole($role)
+    {
+        $role = Role::whereSlug($role)->firstOrFail();
+        $users = $role->users;
+        return view('users.index-role', compact('users', 'role'));
     }
 
     /**

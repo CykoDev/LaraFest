@@ -20,7 +20,7 @@ class ApplicantsExport implements FromCollection, ShouldAutoSize, WithHeadings, 
     {
         return User::select(
             'name', 'email', 'email_verified_at', 'role_id', 'is_active', 'created_at', 'updated_at'
-            )->where('role_id', '=', 1)->get();
+            )->where('role_id', '=', 2)->get();
     }
 
     public function headings(): array

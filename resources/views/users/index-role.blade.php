@@ -9,8 +9,22 @@
     @endif
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">All Users</h1>
-        {!! Form::open(['method'=>'POST', 'action'=>'UserController@exportAllUsers']) !!}
+        <h1 class="h3 mb-0 text-gray-800">{{ ucwords($role->name) }}s</h1>
+        @switch($role->name)
+            @case('admin')
+                {!! Form::open(['method'=>'POST', 'action'=>'UserController@exportAdmins']) !!}
+                @break
+            @case('applicant')
+                {!! Form::open(['method'=>'POST', 'action'=>'UserController@exportApplicants']) !!}
+                @break
+            @case('moderator')
+                {!! Form::open(['method'=>'POST', 'action'=>'UserController@exportModerators']) !!}
+                @break
+            @case('monitor')
+                {!! Form::open(['method'=>'POST', 'action'=>'UserController@exportMonitors']) !!}
+                @break
+        @endswitch
+
         {!! Form::button('<i class="fas fa-download fa-sm text-white-50"></i> Generate Excel',
             ['type'=>'submit', 'class'=>'d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm']) !!}
         {!! Form::close() !!}
@@ -19,37 +33,16 @@
     <div class="row">
         @include('layouts.components.card', [
             'textclass' => 'primary',
-            'title' => 'View Applicants',
+            'title' => 'View All Users',
             'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
             'data' => '',
-            'link' => route('users.index-role', 'applicant'),
-        ])
-         @include('layouts.components.card', [
-            'textclass' => 'info',
-            'title' => 'View Admins',
-            'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
-            'data' => '',
-            'link' => route('users.index-role', 'admin'),
-        ])
-         @include('layouts.components.card', [
-            'textclass' => 'warning',
-            'title' => 'View Moderators',
-            'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
-            'data' => '',
-            'link' => route('users.index-role', 'moderator'),
-        ])
-         @include('layouts.components.card', [
-            'textclass' => 'success',
-            'title' => 'View Monitors',
-            'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
-            'data' => '',
-            'link' => route('users.index-role', 'monitor'),
+            'link' => route('users.index'),
         ])
     </div>
 
     @component('layouts.components.datatable')
     @slot('title')
-        All Users
+        {{ ucwords($role->name) }} Users
     @endslot
     @slot('headings')
         <tr>
@@ -71,7 +64,9 @@
                 <td><img src='{{ is_null($user->photo) ? $user->defaultImage : $user->photo->path }}' class="rounded-circle" width=40 height=40></td>
                 <td><a href="{{ route('users.edit', $user->slug) }}">{{ $user->name }}</a></td>
                 <td>{{ $user->email }}</td>
-                <td>{{ $user->role->name }}</td>
+                <td>
+                    <a href="{{ route('users.index-role', $role->slug) }}">{{ $role->name }}</a>
+                </td>
                 <td>{{ $user->is_active ? 'Active' : 'Not Active' }}</td>
                 <td>{{ $user->created_at->diffForHumans() }}</td>
                 <td>{{ $user->updated_at->diffForHumans() }}</td>
