@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use ZipArchive;
 use App\Photo;
 
 class MediaController extends Controller
@@ -86,10 +87,6 @@ class MediaController extends Controller
         return response()->download(public_path().$path, substr($path, 5));
     }
 
-    public function downloadZip($filepath){
-
-    }
-
     public function manageMany(Request $request){
 
         if (!empty($request->checkBoxArray)) {
@@ -105,7 +102,17 @@ class MediaController extends Controller
                 return redirect(route('media.index'));
             }
             elseif (isset($request->downloadZipMany)) {
-                return 'a';
+
+                $zip = new ZipArchive;
+                $zipFile = time() . 'zipped_media.zip';
+                if ($zip->open(public_path($zipFile), ZipArchive::CREATE) === TRUE) {
+                    $media = Photo::findOrFail($request->checkBoxArray);
+                    foreach ($media as $mediaItem) {
+                        $zip->addFile(public_path().$mediaItem->path, basename($mediaItem->path));
+                    }
+                    $zip->close();
+                }
+                return response()->download(public_path($zipFile))->deleteFileAfterSend(true);
             }
             else {
                 return redirect(route('media.index'));
