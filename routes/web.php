@@ -25,6 +25,22 @@ Route::get('/dashboard', ['as'=>'dashboard', 'uses'=>'HomeController@index']);
 Route::get('/media/delete/{filepath}', ['as'=>'delete', 'uses'=>'MediaController@delete']);
 Route::get('/media/download/{filepath}', ['as'=>'download', 'uses'=>'MediaController@download']);
 
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/page-one', function() { return view('public.page-one'); });
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Portal Routes
+|--------------------------------------------------------------------------
+*/
+
 Route::group(['middleware'=>'verified'], function(){
 
     Route::resource('users', 'UserController');
@@ -44,6 +60,12 @@ Route::group(['middleware'=>'verified'], function(){
     Route::post('export/moderators', 'UserController@exportModerators');
 });
 
-// test routes
+
+
+/*
+|--------------------------------------------------------------------------
+| Test Routes
+|--------------------------------------------------------------------------
+*/
 
 Route::get('pdf/download', 'UserController@generatepdf');
