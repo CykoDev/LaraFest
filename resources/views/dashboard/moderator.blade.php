@@ -4,7 +4,7 @@
 
 <div class="container-fluid">
 
-    Hi Moderator!
+    <h1>Hi Moderator! {{ $theStage }}</h1>
 
 </div>
 

@@ -27,9 +27,11 @@ Route::get('/admin', function(){
 Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
 
 Route::get('/home/admin', 'HomeController@adminUser')->name('admin.home');
-Route::get('/home/applicant', 'HomeController@applicant')->name('applicant.home')->middleware('verified');
-Route::get('/home/moderator', 'HomeController@moderator')->name('moderator.home')->middleware('verified');
-Route::get('/home/monitor', 'HomeController@monitor')->name('monitor.home')->middleware('verified');
+Route::get('/home/applicant', 'HomeController@getApplicant')->name('applicant.home');
+Route::get('/home/moderator', 'HomeController@moderator')->name('moderator.home');
+Route::get('/home/monitor', 'HomeController@monitor')->name('monitor.home');
+
+Route::post('/home/applicant', 'HomeController@postApplicant')->name('applicant.post');
 
 Route::get('/admin', function(){
 

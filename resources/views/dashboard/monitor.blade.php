@@ -4,7 +4,7 @@
 
 <div class="container-fluid">
 
-    Hi Monitor!
+    <h1>Hi Monitor!</h1>
 
 </div>
 
