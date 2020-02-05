@@ -1,1 +1,1 @@
-adasd
+@extends('layouts.public')
