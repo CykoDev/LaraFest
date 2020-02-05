@@ -32,6 +32,8 @@ Route::group(['middleware'=>'verified'], function(){
 
     Route::resource('roles', 'RoleController');
 
+    Route::resource('events', 'EventController');
+
     Route::resource('media', 'MediaController');
     Route::post('media/bulk-manage', ['as'=>'media.manageMany', 'uses'=>'MediaController@manageMany']);
 
@@ -43,7 +45,5 @@ Route::group(['middleware'=>'verified'], function(){
 });
 
 // test routes
-
-
 
 Route::get('pdf/download', 'UserController@generatepdf');
