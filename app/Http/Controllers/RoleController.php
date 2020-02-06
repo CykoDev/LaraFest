@@ -8,6 +8,17 @@ use App\Role;
 class RoleController extends Controller
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('monitor')->only('view', 'show');
+        $this->middleware('moderator')->except('view', 'show');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

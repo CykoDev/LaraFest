@@ -6,6 +6,16 @@ use Illuminate\Http\Request;
 use App\http\Requests\UsersCreateRequest;
 use App\http\Requests\UsersUpdateRequest;
 use Illuminate\Support\Facades\Session;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
+use PDF;
+
+use App\Exports\UsersExport;
+use App\Exports\AdminsExport;
+use App\Exports\ApplicantsExport;
+use App\Exports\ModeratorsExport;
+use App\Exports\MonitorsExport;
+
 use App\User;
 use App\Role;
 use App\Photo;
@@ -13,16 +23,32 @@ use App\Photo;
 class UserController extends Controller
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('admin')->only('edit', 'store', 'destroy', 'update', 'create');
+        $this->middleware('monitor')->only('index', 'show');
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
-
         $users = User::all();
         return view('users.index', compact('users'));
+    }
+
+    public function indexRole($role)
+    {
+        $role = Role::whereSlug($role)->firstOrFail();
+        $users = $role->users;
+        return view('users.index-role', compact('users', 'role'));
     }
 
     /**
@@ -32,8 +58,6 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
-
         $roles = Role::pluck('name', 'id')->all();
         return view('users.create', compact('roles'));
     }
@@ -46,8 +70,6 @@ class UserController extends Controller
      */
     public function store(UsersCreateRequest $request)
     {
-        //
-
         if(trim($request->password) == '' ) {
             $input = $request->except('password');
         }
@@ -61,6 +83,7 @@ class UserController extends Controller
             $photo = Photo::create([
                 'path' => $name,
                 'type' => 'user_photo',
+                'uploaded_by_user_id' => Auth::user()->id,
                 ]);
             $input['photo_id'] = $photo->id;
         }
@@ -102,8 +125,6 @@ class UserController extends Controller
      */
     public function update(UsersUpdateRequest $request, $id)
     {
-        //
-
         if(trim($request->password) == '') {
             $input = $request->except('password');
         }
@@ -119,6 +140,7 @@ class UserController extends Controller
             $photo = Photo::create([
                 'path' => $name,
                 'type' => 'user_photo',
+                'uploaded_by_user_id' => Auth::user()->id,
                 ]);
             $input['photo_id'] = $photo->id;
 
@@ -145,8 +167,6 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
-
         $user = User::findOrFail($id);
         if($user->photo){
             unlink(public_path() . $user->photo->path);
@@ -158,5 +178,36 @@ class UserController extends Controller
             'message' => 'User successfully deleted',
         ]);
         return redirect(route('users.index'));
+    }
+
+    public function exportAllUsers()
+    {
+        return Excel::download(new UsersExport, 'all users.xlsx');
+    }
+
+    public function exportApplicants()
+    {
+        return Excel::download(new ApplicantsExport, 'all applicants.xlsx');
+    }
+
+    public function exportAdmins()
+    {
+        return Excel::download(new AdminsExport, 'admin users.xlsx');
+    }
+
+    public function exportModerators()
+    {
+        return Excel::download(new ModeratorsExport, 'moderator users.xlsx');
+    }
+
+    public function exportMonitors()
+    {
+        return Excel::download(new MonitorsExport, 'monitor users.xlsx');
+    }
+
+    public function generatepdf(){
+
+        $pdf = PDF::loadView('pdf.test');
+        return $pdf->download('testfile.pdf');
     }
 }

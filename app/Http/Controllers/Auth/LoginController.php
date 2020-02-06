@@ -27,42 +27,9 @@ class LoginController extends Controller
      *
      * @var string
      */
-    // protected $redirectTo = RouteServiceProvider::HOME;
+    public function redirectTo() {
 
-    public function redirectTo()
-    {
-        // $role = Auth::user()->role->name;
-
-        $user = Auth::user();
-
-        if ($user->isAdmin()) {
-            return route('admin.home');
-        } else if ($user->isApplicant()) {
-            return route('applicant.home');
-        } else if ($user->isModerator()) {
-            return route('moderator.home');
-        } else if ($user->isMonitor()) {
-            return route('monitor.home');
-        } else {
-            return RouteServiceProvider::HOME;
-        }
-
-        // switch ($role) {
-        //     case 'admin':
-        //         return '/home/admin';
-        //         break;
-        //     case 'applicant':
-        //         return '/home/applicant';
-        //         break;
-        //     case 'moderator':
-        //         return '/home/moderator';
-        //         break;
-        //     case 'monitor':
-        //         return '/home/monitor';
-        //         break;
-        //     default:
-        //         return RouteServiceProvider::HOME;
-        // }
+        return route('dashboard');
     }
 
     /**

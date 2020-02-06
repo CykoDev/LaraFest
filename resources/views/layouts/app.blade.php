@@ -17,7 +17,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- CSS -->
-    <link href="{{ asset('css/libs.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('css/portal.css') }}" rel="stylesheet" type="text/css">
 
     {{-- custom and/or component scripts --}}
     @stack('styles')
@@ -36,7 +36,7 @@
         @endauth
 
         <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content-wrapper" class="d-flex flex-column pb-5">
 
             <!-- Main Content -->
             <div id="content">
@@ -48,13 +48,7 @@
 
     </div>
 
-    @auth
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
-    @endauth
-
-    <script src="{{ asset('js/libs.js') }}"></script>
+    <script src="{{ asset('js/portal.js') }}"></script>
 
     {{-- custom and/or component scripts --}}
     @stack('scripts')

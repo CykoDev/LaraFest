@@ -110,7 +110,7 @@
           </h6>
           <a class="dropdown-item d-flex align-items-center" href="#">
             <div class="dropdown-list-image mr-3">
-              <img class="rounded-circle" src="/img/users/default.png" alt="">
+              <img class="rounded-circle" src="/img/defaultUser.png" alt="">
               <div class="status-indicator bg-success"></div>
             </div>
             <div class="font-weight-bold">
@@ -120,7 +120,7 @@
           </a>
           <a class="dropdown-item d-flex align-items-center" href="#">
             <div class="dropdown-list-image mr-3">
-              <img class="rounded-circle" src="/img/users/default.png" alt="">
+              <img class="rounded-circle" src="/img/defaultUser.png" alt="">
               <div class="status-indicator"></div>
             </div>
             <div>
@@ -130,7 +130,7 @@
           </a>
           <a class="dropdown-item d-flex align-items-center" href="#">
             <div class="dropdown-list-image mr-3">
-              <img class="rounded-circle" src="/img/users/default.png" alt="">
+              <img class="rounded-circle" src="/img/defaultUser.png" alt="">
               <div class="status-indicator bg-warning"></div>
             </div>
             <div>
@@ -140,7 +140,7 @@
           </a>
           <a class="dropdown-item d-flex align-items-center" href="#">
             <div class="dropdown-list-image mr-3">
-              <img class="rounded-circle" src="/img/users/default.png" alt="">
+              <img class="rounded-circle" src="/img/defaultUser.png" alt="">
               <div class="status-indicator bg-success"></div>
             </div>
             <div>

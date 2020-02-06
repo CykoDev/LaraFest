@@ -13,33 +13,59 @@
 
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes(['verify' => true]);
 
-Route::get('/admin', function(){
+Route::get('/', function(){
 
-    return view('layouts.admin');
-})->name('dashboard');
+    return view('welcome');
+})->name('home');
 
-Route::get('/home', 'HomeController@index')->name('home')->middleware('verified');
+Route::get('/dashboard', ['as'=>'dashboard', 'uses'=>'HomeController@index']);
 
-Route::get('/home/admin', 'HomeController@adminUser')->name('admin.home');
-Route::get('/home/applicant', 'HomeController@getApplicant')->name('applicant.home');
-Route::get('/home/moderator', 'HomeController@moderator')->name('moderator.home');
-Route::get('/home/monitor', 'HomeController@monitor')->name('monitor.home');
+Route::get('/media/delete/{filepath}', ['as'=>'delete', 'uses'=>'MediaController@delete']);
+Route::get('/media/download/{filepath}', ['as'=>'download', 'uses'=>'MediaController@download']);
 
-Route::post('/home/applicant', 'HomeController@postApplicant')->name('applicant.post');
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
 
-Route::get('/admin', function(){
+Route::get('/page-one', function() { return view('public.page-one'); });
 
-    return view('layouts.admin');
-})->name('dashboard');
 
-Route::resource('admin/users', 'UserController');
 
-Route::resource('media', 'MediaController');
+/*
+|--------------------------------------------------------------------------
+| Portal Routes
+|--------------------------------------------------------------------------
+*/
 
-Route::resource('roles', 'RoleController');
+Route::group(['middleware'=>'verified'], function(){
+
+    Route::resource('users', 'UserController');
+    Route::get('/users-role/{role}', ['as'=>'users.index-role', 'uses'=>'UserController@indexRole']);
+
+    Route::resource('roles', 'RoleController');
+
+    Route::resource('events', 'EventController');
+
+    Route::resource('media', 'MediaController');
+    Route::post('media/bulk-manage', ['as'=>'media.manageMany', 'uses'=>'MediaController@manageMany']);
+
+    Route::post('export/users', 'UserController@exportAllUsers');
+    Route::post('export/applicants', 'UserController@exportApplicants');
+    Route::post('export/admins', 'UserController@exportAdmins');
+    Route::post('export/monitors', 'UserController@exportMonitors');
+    Route::post('export/moderators', 'UserController@exportModerators');
+});
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Test Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::get('pdf/download', 'UserController@generatepdf');
