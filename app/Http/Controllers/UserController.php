@@ -6,15 +6,9 @@ use Illuminate\Http\Request;
 use App\http\Requests\UsersCreateRequest;
 use App\http\Requests\UsersUpdateRequest;
 use Illuminate\Support\Facades\Session;
-use Maatwebsite\Excel\Facades\Excel;
+
 use Illuminate\Support\Facades\Auth;
 use PDF;
-
-use App\Exports\UsersExport;
-use App\Exports\AdminsExport;
-use App\Exports\ApplicantsExport;
-use App\Exports\ModeratorsExport;
-use App\Exports\MonitorsExport;
 
 use App\User;
 use App\Role;
@@ -178,31 +172,6 @@ class UserController extends Controller
             'message' => 'User successfully deleted',
         ]);
         return redirect(route('users.index'));
-    }
-
-    public function exportAllUsers()
-    {
-        return Excel::download(new UsersExport, 'all users.xlsx');
-    }
-
-    public function exportApplicants()
-    {
-        return Excel::download(new ApplicantsExport, 'all applicants.xlsx');
-    }
-
-    public function exportAdmins()
-    {
-        return Excel::download(new AdminsExport, 'admin users.xlsx');
-    }
-
-    public function exportModerators()
-    {
-        return Excel::download(new ModeratorsExport, 'moderator users.xlsx');
-    }
-
-    public function exportMonitors()
-    {
-        return Excel::download(new MonitorsExport, 'monitor users.xlsx');
     }
 
     public function generatepdf(){

@@ -11,8 +11,13 @@ class Event extends Model
 
     protected $defaultImage = 'defaultEvent.png';
 
+    protected $fillable = [
+        'title', 'event_date', 'photo_id', 'data',
+    ];
+
     protected $casts = [
-        'data' => 'array'
+        'data' => 'array',
+        'event_date' => 'datetime',
     ];
 
     /**
@@ -50,5 +55,10 @@ class Event extends Model
 
     public function users() {
         return $this->belongsToMany('App\User');
+    }
+
+    public function photo(){
+
+        return $this->belongsTo('App\Photo');
     }
 }

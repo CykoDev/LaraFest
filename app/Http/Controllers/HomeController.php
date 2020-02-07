@@ -50,9 +50,13 @@ class HomeController extends Controller
 
                     return view('home.monitor');
                     break;
+                case $user->isApplicant():
+
+                    return view('home.applicant');
+                    break;
                 default:
 
-                    return view('home.viewer');
+                    return view('home.applicant');
                     break;
             }
         }
