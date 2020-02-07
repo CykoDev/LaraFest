@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         $output->writeln("<comment>Running Factories</comment>");
         $factoryTime = Carbon::now();
 
-        factory(App\User::class, 40)->create();
+        factory(App\User::class, 100)->create();
 
         $diff = Carbon::now()->diffInSeconds($factoryTime);
         $output->writeln("<info>Factory Production Complete</info> ($diff seconds)\n");

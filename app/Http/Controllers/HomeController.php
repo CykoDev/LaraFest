@@ -51,8 +51,8 @@ class HomeController extends Controller
                     return view('home.monitor');
                     break;
                 default:
-
-                    return view('home.viewer');
+                    
+                    return view('home.applicant');
                     break;
             }
         }
