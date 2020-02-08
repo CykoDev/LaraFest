@@ -9,7 +9,8 @@ use App\User;
 class ProfileController extends Controller
 {
     //
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         // if (isset($request->Yes)) dd('Yes!');
         // else if (isset($request->No)) dd('No!');
         if (Auth::check()) {
@@ -42,9 +43,13 @@ class ProfileController extends Controller
                     return view('profile.edit', compact('stage', 'userType'));
                 }
             } else if ($user->profile_completed_at == null) {
-                $stage = 'form';
-                $userType = $userData['registrationType'];
-                return view('profile.edit', compact('stage', 'userType'));
+                if ($request->submit == 'continue') {
+                    $stage = 'form';
+                    $userType = $userData['registrationType'];
+                    return view('profile.edit', compact('stage', 'userType'));
+                }
+                $user->data = ['exists' => 'yes'];
+                return redirect('/dashboard');
             } else {
                 $stage = 'event';
                 $userType = $userData['registrationType'];
