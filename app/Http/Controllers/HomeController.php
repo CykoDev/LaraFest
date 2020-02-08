@@ -51,8 +51,16 @@ class HomeController extends Controller
                     return view('home.monitor');
                     break;
                 default:
-                    
-                    return view('home.applicant');
+                    $userData = $user->data;
+                    $stage = '';
+                    if (!isset($userData['registrationType'])) $stage = 'register';
+                    else if ($user->profile_completed_at == null) $stage = 'form';
+                    else {
+                        $stage = 'event';
+                        $userType = $userData['registrationType'];
+                        return view('home.applicant', compact('stage', 'userType'));
+                    }
+                    return view('home.applicant', compact('stage'));
                     break;
             }
         }

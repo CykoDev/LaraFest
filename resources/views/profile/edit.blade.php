@@ -8,7 +8,7 @@
         <h1 class="h3 mb-0 text-gray-800">Hi Applicant!</h1>
 
     </div>
-    @include('users.applicants.dashboard-' . $stage)
+    @include('users.applicants.profile-' . $stage)
 
 </div>
 
