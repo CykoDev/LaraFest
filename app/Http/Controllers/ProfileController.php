@@ -4,17 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\User;
 
 class ProfileController extends Controller
 {
     //
-    public function store(Request $request)
+    public function edit(Request $request)
     {
         // if (isset($request->Yes)) dd('Yes!');
         // else if (isset($request->No)) dd('No!');
         if (Auth::check()) {
-            $user = User::where('id', Auth::user()->id)->first();
+            $user = Auth::user();
             $userData = $user->data;
             if (!isset($userData['registrationType'])) {
                 if ($request->submit == 'yes') {
@@ -49,6 +48,7 @@ class ProfileController extends Controller
                     return view('profile.edit', compact('stage', 'userType'));
                 }
                 $user->data = ['exists' => 'yes'];
+                $user->save();
                 return redirect('/dashboard');
             } else {
                 $stage = 'event';
@@ -61,6 +61,15 @@ class ProfileController extends Controller
                 }
                 return view('profile.edit', compact('stage', 'choiceType'));
             }
+        }
+    }
+
+    public function store(Request $request) {
+        if (Auth::check()) {
+            $user = Auth::user();
+            $userData = $user->data;
+            $userData = array_merge($userData, $request->all());
+            dd($userData);
         }
     }
 }

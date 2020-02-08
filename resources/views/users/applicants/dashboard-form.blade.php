@@ -1,7 +1,7 @@
 <div>
     <p>How would you like to proceed?</p>
     {{-- {!! Form::open(['method'=>'POST', 'action'=>'HomeController@postApplicant', 'files'=>false]) !!} --}}
-    {!! Form::open(['method'=>'POST', 'action'=>'ProfileController@store', 'files'=>false]) !!}
+    {!! Form::open(['method'=>'POST', 'action'=>'ProfileController@edit', 'files'=>false]) !!}
     <div class="form-group">
         {!! Form::button('Continue where I left off', ['type'=>'submit', 'name'=>'submit', 'value'=>'continue', 'class'=>'btn btn-primary']) !!}
     </div>

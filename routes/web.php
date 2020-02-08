@@ -23,6 +23,7 @@ Route::get('/', function(){
 Route::get('/dashboard', ['as'=>'dashboard', 'uses'=>'HomeController@index']);
 
 Route::post('profile/store', 'ProfileController@store');
+Route::post('profile/edit', 'ProfileController@edit');
 
 Route::get('/media/delete/{filepath}', ['as'=>'delete', 'uses'=>'MediaController@delete']);
 Route::get('/media/download/{filepath}', ['as'=>'download', 'uses'=>'MediaController@download']);
