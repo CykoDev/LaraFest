@@ -69,7 +69,10 @@ class ProfileController extends Controller
             $user = Auth::user();
             $userData = $user->data;
             $userData = array_merge($userData, $request->all());
-            dd($userData);
+            $user->data = $userData;
+            $user->profile_completed_at = now();
+            $user->save();
+            return redirect('/dashboard');
         }
     }
 }
