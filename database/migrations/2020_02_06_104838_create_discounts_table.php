@@ -16,7 +16,7 @@ class CreateDiscountsTable extends Migration
         Schema::create('discounts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('package_id');
-            $table->timestamps('name');
+            $table->string('name');
             $table->double('amount');
             $table->timestamp('expiry_at')->nullable();
             $table->json('data');
