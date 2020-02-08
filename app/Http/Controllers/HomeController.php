@@ -53,13 +53,13 @@ class HomeController extends Controller
 
                 case $user->isApplicant():
 
-                    if (!isset($user->data['registrationType'])){
+                    if (is_null($user->profile_completed_at)){
                         return view('home.applicant.starter');
                     }
-                    elseif (is_null($user->profile_completed_at)){
+                    elseif (!is_null($user->events)){
                         return view('home.applicant.browsing');
                     }
-                    elseif (isset($user->data['registrationType']) && !is_null($user->profile_completed_at)) {
+                    else {
                         return view('home.applicant.enrolled');
                     }
                     break;
