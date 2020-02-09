@@ -8,7 +8,7 @@
         <h1 class="h3 mb-0 text-gray-800">non nustian</h1>
     </div>
 
-    {!! Form::model(Auth::user(), ['method'=>'PATCH', 'action'=>['ProfileController@update', 'dashboard'], 'files'=>true]) !!}
+    {!! Form::model(Auth::user(), ['method'=>'PATCH', 'action'=>['ProfileController@updateApplicant', 'dashboard'], 'files'=>true]) !!}
 
         {{ Form::hidden('profile_completed_at', NOW()) }}
 
@@ -16,6 +16,18 @@
             {!! Form::label('data[full_name]', 'Full Name: ') !!}
             {!! Form::text('data[full_name]', null, ['class'=>'form-control']) !!}
             @error('data[full_name]')
+                <span class="text-danger small">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+
+        <div class="form-group">
+            {!! Form::label('photo_id', 'Upload your Picture: (Lets see your face)') !!}
+            <br>
+            {!! Form::file('photo_id', null, ['class'=>'form-control']) !!}
+            @error('photo_id')
+            <br>
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -85,9 +97,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('data[educational_level]', 'Education Level: ') !!}
-            {!! Form::text('data[educational_level]', null, ['class'=>'form-control']) !!}
-            @error('data[educational_level]')
+            {!! Form::label('data[education_level]', 'Education Level: ') !!}
+            {!! Form::text('data[education_level]', null, ['class'=>'form-control']) !!}
+            @error('data[education_level]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -145,8 +157,8 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('data[accommodation]', 'Accommodation: ') !!}
-            {!! Form::select('data[accommodation]', ['Yes'=> 'yes', 'No'=> 'no'], null, ['class'=>'form-control']) !!}
+            {!! Form::label('data[accommodation]', 'Do you need accommodation? ') !!}
+            {!! Form::select('data[accommodation]', [''=>'choose', 'yes'=> 'Sign me up!', 'no'=> 'Eh na I\'m fine'], null, ['class'=>'form-control']) !!}
             @error('data[accommodation]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
@@ -175,7 +187,7 @@
         </div>
 
         <div class="form=group">
-            {!! Form::submit('Next', ['class'=>'btn btn-primary']) !!}
+            {!! Form::submit('Complete Profile', ['class'=>'btn btn-primary']) !!}
         </div>
 
     {!! Form::close() !!}
