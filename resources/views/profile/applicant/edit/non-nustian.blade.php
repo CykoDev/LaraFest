@@ -8,32 +8,14 @@
         <h1 class="h3 mb-0 text-gray-800">non nustian</h1>
     </div>
 
-    {!! Form::open(['method'=>'POST', 'action'=>'ProfileController@store', 'files'=>true]) !!}
+    {!! Form::model(Auth::user(), ['method'=>'POST', 'action'=>'ProfileController@update', 'files'=>true]) !!}
+
+        {{ Form::hidden('profile_completed_at', NOW()) }}
 
         <div class="form-group">
-            {!! Form::label('name', 'Full Name: ') !!}
-            {!! Form::text('name', null, ['class'=>'form-control']) !!}
-            @error('name')
-                <span class="text-danger small">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('fname', 'Father\'s Name: ') !!}
-            {!! Form::text('fname', null, ['class'=>'form-control']) !!}
-            @error('fname')
-                <span class="text-danger small">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
-
-        <div class="form-group">
-            {!! Form::label('dob', 'Date of Birth: ') !!}
-            {!! Form::date('dob', \Carbon\Carbon::now(), ['class' => 'form-control']) !!}
-            @error('dob')
+            {!! Form::label('data[full_name]', 'Full Name: ') !!}
+            {!! Form::text('data[full_name]', null, ['class'=>'form-control']) !!}
+            @error('data[full_name]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -51,9 +33,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('cnic', 'CNIC Number: ') !!}
-            {!! Form::text('cnic', null, ['class'=>'form-control']) !!}
-            @error('cnic')
+            {!! Form::label('data[date_of_birth]', 'Date of Birth: ') !!}
+            {!! Form::date('data[date_of_birth]', \Carbon\Carbon::now(), ['class' => 'form-control']) !!}
+            @error('data[date_of_birth]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -61,21 +43,31 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('cnicfile', 'CNIC Copy:') !!}
+            {!! Form::label('data[cnic]', 'CNIC Number: ') !!}
+            {!! Form::text('data[cnic]', null, ['class'=>'form-control']) !!}
+            @error('data[cnic]')
+                <span class="text-danger small">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+
+        {{-- <div class="form-group">
+            {!! Form::label('data[cnic_photo_id]', 'CNIC Copy:') !!}
             <br>
-            {!! Form::file('cnicfile', null, ['class'=>'form-control']) !!}
-            @error('cnicfile')
+            {!! Form::file('data[cnic_photo_id]', null, ['class'=>'form-control']) !!}
+            @error('data[cnic_photo_id]')
             <br>
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
             @enderror
-        </div>
+        </div> --}}
 
         <div class="form-group">
-            {!! Form::label('city', 'City: ') !!}
-            {!! Form::text('city', null, ['class'=>'form-control']) !!}
-            @error('city')
+            {!! Form::label('data[city]', 'City: ') !!}
+            {!! Form::text('data[city]', null, ['class'=>'form-control']) !!}
+            @error('data[city]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -83,9 +75,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('blood', 'Blood Group: ') !!}
-            {!! Form::text('blood', null, ['class'=>'form-control']) !!}
-            @error('blood')
+            {!! Form::label('data[blood_group]', 'Blood Group: ') !!}
+            {!! Form::text('data[blood_group]', null, ['class'=>'form-control']) !!}
+            @error('data[blood_group]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -93,9 +85,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('edu', 'Education Level: ') !!}
-            {!! Form::select('edu', ['Male'=> 'Male', 'Female'=> 'Female', 'Other'=> 'Other'], null, ['class'=>'form-control']) !!}
-            @error('edu')
+            {!! Form::label('data[educational_level]', 'Education Level: ') !!}
+            {!! Form::text('data[educational_level]', null, ['class'=>'form-control']) !!}
+            @error('data[educational_level]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -103,9 +95,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('institution', 'Institution\'s Name: ') !!}
-            {!! Form::text('institution', null, ['class'=>'form-control']) !!}
-            @error('institution')
+            {!! Form::label('data[institution]', 'Institution\'s Name: ') !!}
+            {!! Form::text('data[institution]', null, ['class'=>'form-control']) !!}
+            @error('data[institution]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -113,9 +105,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('batch', 'Batch: ') !!}
-            {!! Form::text('batch', null, ['class'=>'form-control']) !!}
-            @error('batch')
+            {!! Form::label('data[batch]', 'Batch: ') !!}
+            {!! Form::text('data[batch]', null, ['class'=>'form-control']) !!}
+            @error('data[batch]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -123,9 +115,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('gender', 'Gender: ') !!}
-            {!! Form::select('gender', ['Male'=> 'Male', 'Female'=> 'Female', 'Other'=> 'Other'], null, ['class'=>'form-control']) !!}
-            @error('gender')
+            {!! Form::label('data[gender]', 'Gender: ') !!}
+            {!! Form::select('data[gender]', ['Male'=> 'male', 'Female'=> 'female', 'Other'=> 'other'], null, ['class'=>'form-control']) !!}
+            @error('data[gender]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -133,9 +125,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('mobile', 'Mobile Number: ') !!}
-            {!! Form::text('mobile', null, ['class'=>'form-control']) !!}
-            @error('mobile')
+            {!! Form::label('data[mobile_no]', 'Mobile Number: ') !!}
+            {!! Form::text('data[mobile_no]', null, ['class'=>'form-control']) !!}
+            @error('data[mobile_no]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -143,9 +135,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('ecn', 'Emergency Contact Number: ') !!}
-            {!! Form::text('ecn', null, ['class'=>'form-control']) !!}
-            @error('ecn')
+            {!! Form::label('data[emegerncy_contact]', 'Emergency Contact Number: ') !!}
+            {!! Form::text('data[emegerncy_contact]', null, ['class'=>'form-control']) !!}
+            @error('data[emegerncy_contact]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -153,9 +145,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('accom', 'Accommodation: ') !!}
-            {!! Form::select('accom', ['Yes'=> 'Yes', 'No'=> 'No'], null, ['class'=>'form-control']) !!}
-            @error('accom')
+            {!! Form::label('data[accommodation]', 'Accommodation: ') !!}
+            {!! Form::select('data[accommodation]', ['Yes'=> 'yes', 'No'=> 'no'], null, ['class'=>'form-control']) !!}
+            @error('data[accommodation]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -163,9 +155,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('code', 'Ambassador Code: (optional)') !!}
-            {!! Form::text('code', null, ['class'=>'form-control']) !!}
-            @error('code')
+            {!! Form::label('data[ambassador_code]', 'Ambassador Code: (optional)') !!}
+            {!! Form::text('data[ambassador_code]', null, ['class'=>'form-control']) !!}
+            @error('data[ambassador_code]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -173,9 +165,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('assist', 'Do you need any additional assistance? (optional)') !!}
-            {!! Form::text('assist', null, ['class'=>'form-control']) !!}
-            @error('assist')
+            {!! Form::label('data[assistance]', 'Do you need any additional assistance? (optional)') !!}
+            {!! Form::text('data[assistance]', null, ['class'=>'form-control']) !!}
+            @error('data[assistance]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>

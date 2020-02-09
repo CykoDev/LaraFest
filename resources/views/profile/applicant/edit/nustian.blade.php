@@ -8,12 +8,14 @@
         <h1 class="h3 mb-0 text-gray-800">nustian</h1>
     </div>
 
-    {!! Form::open(['method'=>'POST', 'action'=>'ProfileController@store', 'files'=>true]) !!}
+    {!! Form::model(Auth::user(), ['method'=>'POST', 'action'=>'ProfileController@update', 'files'=>true]) !!}
+
+        {{ Form::hidden('profile_completed_at', NOW()) }}
 
         <div class="form-group">
-            {!! Form::label('name', 'Full Name: ') !!}
-            {!! Form::text('name', null, ['class'=>'form-control']) !!}
-            @error('name')
+            {!! Form::label('data[full_name]', 'Full Name: ') !!}
+            {!! Form::text('data[full_name]', null, ['class'=>'form-control']) !!}
+            @error('data[full_name]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -31,9 +33,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('cms', 'CMS ID: ') !!}
-            {!! Form::text('cms', null, ['class'=>'form-control']) !!}
-            @error('cms')
+            {!! Form::label('data[cms_id]', 'CMS ID: ') !!}
+            {!! Form::text('data[cms_id]', null, ['class'=>'form-control']) !!}
+            @error('data[cms_id]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -41,9 +43,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('batch', 'Batch: ') !!}
-            {!! Form::text('batch', null, ['class'=>'form-control']) !!}
-            @error('batch')
+            {!! Form::label('data[batch]', 'Batch: ') !!}
+            {!! Form::text('data[batch]', null, ['class'=>'form-control']) !!}
+            @error('data[batch]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -51,9 +53,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('dept', 'Department: ') !!}
-            {!! Form::select('dept', ['M'=> 'Male', 'F'=> 'Female', 'O'=> 'Other'], null, ['class'=>'form-control']) !!}
-            @error('dept')
+            {!! Form::label('data[department]', 'Department: ') !!}
+            {!! Form::text('data[department]', null, ['class'=>'form-control']) !!}
+            @error('data[department]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -61,9 +63,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('gender', 'Gender: ') !!}
-            {!! Form::select('gender', ['Male'=> 'Male', 'Female'=> 'Female', 'Other'=> 'Other'], null, ['class'=>'form-control']) !!}
-            @error('gender')
+            {!! Form::label('data[gender]', 'Gender: ') !!}
+            {!! Form::select('data[gender]', ['Male'=> 'male', 'Female'=> 'female', 'Other'=> 'other'], null, ['class'=>'form-control']) !!}
+            @error('data[gender]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -71,9 +73,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('mobile', 'Mobile Number: ') !!}
-            {!! Form::text('mobile', null, ['class'=>'form-control']) !!}
-            @error('mobile')
+            {!! Form::label('data[mobile_no]', 'Mobile Number: ') !!}
+            {!! Form::text('data[mobile_no]', null, ['class'=>'form-control']) !!}
+            @error('data[mobile_no]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -81,9 +83,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('ecn', 'Emergency Contact Number: ') !!}
-            {!! Form::text('ecn', null, ['class'=>'form-control']) !!}
-            @error('ecn')
+            {!! Form::label('data[emegerncy_contact]', 'Emergency Contact Number: ') !!}
+            {!! Form::text('data[emegerncy_contact]', null, ['class'=>'form-control']) !!}
+            @error('data[emegerncy_contact]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -91,9 +93,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('accom', 'Accommodation: ') !!}
-            {!! Form::select('accom', ['Yes'=> 'Yes', 'No'=> 'No'], null, ['class'=>'form-control']) !!}
-            @error('accom')
+            {!! Form::label('data[accommodation]', 'Accommodation: ') !!}
+            {!! Form::select('data[accommodation]', ['Yes'=> 'Yes', 'No'=> 'No'], null, ['class'=>'form-control']) !!}
+            @error('data[accommodation]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -101,9 +103,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('code', 'Ambassador Code: (optional)') !!}
-            {!! Form::text('code', null, ['class'=>'form-control']) !!}
-            @error('code')
+            {!! Form::label('data[ambassador_code]', 'Ambassador Code: (optional)') !!}
+            {!! Form::text('data[ambassador_code]', null, ['class'=>'form-control']) !!}
+            @error('data[ambassador_code]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -111,9 +113,9 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('assist', 'Do you need any additional assistance? (optional)') !!}
-            {!! Form::text('assist', null, ['class'=>'form-control']) !!}
-            @error('assist')
+            {!! Form::label('data[assistance]', 'Do you need any additional assistance? (optional)') !!}
+            {!! Form::text('data[assistance]', null, ['class'=>'form-control']) !!}
+            @error('data[assistance]')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>
@@ -121,7 +123,7 @@
         </div>
 
         <div class="form=group">
-            {!! Form::submit('Next', ['class'=>'btn btn-primary']) !!}
+            {!! Form::submit('Complete Profile', ['class'=>'btn btn-primary']) !!}
         </div>
 
     {!! Form::close() !!}
