@@ -17,4 +17,8 @@ class Package extends Model
 
         return $this->currencySymbol;
     }
+
+    public function discount() {
+        return $this->morphOne('App\Discount', 'discountable');
+    }
 }
