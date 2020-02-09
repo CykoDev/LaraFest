@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Intervention\Image\ImageManagerStatic as Image;
+use \DOMDocument;
+
 use App\Photo;
 use App\Event;
 
@@ -40,6 +43,8 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
+
+        // Event Image
         if($file = $request->file('photo_id')) {
 
             $name = time() . $file->getClientOriginalName();
@@ -51,6 +56,41 @@ class EventController extends Controller
                 ]);
             $input['photo_id'] = $photo->id;
         }
+
+        // Event Content Images
+        $dom = new DomDocument();
+		$dom->loadHtml($request->details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $images = $dom->getElementsByTagName('img');
+
+		foreach($images as $img){
+			$src = $img->getAttribute('src');
+
+			if(preg_match('/data:image/', $src)){
+
+				preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
+				$mimetype = $groups['mime'];
+
+				$filename = uniqid();
+				$filepath = "/img/$filename.$mimetype";
+
+				$image = Image::make($src)
+				  ->encode($mimetype, 100)
+				  ->save(public_path($filepath));
+
+				$new_src = asset($filepath);
+				$img->removeAttribute('src');
+                $img->setAttribute('src', $new_src);
+
+                Photo::create([
+                    'path'=>$filename.'.'.$mimetype,
+                    'type'=>'event_content_media',
+                    'uploaded_by_user_id' => Auth::user()->id,
+                    ]);
+			}
+		}
+        $input['details'] = $dom->saveHTML();
+
+        // Event creation
         Event::create($input);
         return redirect(route('events.index'));
     }
@@ -90,6 +130,7 @@ class EventController extends Controller
         $input = $request->all();
         $event = Event::whereSlug($slug)->firstOrFail();
 
+        // Event Image
         if($file = $request->file('photo_id')){
 
             $name = time().$file->getClientOriginalName();
@@ -108,6 +149,40 @@ class EventController extends Controller
             }
         }
 
+        // Event Content Images
+        $dom = new DomDocument();
+		$dom->loadHtml($request->details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $images = $dom->getElementsByTagName('img');
+
+		foreach($images as $img){
+			$src = $img->getAttribute('src');
+
+			if(preg_match('/data:image/', $src)){
+
+				preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
+				$mimetype = $groups['mime'];
+
+				$filename = uniqid();
+				$filepath = "/img/$filename.$mimetype";
+
+				$image = Image::make($src)
+				  ->encode($mimetype, 100)
+				  ->save(public_path($filepath));
+
+				$new_src = asset($filepath);
+				$img->removeAttribute('src');
+                $img->setAttribute('src', $new_src);
+
+                Photo::create([
+                    'path'=>$filename.'.'.$mimetype,
+                    'type'=>'event_content_media',
+                    'uploaded_by_user_id' => Auth::user()->id,
+                    ]);
+			}
+        }
+        $input['details'] = $dom->saveHTML();
+
+        // Event update
         $event->update($input);
         Session::flash('status', [
             'class' => 'success',

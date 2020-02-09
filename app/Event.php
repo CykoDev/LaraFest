@@ -12,7 +12,7 @@ class Event extends Model
     protected $defaultImage = 'defaultEvent.png';
 
     protected $fillable = [
-        'title', 'event_date', 'photo_id', 'data',
+        'title', 'event_date', 'photo_id', 'data', 'details',
     ];
 
     protected $casts = [

@@ -19,6 +19,7 @@ class CreateEventsTable extends Migration
             $table->string('title');
             $table->string('slug');
             $table->timestamp('event_date')->nullable();
+            $table->text('details')->nullable();
             $table->json('data')->nullable();
             $table->timestamps();
         });
