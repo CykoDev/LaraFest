@@ -9,10 +9,42 @@
     @endif
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Users</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-download fa-sm text-white-50"></i> Generate Excel
-        </a>
+        <h1 class="h3 mb-0 text-gray-800">All Users</h1>
+        {!! Form::open(['method'=>'POST', 'action'=>'ExportController@exportAllUsers']) !!}
+        {!! Form::button('<i class="fas fa-download fa-sm text-white-50"></i> Generate Excel',
+            ['type'=>'submit', 'class'=>'d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm']) !!}
+        {!! Form::close() !!}
+    </div>
+
+    <div class="row">
+        @include('layouts.components.card', [
+            'textclass' => 'primary',
+            'title' => 'View Applicants',
+            'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
+            'data' => '',
+            'link' => route('users.index-role', 'applicant'),
+        ])
+         @include('layouts.components.card', [
+            'textclass' => 'info',
+            'title' => 'View Admins',
+            'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
+            'data' => '',
+            'link' => route('users.index-role', 'admin'),
+        ])
+         @include('layouts.components.card', [
+            'textclass' => 'warning',
+            'title' => 'View Moderators',
+            'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
+            'data' => '',
+            'link' => route('users.index-role', 'moderator'),
+        ])
+         @include('layouts.components.card', [
+            'textclass' => 'success',
+            'title' => 'View Monitors',
+            'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
+            'data' => '',
+            'link' => route('users.index-role', 'monitor'),
+        ])
     </div>
 
     @component('layouts.components.datatable')
