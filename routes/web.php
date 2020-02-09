@@ -22,6 +22,8 @@ Route::get('/', function(){
 
 Route::get('/dashboard', ['as'=>'dashboard', 'uses'=>'HomeController@index']);
 
+
+
 Route::get('/media/delete/{filepath}', ['as'=>'delete', 'uses'=>'MediaController@delete']);
 Route::get('/media/download/{filepath}', ['as'=>'download', 'uses'=>'MediaController@download']);
 
@@ -50,6 +52,8 @@ Route::group(['middleware'=>'verified'], function(){
 
     Route::resource('events', 'EventController');
 
+    // Route::resource('profile', 'ProfileController');
+
     Route::resource('media', 'MediaController');
     Route::post('media/bulk-manage', ['as'=>'media.manageMany', 'uses'=>'MediaController@manageMany']);
 
@@ -68,7 +72,9 @@ Route::group(['middleware'=>'verified'], function(){
     Route::post('export/events', 'ExportController@exportEvents');
 });
 
-
+Route::post('profile/store', 'ProfileController@store');
+Route::get('profile/edit', 'ProfileController@edit')->name('profile.edit');
+Route::patch('profile/update', ['as'=>'profile.update', 'uses'=>'ProfileController@update']);
 
 /*
 |--------------------------------------------------------------------------
@@ -77,3 +83,8 @@ Route::group(['middleware'=>'verified'], function(){
 */
 
 Route::get('pdf/download', 'UserController@generatepdf');
+
+
+
+
+

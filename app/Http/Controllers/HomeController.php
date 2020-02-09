@@ -33,30 +33,40 @@ class HomeController extends Controller
 
                     $users = User::all();
                     $roles = Role::all();
-
                     for($i=0; $i < 12; $i++){
-
                         $userMonthCount[$i+1] = User::whereMonth('created_at', $i+1)->count();
                     }
                     return view('home.admin', compact(
                         'users', 'userMonthCount', 'roles',
                     ));
                     break;
+
                 case $user->isModerator():
 
                     return view('home.moderator');
                     break;
+
                 case $user->isMonitor():
 
                     return view('home.monitor');
                     break;
+
                 case $user->isApplicant():
 
-                    return view('home.applicant');
+                    if (is_null($user->profile_completed_at)){
+                        return view('home.applicant.starter');
+                    }
+                    elseif (!is_null($user->events)){
+                        return view('home.applicant.browsing');
+                    }
+                    else {
+                        return view('home.applicant.enrolled');
+                    }
                     break;
+
                 default:
 
-                    return view('home.applicant');
+                    return view('welcome');
                     break;
             }
         }

@@ -7,11 +7,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
+use App\Photo;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
     use Sluggable;
+    use HasJsonRelationships;
 
     protected $defaultImage = 'defaultUser.png';
 
@@ -21,7 +24,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role_id', 'is_active', 'photo_id', 'profile_completed_at'
+        'name', 'email', 'password', 'role_id', 'is_active', 'photo_id', 'profile_completed_at', 'data'
     ];
 
     /**
@@ -40,6 +43,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'data' => 'array',
     ];
 
     /**
@@ -151,8 +155,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo('App\Role');
     }
 
-    public function photo(){
-
+    public function photo($photo=null){
+        if (isset($photo)){
+            if (isset($this->data[$photo.'_id'])){
+                return Photo::whereId($this->data[$photo.'_id'])->firstOrFail();
+            }
+            else {
+                return null;
+            }
+        }
         return $this->belongsTo('App\Photo');
     }
 

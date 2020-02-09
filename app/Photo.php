@@ -4,10 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use \Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
 
 class Photo extends Model
 {
-    //
+    use HasJsonRelationships;
 
     protected $public_path = '/img/';
 

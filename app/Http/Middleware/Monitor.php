@@ -24,6 +24,6 @@ class Monitor
             }
         }
 
-        return redirect(404);
+        return redirect()->back();
     }
 }
