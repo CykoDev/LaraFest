@@ -51,7 +51,8 @@ class ProfileController extends Controller
                 Photo::findOrFail($user->photo->id)->delete();
             }
         }
-        if(isset($input['data']) && isset($user->data)){
+        if(isset($input['data'])){
+            if ($user->data == null) $user->data = [];
             $input['data'] = array_merge($user->data, $input['data']);
         }
         $user->update($input);
