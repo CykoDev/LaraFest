@@ -74,7 +74,7 @@ Route::group(['middleware'=>'verified'], function(){
 
 Route::post('profile/store', 'ProfileController@store');
 Route::get('profile/edit', 'ProfileController@edit')->name('profile.edit');
-Route::patch('profile/update', ['as'=>'profile.update', 'uses'=>'ProfileController@update']);
+Route::patch('profile/update/{route}', ['as'=>'profile.update', 'uses'=>'ProfileController@update']);
 
 /*
 |--------------------------------------------------------------------------

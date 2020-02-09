@@ -24,6 +24,6 @@ class Admin
             }
         }
 
-        return redirect()->back();
+        return redirect(route('dashboard'));
     }
 }

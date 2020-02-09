@@ -15,13 +15,11 @@ class ProfileController extends Controller
         $this->middleware('applicant');
     }
 
-    public function update(Request $request) {
+    public function update(Request $request, $route) {
         $input = $request->all();
         $user = Auth::user();
         if ($images = $request->file('data')){
-
             foreach($images as $key => $image){
-
                 $type = substr($key, 0, strrpos($key, '_id'));
                 $name = time().$image->getClientOriginalName();
                 $image->move('img', $name);
@@ -55,7 +53,7 @@ class ProfileController extends Controller
             $input['data'] = array_merge($user->data, $input['data']);
         }
         $user->update($input);
-        return redirect(route('profile.edit'));
+        return redirect(route($route));
     }
 
     public function edit(Request $request) {
@@ -65,7 +63,6 @@ class ProfileController extends Controller
             return view('profile.applicant.package-options', compact('packages'));
         }
         switch(Auth::user()->data['registration_type']) {
-
             case 'nustian':
                 return view('profile.applicant.edit.nustian');
                 break;
@@ -80,7 +77,6 @@ class ProfileController extends Controller
                 Auth::user()->save();
                 return redirect(route('dashboard'));
                 break;
-
         }
     }
 }
