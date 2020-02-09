@@ -42,7 +42,7 @@
             @enderror
         </div>
 
-        {{-- <div class="form-group">
+        <div class="form-group">
             {!! Form::label('data[cnic_photo_id]', 'CNIC Copy:') !!}
             <br>
             {!! Form::file('data[cnic_photo_id]', null, ['class'=>'form-control']) !!}
@@ -52,7 +52,7 @@
                     <strong>{{ $message }}</strong>
                 </span>
             @enderror
-        </div> --}}
+        </div>
 
         <div class="form-group">
             {!! Form::label('data[city]', 'City: ') !!}

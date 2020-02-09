@@ -18,7 +18,6 @@ class UsersExport implements FromCollection, ShouldAutoSize, WithHeadings, WithE
     */
     public function collection()
     {
-
         return User::select(
             'name', 'email', 'email_verified_at', 'role_id', 'is_active', 'created_at', 'updated_at'
             )->get();

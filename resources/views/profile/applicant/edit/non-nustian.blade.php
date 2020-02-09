@@ -8,7 +8,7 @@
         <h1 class="h3 mb-0 text-gray-800">non nustian</h1>
     </div>
 
-    {!! Form::model(Auth::user(), ['method'=>'POST', 'action'=>'ProfileController@update', 'files'=>true]) !!}
+    {!! Form::model(Auth::user(), ['method'=>'PATCH', 'action'=>'ProfileController@update', 'files'=>true]) !!}
 
         {{ Form::hidden('profile_completed_at', NOW()) }}
 
@@ -52,7 +52,7 @@
             @enderror
         </div>
 
-        {{-- <div class="form-group">
+        <div class="form-group">
             {!! Form::label('data[cnic_photo_id]', 'CNIC Copy:') !!}
             <br>
             {!! Form::file('data[cnic_photo_id]', null, ['class'=>'form-control']) !!}
@@ -62,7 +62,7 @@
                     <strong>{{ $message }}</strong>
                 </span>
             @enderror
-        </div> --}}
+        </div>
 
         <div class="form-group">
             {!! Form::label('data[city]', 'City: ') !!}
