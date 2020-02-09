@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use App\Photo;
+use App\Event;
 
 class EventController extends Controller
 {
@@ -13,7 +17,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        return view('events.index');
+        $events = Event::all();
+        return view('events.index', compact('events'));
     }
 
     /**
@@ -34,7 +39,20 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        if($file = $request->file('photo_id')) {
+
+            $name = time() . $file->getClientOriginalName();
+            $file->move('img', $name);
+            $photo = Photo::create([
+                'path' => $name,
+                'type' => 'event_photo',
+                'uploaded_by_user_id' => Auth::user()->id,
+                ]);
+            $input['photo_id'] = $photo->id;
+        }
+        Event::create($input);
+        return redirect(route('events.index'));
     }
 
     /**
@@ -54,9 +72,10 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
-        return view('events.edit');
+        $event = Event::whereSlug($slug)->firstOrFail();
+        return view('events.edit', compact('event'));
     }
 
     /**
@@ -66,9 +85,35 @@ class EventController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        //
+        $input = $request->all();
+        $event = Event::whereSlug($slug)->firstOrFail();
+
+        if($file = $request->file('photo_id')){
+
+            $name = time().$file->getClientOriginalName();
+            $file->move('img', $name);
+            $photo = Photo::create([
+                'path' => $name,
+                'type' => 'event_photo',
+                'uploaded_by_user_id' => Auth::user()->id,
+                ]);
+            $input['photo_id'] = $photo->id;
+
+            if($event->photo){
+
+                unlink(public_path() . $event->photo->path);
+                Photo::findOrFail($event->photo->id)->delete();
+            }
+        }
+
+        $event->update($input);
+        Session::flash('status', [
+            'class' => 'success',
+            'message' => 'Event successfully updated',
+        ]);
+        return redirect(route('events.index'));
     }
 
     /**
@@ -79,6 +124,16 @@ class EventController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $event = Event::findOrFail($id);
+        if($event->photo){
+            unlink(public_path() . $event->photo->path);
+            Photo::findOrFail($event->photo->id)->delete();
+        }
+        $event->delete();
+        Session::flash('status', [
+            'class' => 'danger',
+            'message' => 'Event successfully deleted',
+        ]);
+        return redirect(route('events.index'));
     }
 }

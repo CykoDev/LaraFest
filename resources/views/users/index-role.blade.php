@@ -12,16 +12,16 @@
         <h1 class="h3 mb-0 text-gray-800">{{ ucwords($role->name) }}s</h1>
         @switch($role->name)
             @case('admin')
-                {!! Form::open(['method'=>'POST', 'action'=>'UserController@exportAdmins']) !!}
+                {!! Form::open(['method'=>'POST', 'action'=>'ExportController@exportAdmins']) !!}
                 @break
             @case('applicant')
-                {!! Form::open(['method'=>'POST', 'action'=>'UserController@exportApplicants']) !!}
+                {!! Form::open(['method'=>'POST', 'action'=>'ExportController@exportApplicants']) !!}
                 @break
             @case('moderator')
-                {!! Form::open(['method'=>'POST', 'action'=>'UserController@exportModerators']) !!}
+                {!! Form::open(['method'=>'POST', 'action'=>'ExportController@exportModerators']) !!}
                 @break
             @case('monitor')
-                {!! Form::open(['method'=>'POST', 'action'=>'UserController@exportMonitors']) !!}
+                {!! Form::open(['method'=>'POST', 'action'=>'ExportController@exportMonitors']) !!}
                 @break
         @endswitch
 

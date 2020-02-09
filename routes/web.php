@@ -57,11 +57,19 @@ Route::group(['middleware'=>'verified'], function(){
     Route::resource('media', 'MediaController');
     Route::post('media/bulk-manage', ['as'=>'media.manageMany', 'uses'=>'MediaController@manageMany']);
 
-    Route::post('export/users', 'UserController@exportAllUsers');
-    Route::post('export/applicants', 'UserController@exportApplicants');
-    Route::post('export/admins', 'UserController@exportAdmins');
-    Route::post('export/monitors', 'UserController@exportMonitors');
-    Route::post('export/moderators', 'UserController@exportModerators');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Exports
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post('export/users', 'ExportController@exportAllUsers');
+    Route::post('export/applicants', 'ExportController@exportApplicants');
+    Route::post('export/admins', 'ExportController@exportAdmins');
+    Route::post('export/monitors', 'ExportController@exportMonitors');
+    Route::post('export/moderators', 'ExportController@exportModerators');
+    Route::post('export/events', 'ExportController@exportEvents');
 });
 
 Route::post('profile/store', 'ProfileController@store');
