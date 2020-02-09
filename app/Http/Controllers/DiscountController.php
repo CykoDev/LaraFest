@@ -15,6 +15,8 @@ class DiscountController extends Controller
     public function index()
     {
         //
+        $discounts = Discount::all();
+        return view('discounts.index', compact('discounts'));
     }
 
     /**
@@ -25,6 +27,7 @@ class DiscountController extends Controller
     public function create()
     {
         //
+        return view('discounts.create');
     }
 
     /**

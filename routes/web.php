@@ -52,6 +52,8 @@ Route::group(['middleware'=>'verified'], function(){
 
     Route::resource('events', 'EventController');
 
+    Route::resource('discounts', 'DiscountController');
+
     // Route::resource('profile', 'ProfileController');
 
     Route::resource('media', 'MediaController');

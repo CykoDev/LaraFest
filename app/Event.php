@@ -61,4 +61,8 @@ class Event extends Model
 
         return $this->belongsTo('App\Photo');
     }
+
+    public function discount() {
+        return $this->morphOne('App\Discount', 'discountable');
+    }
 }
