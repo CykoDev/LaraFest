@@ -8,7 +8,7 @@
         <h1 class="h3 mb-0 text-gray-800">nustian</h1>
     </div>
 
-    {!! Form::model(Auth::user(), ['method'=>'POST', 'action'=>'ProfileController@update', 'files'=>true]) !!}
+    {!! Form::model(Auth::user(), ['method'=>'PATCH', 'action'=>'ProfileController@update', 'files'=>true]) !!}
 
         {{ Form::hidden('profile_completed_at', NOW()) }}
 

@@ -16,9 +16,27 @@ class ProfileController extends Controller
     }
 
     public function update(Request $request) {
-
         $input = $request->all();
         $user = Auth::user();
+        if ($images = $request->file('data')){
+
+            foreach($images as $key => $image){
+
+                $type = substr($key, 0, strrpos($key, '_id'));
+                $name = time().$image->getClientOriginalName();
+                $image->move('img', $name);
+                $photo = Photo::create([
+                    'path' => $name,
+                    'type' => $type,
+                    'uploaded_by_user_id' => Auth::user()->id,
+                ]);
+                $input['data'][$key] = $photo->id;
+                if($user->photo($type)){
+                    unlink(public_path() . $user->photo($type)->path);
+                    Photo::findOrFail($user->photo($type)->id)->delete();
+                }
+            }
+        }
         if($file = $request->file('photo_id')){
             $name = time().$file->getClientOriginalName();
             $file->move('img', $name);
@@ -33,7 +51,7 @@ class ProfileController extends Controller
                 Photo::findOrFail($user->photo->id)->delete();
             }
         }
-        if(isset($input['data'])){
+        if(isset($input['data']) && isset($user->data)){
             $input['data'] = array_merge($user->data, $input['data']);
         }
         $user->update($input);
