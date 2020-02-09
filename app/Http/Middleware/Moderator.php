@@ -24,6 +24,6 @@ class Moderator
             }
         }
 
-        return redirect(404);
+        return redirect()->back();
     }
 }
