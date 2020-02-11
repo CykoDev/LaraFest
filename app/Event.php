@@ -61,4 +61,9 @@ class Event extends Model
 
         return $this->belongsTo('App\Photo');
     }
+
+    public function type(){
+
+        return $this->belongsTo('App\EventType', 'event_type_id');
+    }
 }

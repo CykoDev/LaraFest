@@ -56,6 +56,8 @@ Route::group(['middleware'=>'verified'], function(){
 
     // Route::resource('profile', 'ProfileController');
 
+    Route::resource('packages', 'PackageController');
+
     Route::resource('media', 'MediaController');
     Route::post('media/bulk-manage', ['as'=>'media.manageMany', 'uses'=>'MediaController@manageMany']);
 

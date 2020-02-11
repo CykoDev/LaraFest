@@ -39,6 +39,19 @@
     </li>
 
     <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#packagemanagement" aria-expanded="true" aria-controls="packagemanagement">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Manage Packages</span>
+        </a>
+        <div id="packagemanagement" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{{ route('packages.index') }}">View Packages</a>
+            <a class="collapse-item" href="{{ route('packages.create') }}">Create Package</a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#eventmanagement" aria-expanded="true" aria-controls="eventmanagement">
             <i class="fas fa-fw fa-cog"></i>
             <span>Manage Events</span>
