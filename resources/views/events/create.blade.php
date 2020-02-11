@@ -42,6 +42,16 @@
         </div>
 
         <div class="form-group">
+            {!! Form::label('event_type_id', 'Event Type: ') !!}
+            {!! Form::select('event_type_id', [''=>'Choose Type'] + $types, null, ['class'=>'form-control']) !!}
+            @error('event_type_id')
+                <span class="text-danger small">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+
+        <div class="form-group">
             {!! Form::label('details', 'Details: ') !!}
             {!! Form::textarea('details', null,  ['class'=>'form-control', 'rows'=>5]) !!}
             @error('details')

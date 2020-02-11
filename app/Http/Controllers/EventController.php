@@ -10,6 +10,7 @@ use \DOMDocument;
 
 use App\Photo;
 use App\Event;
+use App\EventType;
 
 class EventController extends Controller
 {
@@ -31,7 +32,8 @@ class EventController extends Controller
      */
     public function create()
     {
-        return view('events.create');
+        $types = EventType::pluck('name', 'id')->all();
+        return view('events.create', compact('types'));
     }
 
     /**
@@ -115,7 +117,8 @@ class EventController extends Controller
     public function edit($slug)
     {
         $event = Event::whereSlug($slug)->firstOrFail();
-        return view('events.edit', compact('event'));
+        $types = EventType::pluck('name', 'id')->all();
+        return view('events.edit', compact('event', 'types'));
     }
 
     /**
