@@ -44,4 +44,9 @@ class Package extends Model
 
         return $this->hasMany('App\User');
     }
+
+    public function quotas(){
+
+        return $this->hasMany('App\PackageQuota');
+    }
 }
