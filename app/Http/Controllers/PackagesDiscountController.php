@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Discount;
+use App\Package;
 use Illuminate\Http\Request;
 
-class DiscountController extends Controller
+class PackagesDiscountController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,10 +25,10 @@ class DiscountController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
         //
-        return view('discounts.create');
+        return view('packages.discounts.create', compact('id'));
     }
 
     /**
@@ -38,7 +39,9 @@ class DiscountController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $package = Package::findOrFail($request->packageId);
+        $package->discount()->create(['name'=>$request->name, 'amount'=>$request->amount, 'expiry_at'=>$request->expiry]);
+        dd($package->name);
     }
 
     /**

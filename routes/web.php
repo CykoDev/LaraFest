@@ -52,7 +52,13 @@ Route::group(['middleware'=>'verified'], function(){
 
     Route::resource('events', 'EventController');
 
-    Route::resource('discounts', 'DiscountController');
+    Route::resource('events/discounts', 'EventsDiscountController');
+    Route::get('events/discounts/create/{id}', ['as' => 'events.discounts.create', 'uses' => 'EventsDiscountController@create']);
+
+    Route::resource('packages/discounts', 'PackagesDiscountController');
+    Route::get('packages/discounts/create/{id}', ['as' => 'packages.discounts.create', 'uses' => 'PackagesDiscountController@create']);
+
+    Route::resource('packages', 'PackageController');
 
     Route::resource('event/types', 'EventTypeController');
 
