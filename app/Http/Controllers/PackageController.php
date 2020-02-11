@@ -14,7 +14,8 @@ class PackageController extends Controller
      */
     public function index()
     {
-        //
+        $packages = Package::all();
+        return view('packages.index.info', compact('packages'));
     }
 
     /**
@@ -55,7 +56,7 @@ class PackageController extends Controller
      * @param  \App\Package  $package
      * @return \Illuminate\Http\Response
      */
-    public function edit(Package $package)
+    public function edit($slug)
     {
         //
     }

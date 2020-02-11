@@ -175,4 +175,9 @@ class User extends Authenticatable implements MustVerifyEmail
         }
         return $this->belongsToMany('App\Event');
     }
+
+    public function package(){
+
+        return $this->belongsTo('App\Package');
+    }
 }
