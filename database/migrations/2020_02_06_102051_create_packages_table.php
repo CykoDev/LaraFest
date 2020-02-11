@@ -18,7 +18,7 @@ class CreatePackagesTable extends Migration
             $table->string('name');
             $table->double('price');
             $table->string('description')->nullable();
-            $table->string('data')->nullable();
+            $table->json('data')->nullable();
             $table->timestamps();
         });
     }

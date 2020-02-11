@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Package;
+use App\Discount;
+use App\Event;
 use Illuminate\Http\Request;
 
-class PackageController extends Controller
+class EventsDiscountController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +16,8 @@ class PackageController extends Controller
     public function index()
     {
         //
+        $discounts = Discount::all();
+        return view('discounts.index', compact('discounts'));
     }
 
     /**
@@ -22,9 +25,10 @@ class PackageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
         //
+        return view('events.discounts.create', compact('id'));
     }
 
     /**
@@ -35,27 +39,29 @@ class PackageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $event = Event::findOrFail($request->eventId);
+        $event->discount()->create(['name'=>$request->name, 'amount'=>$request->amount, 'expiry_at'=>$request->expiry]);
+        dd($event->title);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Package  $package
+     * @param  \App\Discount  $discount
      * @return \Illuminate\Http\Response
      */
-    public function show(Package $package)
+    public function show(Discount $discount)
     {
-        return view('packages.show', compact('package'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Package  $package
+     * @param  \App\Discount  $discount
      * @return \Illuminate\Http\Response
      */
-    public function edit(Package $package)
+    public function edit(Discount $discount)
     {
         //
     }
@@ -64,10 +70,10 @@ class PackageController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Package  $package
+     * @param  \App\Discount  $discount
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Package $package)
+    public function update(Request $request, Discount $discount)
     {
         //
     }
@@ -75,10 +81,10 @@ class PackageController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Package  $package
+     * @param  \App\Discount  $discount
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Package $package)
+    public function destroy(Discount $discount)
     {
         //
     }

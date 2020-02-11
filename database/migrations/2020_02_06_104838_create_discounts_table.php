@@ -20,7 +20,7 @@ class CreateDiscountsTable extends Migration
             $table->string('name');
             $table->double('amount');
             $table->timestamp('expiry_at')->nullable();
-            $table->json('data');
+            $table->json('data')->nullable();
             $table->timestamps();
         });
     }
