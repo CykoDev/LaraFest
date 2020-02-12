@@ -17,7 +17,8 @@ Auth::routes(['verify' => true]);
 
 Route::get('/', function(){
 
-    return view('welcome');
+    // return view('welcome');
+    return view('public.page-one');
 })->name('home');
 
 Route::get('/dashboard', ['as'=>'dashboard', 'uses'=>'HomeController@index']);
@@ -34,7 +35,7 @@ Route::get('/media/download/{filepath}', ['as'=>'download', 'uses'=>'MediaContro
 |--------------------------------------------------------------------------
 */
 
-Route::get('/page-one', function() { return view('public.page-one'); });
+// Route::get('/page-one', function() { return view('public.page-one'); });
 
 
 
