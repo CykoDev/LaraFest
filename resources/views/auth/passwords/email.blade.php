@@ -12,10 +12,13 @@
               <!-- Nested Row within Card Body -->
               <div class="row">
                 <div class="col-lg-6 d-none d-lg-block bg-login-image" style="
-                    background: url({{ asset('img/public/backwithmorecarsbaby.jpg') }});
-                    background-size: cover;
+                    background: url({{ asset('img/public/undraw_forgot_password_gi2d.svg') }});
+                    background-position: bottom;
+                    background-repeat: no-repeat;
+                    background-attachment: scroll;
+                    background-size: contain;
                 "></div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 my-5">
                   <div class="p-5">
                     <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">{{ __('Reset Password') }}</h1>

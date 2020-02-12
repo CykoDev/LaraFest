@@ -53,6 +53,8 @@ class HomeController extends Controller
 
                 case $user->isApplicant():
 
+                    return view('home.applicant.comingsoon');
+
                     if (is_null($user->profile_completed_at)){
                         return view('home.applicant.starter');
                     }
