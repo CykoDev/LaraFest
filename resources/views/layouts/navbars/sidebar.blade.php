@@ -32,27 +32,21 @@
         <div id="usermanagement" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="{{ route('users.index') }}">View Users</a>
+            <a class="collapse-item" href="{{ route('roles.index') }}">View User Roles</a>
             <a class="collapse-item" href="{{ route('users.create') }}">Create User</a>
             </div>
         </div>
     </li>
 
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('roles.index') }}">
-        <i class="fas fa-fw fa-table"></i>
-        <span>Manage Roles</span></span></a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#mediamanagement" aria-expanded="true" aria-controls="mediamanagement">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#packagemanagement" aria-expanded="true" aria-controls="packagemanagement">
             <i class="fas fa-fw fa-cog"></i>
-            <span>Manage Media</span>
+            <span>Manage Packages</span>
         </a>
-        <div id="mediamanagement" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="packagemanagement" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-            {{-- <h6 class="collapse-header">Custom Components:</h6> --}}
-            <a class="collapse-item" href="{{ route('media.index') }}">View Media</a>
-            <a class="collapse-item" href="{{ route('media.create') }}">Upload Media</a>
+            <a class="collapse-item" href="{{ route('packages.index') }}">View Packages</a>
+            <a class="collapse-item" href="{{ route('packages.create') }}">Create Package</a>
             </div>
         </div>
     </li>
@@ -64,9 +58,22 @@
         </a>
         <div id="eventmanagement" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-            {{-- <h6 class="collapse-header">Custom Components:</h6> --}}
             <a class="collapse-item" href="{{ route('events.index') }}">View Events</a>
+            <a class="collapse-item" href="{{ route('types.index') }}">View Event Types</a>
             <a class="collapse-item" href="{{ route('events.create') }}">Create Event</a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#mediamanagement" aria-expanded="true" aria-controls="mediamanagement">
+            <i class="fas fa-fw fa-cog"></i>
+            <span>Manage Media</span>
+        </a>
+        <div id="mediamanagement" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+            <a class="collapse-item" href="{{ route('media.index') }}">View Media</a>
+            <a class="collapse-item" href="{{ route('media.create') }}">Upload Media</a>
             </div>
         </div>
     </li>

@@ -52,6 +52,8 @@ Route::group(['middleware'=>'verified'], function(){
 
     Route::resource('events', 'EventController');
 
+    Route::resource('event/types', 'EventTypeController');
+
     Route::resource('events/discounts', 'EventsDiscountController');
     Route::get('events/discounts/create/{id}', ['as' => 'events.discounts.create', 'uses' => 'EventsDiscountController@create']);
 
@@ -61,6 +63,8 @@ Route::group(['middleware'=>'verified'], function(){
     Route::resource('packages', 'PackageController');
 
     // Route::resource('profile', 'ProfileController');
+
+    Route::resource('packages', 'PackageController');
 
     Route::resource('media', 'MediaController');
     Route::post('media/bulk-manage', ['as'=>'media.manageMany', 'uses'=>'MediaController@manageMany']);
@@ -82,7 +86,8 @@ Route::group(['middleware'=>'verified'], function(){
 
 Route::post('profile/store', 'ProfileController@store');
 Route::get('profile/edit', 'ProfileController@edit')->name('profile.edit');
-Route::patch('profile/update', ['as'=>'profile.update', 'uses'=>'ProfileController@update']);
+Route::patch('profile/update/{route}', ['as'=>'profile.update', 'uses'=>'ProfileController@update']);
+Route::patch('applicant/profile/update/{route}', ['as'=>'profile.update', 'uses'=>'ProfileController@updateApplicant']);
 
 /*
 |--------------------------------------------------------------------------

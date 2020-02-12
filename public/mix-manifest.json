@@ -4,5 +4,7 @@
     "/js/components/chart-area.js": "/js/components/chart-area.js",
     "/js/components/chart-pie.js": "/js/components/chart-pie.js",
     "/js/components/chart-bar.js": "/js/components/chart-bar.js",
-    "/js/components/datatables.js": "/js/components/datatables.js"
+    "/js/components/datatables.js": "/js/components/datatables.js",
+    "/css/public.css": "/css/public.css",
+    "/js/public.js": "/js/public.js"
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePackagesTable extends Migration
+class CreatePackageQuotasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreatePackagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('packages', function (Blueprint $table) {
+        Schema::create('package_quotas', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('slug');
-            $table->double('price');
-            $table->string('description')->nullable();
-            $table->json('data')->nullable();
+            $table->unsignedBigInteger('package_id')->index();
+            $table->unsignedBigInteger('event_type_id')->index();
+            $table->integer('quota_amount');
             $table->timestamps();
+
+            $table->foreign('package_id')->references('id')->on('packages')->onDelete('cascade');
         });
     }
 
@@ -31,6 +31,6 @@ class CreatePackagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('packages');
+        Schema::dropIfExists('package_quotas');
     }
 }

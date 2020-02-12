@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RolesTableSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(PackagesTableSeeder::class);
+        $this->call(EventTypesTableSeeder::class);
 
         /*
         *   Factories

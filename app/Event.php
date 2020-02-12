@@ -12,7 +12,7 @@ class Event extends Model
     protected $defaultImage = 'defaultEvent.png';
 
     protected $fillable = [
-        'title', 'event_date', 'photo_id', 'data',
+        'title', 'event_date', 'photo_id', 'data', 'details', 'event_type_id',
     ];
 
     protected $casts = [
@@ -64,5 +64,10 @@ class Event extends Model
 
     public function discount() {
         return $this->morphOne('App\Discount', 'discountable');
+    }
+
+    public function type(){
+
+        return $this->belongsTo('App\EventType', 'event_type_id');
     }
 }

@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->integer('photo_id')->unsigned()->index()->nullable();
+            $table->integer('package_id')->unsigned()->index()->nullable();
             $table->json('data')->nullable();
             $table->timestamp('profile_completed_at')->nullable();
             $table->string('payment_status')->default('unpaid');

@@ -8,7 +8,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
+
 use App\Photo;
+use App\EventType;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -167,7 +169,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo('App\Photo');
     }
 
-    public function events(){
+    public function events($eventType=null){
+        if (isset($eventType)){
+            return EventType::whereName($eventType)->firstOrFail()->events();
+        }
         return $this->belongsToMany('App\Event');
+    }
+
+    public function package(){
+
+        return $this->belongsTo('App\Package');
     }
 }
