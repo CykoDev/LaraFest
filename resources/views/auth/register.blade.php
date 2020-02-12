@@ -11,8 +11,11 @@
             <div class="card-body p-0">
               <div class="row">
                 <div class="col-lg-6 d-none d-lg-block bg-login-image" style="
-                    background: url({{ asset('img/public/wontfailagainipromise.jpg') }});
-                    background-size: cover;
+                    background: url({{ asset('img/public/undraw_develop_app_kvt2.svg') }});
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-attachment: scroll;
+                    background-size: contain;
                 "></div>
                 <div class="col-lg-6">
                   <div class="p-5">
@@ -55,13 +58,6 @@
                         <button type="submit" class="btn btn-primary btn-user btn-block">
                             {{ __('Register') }}
                         </button>
-                        <hr class="my-3">
-                        <a href="#" class="btn btn-google btn-user btn-block">
-                            <i class="fab fa-google fa-fw"></i>{{ __(' Signup with Google') }}
-                        </a>
-                        <a href="#" class="btn btn-facebook btn-user btn-block">
-                            <i class="fab fa-facebook-f fa-fw"></i>{{ __(' Signup with Facebook') }}
-                        </a>
                     </form>
 
                     <hr class="my-3">
