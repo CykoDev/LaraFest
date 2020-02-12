@@ -22,7 +22,8 @@ Route::get('/', function(){
 
 Route::get('/dashboard', ['as'=>'dashboard', 'uses'=>'HomeController@index']);
 
-
+Route::get('/enroll/package/{id}', ['as'=>'enroll.package', 'uses'=>'ApplicantController@enroll']);
+Route::post('/enroll/package', ['as'=>'enroll.package.store', 'uses'=>'ApplicantController@store']);
 
 Route::get('/media/delete/{filepath}', ['as'=>'delete', 'uses'=>'MediaController@delete']);
 Route::get('/media/download/{filepath}', ['as'=>'download', 'uses'=>'MediaController@download']);
