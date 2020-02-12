@@ -27,8 +27,8 @@ class EventsDiscountController extends Controller
      */
     public function create($id)
     {
-        //
-        return view('events.discounts.create', compact('id'));
+        $event = Event::findOrFail($id);
+        return view('events.discounts.create', compact('event'));
     }
 
     /**
@@ -40,8 +40,9 @@ class EventsDiscountController extends Controller
     public function store(Request $request)
     {
         $event = Event::findOrFail($request->eventId);
+        if ($event->discount) $event->discount()->delete();
         $event->discount()->create(['name'=>$request->name, 'amount'=>$request->amount, 'expiry_at'=>$request->expiry]);
-        dd($event->title);
+        return redirect()->back();
     }
 
     /**
