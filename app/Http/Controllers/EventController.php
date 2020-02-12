@@ -45,14 +45,15 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
+        $event = new Event;
 
         // Event Image
         if($file = $request->file('photo_id')) {
 
             $name = time() . $file->getClientOriginalName();
-            $file->move('img', $name);
+            $file->move('img/'.$event->imageFolder, $name);
             $photo = Photo::create([
-                'path' => $name,
+                'path' => $event->imageFolder.$name,
                 'type' => 'event_photo',
                 'uploaded_by_user_id' => Auth::user()->id,
                 ]);
@@ -93,7 +94,7 @@ class EventController extends Controller
         $input['details'] = $dom->saveHTML();
 
         // Event creation
-        Event::create($input);
+        $event->create($input);
         return redirect(route('events.index'));
     }
 
@@ -137,9 +138,9 @@ class EventController extends Controller
         if($file = $request->file('photo_id')){
 
             $name = time().$file->getClientOriginalName();
-            $file->move('img', $name);
+            $file->move('img/'.$event->imageFolder, $name);
             $photo = Photo::create([
-                'path' => $name,
+                'path' => $event->imageFolder.$name,
                 'type' => 'event_photo',
                 'uploaded_by_user_id' => Auth::user()->id,
                 ]);
