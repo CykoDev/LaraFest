@@ -95,7 +95,12 @@ Route::patch('applicant/profile/update/{route}', ['as'=>'profile.update', 'uses'
 |--------------------------------------------------------------------------
 */
 
-Route::get('pdf/download', 'UserController@generatepdf');
+Route::get('pdf/download', 'InvoiceController@generatepdf');
+
+Route::Get('pdf', function(){
+
+    return view('pdf.invoice');
+});
 
 
 
