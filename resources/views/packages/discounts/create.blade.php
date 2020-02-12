@@ -10,7 +10,11 @@
 
     {!! Form::open(['method'=>'POST', 'action'=>'PackagesDiscountController@store', 'files'=>false]) !!}
 
-        {!! Form::hidden('packageId', $id) !!}
+        {!! Form::hidden('packageId', $package->id) !!}
+
+        @if ($package->discount)
+            <p>Adding new discount will override the existing one</p>
+        @endif
 
         <div class="form-group">
             {!! Form::label('name', 'Name: ') !!}

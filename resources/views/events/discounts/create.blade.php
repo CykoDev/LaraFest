@@ -10,7 +10,7 @@
 
     {!! Form::open(['method'=>'POST', 'action'=>'EventsDiscountController@store', 'files'=>false]) !!}
 
-        {!! Form::hidden('eventId', $id) !!}
+        {!! Form::hidden('eventId', $event->id) !!}
 
         <div class="form-group">
             {!! Form::label('name', 'Name: ') !!}

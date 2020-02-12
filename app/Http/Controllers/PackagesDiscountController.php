@@ -28,7 +28,8 @@ class PackagesDiscountController extends Controller
     public function create($id)
     {
         //
-        return view('packages.discounts.create', compact('id'));
+        $package = Package::findOrFail($id);
+        return view('packages.discounts.create', compact('package'));
     }
 
     /**
@@ -40,8 +41,9 @@ class PackagesDiscountController extends Controller
     public function store(Request $request)
     {
         $package = Package::findOrFail($request->packageId);
+        if ($package->discount) $package->discount()->delete();
         $package->discount()->create(['name'=>$request->name, 'amount'=>$request->amount, 'expiry_at'=>$request->expiry]);
-        dd($package->name);
+        return redirect()->back();
     }
 
     /**
