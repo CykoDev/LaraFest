@@ -18,7 +18,8 @@ class User extends Authenticatable implements MustVerifyEmail
     use Sluggable;
     use HasJsonRelationships;
 
-    protected $defaultImage = 'defaultUser.png';
+    protected $defaultImage = 'defaults/user.png';
+    protected $imageFolder = 'users/';
 
     /**
      * The attributes that are mass assignable.
@@ -61,6 +62,68 @@ class User extends Authenticatable implements MustVerifyEmail
                 'onUpdate' => true,
             ]
         ];
+    }
+
+
+    /*
+    *--------------------------------------------------------------------------
+    * Mutators | Accessors
+    *--------------------------------------------------------------------------
+    */
+
+    public function getDefaultImageAttribute($value){
+
+        return '/img/' . $this->defaultImage;
+    }
+
+    public function getImageFolderAttribute($value){
+
+        return $this->imageFolder;
+    }
+
+    public function setPasswordAttribute($value){
+
+        $this->attributes['password'] = Hash::make($value);
+    }
+
+    /*
+    *--------------------------------------------------------------------------
+    * CRUD Relations
+    *--------------------------------------------------------------------------
+    */
+
+    public function role(){
+
+        return $this->belongsTo('App\Role');
+    }
+
+    public function package(){
+
+        return $this->belongsTo('App\Package');
+    }
+
+    public function invoice(){
+
+        return $this->belongsTo('App\Package');
+    }
+
+    public function photo($photo=null){
+        if (isset($photo)){
+            if (isset($this->data[$photo.'_id'])){
+                return Photo::whereId($this->data[$photo.'_id'])->firstOrFail();
+            }
+            else {
+                return null;
+            }
+        }
+        return $this->belongsTo('App\Photo');
+    }
+
+    public function events($eventType=null){
+        if (isset($eventType)){
+            return EventType::whereName($eventType)->firstOrFail()->events();
+        }
+        return $this->belongsToMany('App\Event');
     }
 
     /*
@@ -127,57 +190,5 @@ class User extends Authenticatable implements MustVerifyEmail
         else {
             return false;
         }
-    }
-
-
-    /*
-    *--------------------------------------------------------------------------
-    * Mutators | Accessors
-    *--------------------------------------------------------------------------
-    */
-
-    public function getDefaultImageAttribute($value){
-
-        return '/img/' . $this->defaultImage;
-    }
-
-    public function setPasswordAttribute($value){
-
-        $this->attributes['password'] = Hash::make($value);
-    }
-
-    /*
-    *--------------------------------------------------------------------------
-    * CRUD Relations
-    *--------------------------------------------------------------------------
-    */
-
-    public function role(){
-
-        return $this->belongsTo('App\Role');
-    }
-
-    public function photo($photo=null){
-        if (isset($photo)){
-            if (isset($this->data[$photo.'_id'])){
-                return Photo::whereId($this->data[$photo.'_id'])->firstOrFail();
-            }
-            else {
-                return null;
-            }
-        }
-        return $this->belongsTo('App\Photo');
-    }
-
-    public function events($eventType=null){
-        if (isset($eventType)){
-            return EventType::whereName($eventType)->firstOrFail()->events();
-        }
-        return $this->belongsToMany('App\Event');
-    }
-
-    public function package(){
-
-        return $this->belongsTo('App\Package');
     }
 }
