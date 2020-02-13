@@ -14,8 +14,7 @@ class ProfileController extends Controller
 {
     public function __construct()
     {
-
-        // $this->middleware('applicant');
+        $this->middleware('applicant')->only('updateApplicant', 'editApplicant');
     }
 
     public function show()
