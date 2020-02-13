@@ -16,7 +16,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('auth');
+        $this->middleware('auth');
     }
 
     /**
@@ -26,54 +26,49 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if (Auth::check()){
-            $user = Auth::user();
-            switch(true) {
-                case $user->isAdmin():
+        $user = Auth::user();
+        switch(true) {
+            case $user->isAdmin():
 
-                    $users = User::all();
-                    $roles = Role::all();
-                    for($i=0; $i < 12; $i++){
-                        $userMonthCount[$i+1] = User::whereMonth('created_at', $i+1)->count();
-                    }
-                    return view('home.admin', compact(
-                        'users', 'userMonthCount', 'roles',
-                    ));
-                    break;
+                $users = User::all();
+                $roles = Role::all();
+                for($i=0; $i < 12; $i++){
+                    $userMonthCount[$i+1] = User::whereMonth('created_at', $i+1)->count();
+                }
+                return view('home.admin', compact(
+                    'users', 'userMonthCount', 'roles',
+                ));
+                break;
 
-                case $user->isModerator():
+            case $user->isModerator():
 
-                    return view('home.moderator');
-                    break;
+                return view('home.moderator');
+                break;
 
-                case $user->isMonitor():
+            case $user->isMonitor():
 
-                    return view('home.monitor');
-                    break;
+                return view('home.monitor');
+                break;
 
-                case $user->isApplicant():
+            case $user->isApplicant():
 
-                    return view('home.applicant.comingsoon');
+                return view('home.applicant.comingsoon');
 
-                    if (is_null($user->profile_completed_at)){
-                        return view('home.applicant.starter');
-                    }
-                    elseif (!is_null($user->events)){
-                        return view('home.applicant.browsing');
-                    }
-                    else {
-                        return view('home.applicant.enrolled');
-                    }
-                    break;
+                if (is_null($user->profile_completed_at)){
+                    return view('home.applicant.starter');
+                }
+                elseif (!is_null($user->events)){
+                    return view('home.applicant.browsing');
+                }
+                else {
+                    return view('home.applicant.enrolled');
+                }
+                break;
 
-                default:
+            default:
 
-                    return view('welcome');
-                    break;
-            }
-        }
-        else {
-            return view('welcome');
+                return view('welcome');
+                break;
         }
     }
 }

@@ -12,18 +12,80 @@ use App\Package;
 
 class ProfileController extends Controller
 {
-    public function __construct(){
+    public function __construct()
+    {
 
-        $this->middleware('applicant');
+        // $this->middleware('applicant');
     }
 
-    public function update(Request $request, $route) {
+    public function show()
+    {
+
+        $user = Auth::user();
+        return view('profile.show', compact('user'));
+    }
+
+    public function edit()
+    {
+
+        $user = Auth::user();
+        return view('profile.edit', compact('user'));
+    }
+
+    public function update(Request $request, $route = null)
+    {
+        // dd($request);
         $input = $request->all();
         $user = Auth::user();
-        if ($images = $request->file('data')){
-            foreach($images as $key => $image){
+        if ($images = $request->file('data')) {
+            foreach ($images as $key => $image) {
                 $type = substr($key, 0, strrpos($key, '_id'));
-                $name = time().$image->getClientOriginalName();
+                $name = time() . $image->getClientOriginalName();
+                $image->move('img/users/data/', $name);
+                $photo = Photo::create([
+                    'path' => 'users/data/' . $name,
+                    'type' => $type,
+                    'uploaded_by_user_id' => Auth::user()->id,
+                ]);
+                $input['data'][$key] = $photo->id;
+                if ($user->photo($type)) {
+                    unlink(public_path() . $user->photo($type)->path);
+                    Photo::findOrFail($user->photo($type)->id)->delete();
+                }
+            }
+        }
+        if ($file = $request->file('photo_id')) {
+
+            $name = time() . $file->getClientOriginalName();
+            $file->move('img/' . $user->imageFolder, $name);
+            $photo = Photo::create([
+                'path' => $user->imageFolder . $name,
+                'type' => 'user_photo',
+                'uploaded_by_user_id' => Auth::user()->id,
+            ]);
+            $input['photo_id'] = $photo->id;
+
+            if ($user->photo) {
+
+                unlink(public_path() . $user->photo->path);
+                Photo::findOrFail($user->photo->id)->delete();
+            }
+        }
+        if (isset($input['data']) && isset($user->data)) {
+            $input['data'] = array_merge($user->data, $input['data']);
+        }
+        $user->update($input);
+        return redirect(route($route));
+    }
+
+    public function updateApplicant(ApplicantProfileRequest $request, $route)
+    {
+        $input = $request->all();
+        $user = Auth::user();
+        if ($images = $request->file('data')) {
+            foreach ($images as $key => $image) {
+                $type = substr($key, 0, strrpos($key, '_id'));
+                $name = time() . $image->getClientOriginalName();
                 $image->move('img', $name);
                 $photo = Photo::create([
                     'path' => $name,
@@ -31,81 +93,41 @@ class ProfileController extends Controller
                     'uploaded_by_user_id' => Auth::user()->id,
                 ]);
                 $input['data'][$key] = $photo->id;
-                if($user->photo($type)){
+                if ($user->photo($type)) {
                     unlink(public_path() . $user->photo($type)->path);
                     Photo::findOrFail($user->photo($type)->id)->delete();
                 }
             }
         }
-        if($file = $request->file('photo_id')){
-            $name = time().$file->getClientOriginalName();
+        if ($file = $request->file('photo_id')) {
+            $name = time() . $file->getClientOriginalName();
             $file->move('img', $name);
             $photo = Photo::create([
                 'path' => $name,
                 'type' => 'user_photo',
                 'uploaded_by_user_id' => Auth::user()->id,
-                ]);
+            ]);
             $input['photo_id'] = $photo->id;
-            if($user->photo){
+            if ($user->photo) {
                 unlink(public_path() . $user->photo->path);
                 Photo::findOrFail($user->photo->id)->delete();
             }
         }
-        if(isset($input['data']) && isset($user->data)){
+        if (isset($input['data']) && isset($user->data)) {
             $input['data'] = array_merge($user->data, $input['data']);
         }
         $user->update($input);
         return redirect(route($route));
     }
 
-    public function updateApplicant(ApplicantProfileRequest $request, $route) {
-        $input = $request->all();
-        $user = Auth::user();
-        if ($images = $request->file('data')){
-            foreach($images as $key => $image){
-                $type = substr($key, 0, strrpos($key, '_id'));
-                $name = time().$image->getClientOriginalName();
-                $image->move('img', $name);
-                $photo = Photo::create([
-                    'path' => $name,
-                    'type' => $type,
-                    'uploaded_by_user_id' => Auth::user()->id,
-                ]);
-                $input['data'][$key] = $photo->id;
-                if($user->photo($type)){
-                    unlink(public_path() . $user->photo($type)->path);
-                    Photo::findOrFail($user->photo($type)->id)->delete();
-                }
-            }
-        }
-        if($file = $request->file('photo_id')){
-            $name = time().$file->getClientOriginalName();
-            $file->move('img', $name);
-            $photo = Photo::create([
-                'path' => $name,
-                'type' => 'user_photo',
-                'uploaded_by_user_id' => Auth::user()->id,
-                ]);
-            $input['photo_id'] = $photo->id;
-            if($user->photo){
-                unlink(public_path() . $user->photo->path);
-                Photo::findOrFail($user->photo->id)->delete();
-            }
-        }
-        if(isset($input['data']) && isset($user->data)){
-            $input['data'] = array_merge($user->data, $input['data']);
-        }
-        $user->update($input);
-        return redirect(route($route));
-    }
+    public function editApplicant(Request $request)
+    {
 
-    public function edit(Request $request) {
-
-        if(!isset(Auth::user()->data['registration_type'])) {
+        if (!isset(Auth::user()->data['registration_type'])) {
             $packages = Package::where('id', 2)->orWhere('id', 3)->get();
             return view('profile.applicant.package-options', compact('packages'));
         }
-        switch(Auth::user()->data['registration_type']) {
+        switch (Auth::user()->data['registration_type']) {
             case 'nustian':
                 return view('profile.applicant.edit.nustian');
                 break;
