@@ -25,6 +25,10 @@ class Package extends Model
         return $this->morphOne('App\Discount', 'discountable');
     }
 
+    public function expense() {
+        return $this->morphOne('App\Expense', 'expendable');
+    }
+
     /**
      * Return the sluggable configuration array for this model.
      *

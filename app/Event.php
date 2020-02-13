@@ -76,6 +76,10 @@ class Event extends Model
         return $this->morphOne('App\Discount', 'discountable');
     }
 
+    public function expense() {
+        return $this->morphOne('App\Expense', 'expendable');
+    }
+
     public function type(){
 
         return $this->belongsTo('App\EventType', 'event_type_id');

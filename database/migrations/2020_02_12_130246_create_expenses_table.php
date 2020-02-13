@@ -13,9 +13,12 @@ class CreateExpensesTable extends Migration
      */
     public function up()
     {
-        Schema::create('expenses', function (Blueprint $table) {
+        Schema::create('expendables', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('expendable_id')->index();
+            $table->string('expendable_type');
             $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('price');
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class CreateExpensesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expenses');
+        Schema::dropIfExists('expendables');
     }
 }
