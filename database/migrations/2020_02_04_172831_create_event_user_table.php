@@ -14,9 +14,11 @@ class CreateEventUserTable extends Migration
     public function up()
     {
         Schema::create('eventables', function (Blueprint $table) {
-            $table->bigIncrements('event_id')->unsigned()->index();
+            $table->bigIncrements('id')->unsigned()->index();
+            $table->unsignedBigInteger('event_id')->unsigned()->index();
             $table->unsignedBigInteger('eventable_id')->index();
             $table->string('eventable_type');
+            $table->unsignedBigInteger('user_id')->unsigned()->index();
             $table->timestamps();
         });
     }

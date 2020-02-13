@@ -10,13 +10,15 @@
 
 {!! Form::open(['method'=>'POST', 'action'=>'ApplicantController@store', 'files'=>false]) !!}
 
+{!! Form::hidden('packageId', $package->id) !!}
+
 @foreach($package->quotas as $quota)
 
     @for($i = 0; $i < $quota->quota_amount; $i++)
     <div class="form-group">
-        {!! Form::label('event', $quota->eventType->name . ': ') !!}
-        {!! Form::select('event', $quota->eventType->events, null, ['class'=>'form-control']) !!}
-        @error('event')
+        {!! Form::label('eventIds[]', $quota->eventType->name . ': ') !!}
+        {!! Form::select('eventIds[]', $quota->eventType->events->pluck('title', 'id'), null, ['class'=>'form-control']) !!}
+        @error('eventIds[]')
             <span class="text-danger small">
                 <strong>{{ $message }}</strong>
             </span>
@@ -25,6 +27,10 @@
     @endfor
 
 @endforeach
+
+<div class="form=group">
+    {!! Form::submit('Enroll in Package', ['class'=>'btn btn-primary']) !!}
+</div>
 
 {!! Form::close() !!}
 
