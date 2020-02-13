@@ -169,11 +169,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo('App\Photo');
     }
 
-    public function events($eventType=null){
-        if (isset($eventType)){
-            return EventType::whereName($eventType)->firstOrFail()->events();
-        }
-        return $this->belongsToMany('App\Event');
+    // public function events($eventType=null){
+    //     if (isset($eventType)){
+    //         return EventType::whereName($eventType)->firstOrFail()->events();
+    //     }
+    //     return $this->belongsToMany('App\Event');
+    // }
+
+    public function events() {
+        return $this->morphToMany('App\Event', 'eventable');
     }
 
     public function package(){

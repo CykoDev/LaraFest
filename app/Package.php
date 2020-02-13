@@ -45,6 +45,10 @@ class Package extends Model
         return $this->hasMany('App\User');
     }
 
+    public function events() {
+        return $this->morphToMany('App\Event', 'eventable');
+    }
+
     public function quotas(){
 
         return $this->hasMany('App\PackageQuota');
