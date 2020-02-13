@@ -11,8 +11,8 @@
     <div class="row">
         <div class="col-lg-3 mb-4">
 
-            <div class="text-center p-3 ml-5">
-                <img class="img-fluid rounded" src="{{ $user->photo ? $user->photo->path : $user->defaultImage }}" width=200 height=100>
+            <div class="text-center p-3 ml-4">
+                <img width="200" height="200" class="rounded-circle" src="{{ $user->photo ? $user->photo->path : $user->defaultImage }}">
                 <a href="{{ route('profile.edit') }}" class="btn btn-primary px-5 mt-5">
                     <small>Edit Profile</small>
                 </a>
@@ -50,12 +50,18 @@
                     </div>
                     <div class="card-body">
                         @foreach($user->data as $key=>$value)
-                            <div class="form-row">
+                            <div class="form-row py-1">
                                 <div class="col-3">
-                                    <span class="text-dark font-weight-bold">{{ ucwords($key) }}</span>
+                                    <span class="text-dark font-weight-bold">
+                                        {{ ucwords(str_replace('_',' ',str_replace('_id', '', $key))) }}
+                                    </span>
                                 </div>
                                 <div class="col-7">
-                                    <span>{{ ucwords($value) }}</span>
+                                    @if(strpos($key, 'photo_id'))
+                                        <a href="{{ $user->photo(str_replace('_id','',$key))->path }}" target="_blanl">View</a>
+                                    @else
+                                        <span>{{ ucwords($value) }}</span>
+                                    @endif
                                 </div>
                                 <div class="col-2"></div>
                             </div>
