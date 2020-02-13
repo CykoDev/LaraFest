@@ -9,7 +9,8 @@ class Event extends Model
 {
     use Sluggable;
 
-    protected $defaultImage = 'defaultEvent.png';
+    protected $defaultImage = 'defaults/event.png';
+    protected $imageFolder = 'events/';
 
     protected $fillable = [
         'title', 'event_date', 'photo_id', 'data', 'details', 'event_type_id',
@@ -44,6 +45,11 @@ class Event extends Model
     public function getDefaultImageAttribute($value){
 
         return '/img/' . $this->defaultImage;
+    }
+
+    public function getImageFolderAttribute($value){
+
+        return $this->imageFolder;
     }
 
 

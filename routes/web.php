@@ -17,7 +17,8 @@ Auth::routes(['verify' => true]);
 
 Route::get('/', function(){
 
-    return view('welcome');
+    // return view('welcome');
+    return view('public.page-one');
 })->name('home');
 
 Route::get('/dashboard', ['as'=>'dashboard', 'uses'=>'HomeController@index']);
@@ -34,7 +35,7 @@ Route::get('/media/download/{filepath}', ['as'=>'download', 'uses'=>'MediaContro
 |--------------------------------------------------------------------------
 */
 
-Route::get('/page-one', function() { return view('public.page-one'); });
+// Route::get('/page-one', function() { return view('public.page-one'); });
 
 
 
@@ -85,10 +86,12 @@ Route::group(['middleware'=>'verified'], function(){
     Route::post('export/events', 'ExportController@exportEvents');
 });
 
-Route::post('profile/store', 'ProfileController@store');
-Route::get('profile/edit', 'ProfileController@edit')->name('profile.edit');
+Route::get('profile', ['as'=>'profile.show', 'uses'=>'ProfileController@show']);
+Route::post('profile', ['as'=>'profile.store', 'uses'=>'ProfileController@store']);
+Route::get('profile/edit', ['as'=>'profile.edit', 'uses'=>'ProfileController@edit']);
+Route::get('applicant/profile/setup', ['as'=>'profile.applicant.edit', 'uses'=>'ProfileController@editApplicant']);
 Route::patch('profile/update/{route}', ['as'=>'profile.update', 'uses'=>'ProfileController@update']);
-Route::patch('applicant/profile/update/{route}', ['as'=>'profile.update', 'uses'=>'ProfileController@updateApplicant']);
+Route::patch('applicant/profile/update/{route}', ['as'=>'profile.applicant.update', 'uses'=>'ProfileController@updateApplicant']);
 
 /*
 |--------------------------------------------------------------------------
@@ -96,7 +99,12 @@ Route::patch('applicant/profile/update/{route}', ['as'=>'profile.update', 'uses'
 |--------------------------------------------------------------------------
 */
 
-Route::get('pdf/download', 'UserController@generatepdf');
+Route::get('pdf/download', 'InvoiceController@generatepdf');
+
+Route::Get('pdf', function(){
+
+    return view('pdf.invoice');
+});
 
 
 

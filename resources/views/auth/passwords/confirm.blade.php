@@ -12,7 +12,11 @@
               <!-- Nested Row within Card Body -->
               <div class="row">
                 <div class="col-lg-6 d-none d-lg-block bg-login-image" style="
-                    background: url({{ asset('img/auth_banner.png') }});
+                    background: url({{ asset('img/public/undraw_Security_on_ff2u.svg') }});
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-attachment: scroll;
+                    background-size: contain;
                 "></div>
                 <div class="col-lg-6">
                   <div class="p-5">

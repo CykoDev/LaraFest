@@ -12,7 +12,11 @@
               <!-- Nested Row within Card Body -->
               <div class="row">
                 <div class="col-lg-6 d-none d-lg-block bg-login-image" style="
-                    background: url({{ asset('img/auth_banner.png') }});
+                    background: url({{ asset('img/public/undraw_access_account_99n5.svg') }});
+                    background-position: bottom;
+                    background-repeat: no-repeat;
+                    background-attachment: scroll;
+                    background-size: contain;
                 "></div>
                 <div class="col-lg-6">
                   <div class="p-5">
@@ -49,13 +53,6 @@
                         <button type="submit" class="btn btn-primary btn-user btn-block">
                             {{ __('Login') }}
                         </button>
-                        <hr>
-                        <a href="#" class="btn btn-google btn-user btn-block">
-                            <i class="fab fa-google fa-fw"></i>{{ __(' Login with Google') }}
-                        </a>
-                        <a href="#" class="btn btn-facebook btn-user btn-block">
-                            <i class="fab fa-facebook-f fa-fw"></i>{{ __(' Login with Facebook') }}
-                        </a>
                     </form>
 
                     <hr>

@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 use App\http\Requests\UsersCreateRequest;
 use App\http\Requests\UsersUpdateRequest;
 use Illuminate\Support\Facades\Session;
-
 use Illuminate\Support\Facades\Auth;
-use PDF;
 
 use App\User;
 use App\Role;
@@ -70,18 +68,19 @@ class UserController extends Controller
         else {
             $input = $request->all();
         }
+        $user = new User;
         if($file = $request->file('photo_id')) {
 
             $name = time() . $file->getClientOriginalName();
-            $file->move('img', $name);
+            $file->move('img/'.$user->imageFolder, $name);
             $photo = Photo::create([
-                'path' => $name,
+                'path' => $user->imageFolder.$name,
                 'type' => 'user_photo',
                 'uploaded_by_user_id' => Auth::user()->id,
                 ]);
             $input['photo_id'] = $photo->id;
         }
-        User::create($input);
+        $user->create($input);
         return redirect(route('users.index'));
     }
 
@@ -130,9 +129,9 @@ class UserController extends Controller
         if($file = $request->file('photo_id')){
 
             $name = time().$file->getClientOriginalName();
-            $file->move('img', $name);
+            $file->move('img/'.$user->imageFolder, $name);
             $photo = Photo::create([
-                'path' => $name,
+                'path' => $user->imageFolder.$name,
                 'type' => 'user_photo',
                 'uploaded_by_user_id' => Auth::user()->id,
                 ]);
@@ -172,11 +171,5 @@ class UserController extends Controller
             'message' => 'User successfully deleted',
         ]);
         return redirect(route('users.index'));
-    }
-
-    public function generatepdf(){
-
-        $pdf = PDF::loadView('pdf.test');
-        return $pdf->download('testfile.pdf');
     }
 }

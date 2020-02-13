@@ -52,9 +52,9 @@ class MediaController extends Controller
     {
         $file = $request->file('file');
         $name = time() . $file->getClientOriginalName();
-        $file->move('img', $name);
+        $file->move('img/uploads', $name);
         $photo = Photo::create([
-            'path' => $name,
+            'path' => 'uploads/'.$name,
             'uploaded_by_user_id' => Auth::user()->id,
             ]);
     }
@@ -84,7 +84,7 @@ class MediaController extends Controller
     public function download($filepath)
     {
         $path = hex2bin($filepath);
-        return response()->download(public_path().$path, substr($path, 5));
+        return response()->download(public_path().$path, str_replace('/', '', substr($path, -10)));
     }
 
     public function manageMany(Request $request){
