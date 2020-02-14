@@ -60,12 +60,24 @@ class Event extends Model
     */
 
     public function users() {
-        return $this->belongsToMany('App\User');
+        return $this->morphedByMany('App\User', 'eventable');
+    }
+
+    public function packages() {
+        return $this->morphedByMany('App\Package', 'eventable');
     }
 
     public function photo(){
 
         return $this->belongsTo('App\Photo');
+    }
+
+    public function discount() {
+        return $this->morphOne('App\Discount', 'discountable');
+    }
+
+    public function expense() {
+        return $this->morphOne('App\Expense', 'expendable');
     }
 
     public function type(){

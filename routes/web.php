@@ -16,7 +16,11 @@ Route::get('/', function () {
 
 Route::get('/dashboard', ['as' => 'dashboard', 'uses' => 'HomeController@index']);
 
+Route::get('/enroll/package/{id}', ['as'=>'enroll.package', 'uses'=>'ApplicantController@enrollPackage']);
+Route::post('/enroll/package', ['as'=>'enroll.package.store', 'uses'=>'ApplicantController@storePackage']);
 
+Route::get('/enroll/event/{id}', ['as'=>'enroll.event', 'uses'=>'ApplicantController@enrollEvent']);
+Route::post('/enroll/event', ['as'=>'enroll.event.store', 'uses'=>'ApplicantController@storeEvent']);
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -42,6 +46,11 @@ Route::group(['middleware' => 'verified'], function () {
     Route::resource('events', 'EventController');
     Route::resource('event/types', 'EventTypeController');
 
+    Route::resource('events/discounts', 'EventsDiscountController');
+    Route::get('events/discounts/create/{id}', ['as' => 'events.discounts.create', 'uses' => 'EventsDiscountController@create']);
+
+    Route::resource('packages/discounts', 'PackagesDiscountController');
+    Route::get('packages/discounts/create/{id}', ['as' => 'packages.discounts.create', 'uses' => 'PackagesDiscountController@create']);
     Route::resource('packages', 'PackageController');
 
     Route::resource('media', 'MediaController');

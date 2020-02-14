@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Discount;
+use App\Event;
 use Illuminate\Http\Request;
 
-class DiscountController extends Controller
+class EventsDiscountController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,6 +16,8 @@ class DiscountController extends Controller
     public function index()
     {
         //
+        $discounts = Discount::all();
+        return view('discounts.index', compact('discounts'));
     }
 
     /**
@@ -22,9 +25,10 @@ class DiscountController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $event = Event::findOrFail($id);
+        return view('events.discounts.create', compact('event'));
     }
 
     /**
@@ -35,7 +39,10 @@ class DiscountController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $event = Event::findOrFail($request->eventId);
+        if ($event->discount) $event->discount()->delete();
+        $event->discount()->create(['name'=>$request->name, 'amount'=>$request->amount, 'expiry_at'=>$request->expiry]);
+        return redirect()->back();
     }
 
     /**

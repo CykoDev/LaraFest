@@ -21,6 +21,14 @@ class Package extends Model
         return $this->currencySymbol;
     }
 
+    public function discount() {
+        return $this->morphOne('App\Discount', 'discountable');
+    }
+
+    public function expense() {
+        return $this->morphOne('App\Expense', 'expendable');
+    }
+
     /**
      * Return the sluggable configuration array for this model.
      *
@@ -39,6 +47,10 @@ class Package extends Model
     public function users(){
 
         return $this->hasMany('App\User');
+    }
+
+    public function events() {
+        return $this->morphToMany('App\Event', 'eventable');
     }
 
     public function quotas(){

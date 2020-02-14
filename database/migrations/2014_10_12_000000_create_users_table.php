@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->integer('package_id')->unsigned()->index()->nullable();
             $table->json('data')->nullable();
             $table->timestamp('profile_completed_at')->nullable();
+            $table->string('payment_status')->default('unpaid');
             $table->rememberToken();
             $table->timestamps();
         });

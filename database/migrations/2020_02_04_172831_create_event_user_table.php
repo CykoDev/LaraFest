@@ -13,14 +13,13 @@ class CreateEventUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('event_user', function (Blueprint $table) {
+        Schema::create('eventables', function (Blueprint $table) {
             $table->bigIncrements('id')->unsigned()->index();
-            $table->unsignedBigInteger('user_id')->index();
-            $table->unsignedBigInteger('event_id')->index();
+            $table->unsignedBigInteger('event_id')->unsigned()->index();
+            $table->unsignedBigInteger('eventable_id')->index();
+            $table->string('eventable_type');
+            $table->unsignedBigInteger('user_id')->unsigned()->index();
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
         });
     }
 
@@ -31,7 +30,7 @@ class CreateEventUserTable extends Migration
      */
     public function down()
     {
-        Schema::table('event_user', function (Blueprint $table) {
+        Schema::table('eventables', function (Blueprint $table) {
             //
         });
     }
