@@ -15,6 +15,11 @@ class ApplicantController extends Controller
         return view('packages.applicants.enroll', compact('package'));
     }
 
+    public function enrollEvent($id) {
+        $event = Event::findOrFail($id);
+        return view('events.applicants.enroll', compact('event'));
+    }
+
     public function storePackage(Request $request) {
         $userId = Auth::user()->id;
         $package = Package::findOrFail($request->packageId);
@@ -23,6 +28,12 @@ class ApplicantController extends Controller
             $package->events()->save($event, ['user_id' => $userId]);
         }
         $package->expense()->create(['price' => $package->price, 'user_id' => $userId]);
+        dd($request->all());
+    }
+
+    public function storeEvent(Request $request) {
+        $userId = Auth::user()->id;
+        $event = Event::findOrFail($request->eventId);
         dd($request->all());
     }
 }

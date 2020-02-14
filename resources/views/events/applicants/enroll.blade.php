@@ -4,13 +4,13 @@
 
 <div class="container-fluid">
 
-<h1>{{ $package->name }}</h1>
+<h1>{{ $event->name }}</h1>
 
-<h6>Price: <span>{{ $package->price }}</span></h6>
+<h6>Price: <span>{{ $event->price }}</span></h6>
 
-{!! Form::open(['method'=>'POST', 'action'=>'ApplicantController@storePackage', 'files'=>false]) !!}
+{!! Form::open(['method'=>'POST', 'action'=>'ApplicantController@storeEvent', 'files'=>false]) !!}
 
-{!! Form::hidden('packageId', $package->id) !!}
+{!! Form::hidden('eventId', $event->id) !!}
 
 @foreach($package->quotas as $quota)
 
