@@ -26,6 +26,9 @@ Route::get('/dashboard', ['as'=>'dashboard', 'uses'=>'HomeController@index']);
 Route::get('/enroll/package/{id}', ['as'=>'enroll.package', 'uses'=>'ApplicantController@enrollPackage']);
 Route::post('/enroll/package', ['as'=>'enroll.package.store', 'uses'=>'ApplicantController@storePackage']);
 
+Route::get('/enroll/event/{id}', ['as'=>'enroll.event', 'uses'=>'ApplicantController@enrollEvent']);
+Route::post('/enroll/event', ['as'=>'enroll.event.store', 'uses'=>'ApplicantController@storeEvent']);
+
 Route::get('/media/delete/{filepath}', ['as'=>'delete', 'uses'=>'MediaController@delete']);
 Route::get('/media/download/{filepath}', ['as'=>'download', 'uses'=>'MediaController@download']);
 
