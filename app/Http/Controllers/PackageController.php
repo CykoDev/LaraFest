@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class PackageController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('applicant')->only('indexBrowse');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,6 +23,11 @@ class PackageController extends Controller
     {
         $packages = Package::all();
         return view('packages.index.info', compact('packages'));
+    }
+
+    public function indexBrowse()
+    {
+        return view('packages.index.browse');
     }
 
     /**
@@ -80,8 +90,8 @@ class PackageController extends Controller
         $package = Package::findOrFail($id);
         $quotas = $request->quotas;
 
-        if($request->quotas){
-            for ($i=0; $i<sizeof($package->quotas); $i++) {
+        if ($request->quotas) {
+            for ($i = 0; $i < sizeof($package->quotas); $i++) {
                 if (in_array($package->quotas[$i]->id, $quotas['id'])) {
                     $index = array_search($package->quotas[$i]->id, $quotas['id']);
                     $package->quotas[$i]->update([
@@ -89,20 +99,18 @@ class PackageController extends Controller
                         'quota_amount' => $quotas['quota_amount'][$index],
                     ]);
                     $quotas['id'][$index] = null;
-                }
-                else {
+                } else {
                     $package->quotas[$i]->delete();
                 }
             }
-        }
-        else {
-            foreach($package->quotas as $quota){
+        } else {
+            foreach ($package->quotas as $quota) {
                 $quota->delete();
             }
         }
 
-        if($request->quotas['id']){
-            for($i=0; $i<sizeof($quotas['id']); $i++) {
+        if ($request->quotas['id']) {
+            for ($i = 0; $i < sizeof($quotas['id']); $i++) {
                 if (is_null($quotas['id'][$i])) {
                     continue;
                 }

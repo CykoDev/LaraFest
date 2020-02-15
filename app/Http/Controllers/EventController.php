@@ -14,6 +14,11 @@ use App\EventType;
 
 class EventController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('applicant')->only('indexBrowse');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +27,12 @@ class EventController extends Controller
     public function index()
     {
         $events = Event::all();
-        return view('events.index', compact('events'));
+        return view('events.index.info', compact('events'));
+    }
+
+    public function indexBrowse()
+    {
+        return view('events.index.browse');
     }
 
     /**
@@ -48,49 +58,49 @@ class EventController extends Controller
         $event = new Event;
 
         // Event Image
-        if($file = $request->file('photo_id')) {
+        if ($file = $request->file('photo_id')) {
 
             $name = time() . $file->getClientOriginalName();
-            $file->move('img/'.$event->imageFolder, $name);
+            $file->move('img/' . $event->imageFolder, $name);
             $photo = Photo::create([
-                'path' => $event->imageFolder.$name,
+                'path' => $event->imageFolder . $name,
                 'type' => 'event_photo',
                 'uploaded_by_user_id' => Auth::user()->id,
-                ]);
+            ]);
             $input['photo_id'] = $photo->id;
         }
 
         // Event Content Images
         $dom = new DomDocument();
-		$dom->loadHtml($request->details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $dom->loadHtml($request->details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $images = $dom->getElementsByTagName('img');
 
-		foreach($images as $img){
-			$src = $img->getAttribute('src');
+        foreach ($images as $img) {
+            $src = $img->getAttribute('src');
 
-			if(preg_match('/data:image/', $src)){
+            if (preg_match('/data:image/', $src)) {
 
-				preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
-				$mimetype = $groups['mime'];
+                preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
+                $mimetype = $groups['mime'];
 
-				$filename = uniqid();
-				$filepath = "/img/$filename.$mimetype";
+                $filename = uniqid();
+                $filepath = "/img/$filename.$mimetype";
 
-				$image = Image::make($src)
-				  ->encode($mimetype, 100)
-				  ->save(public_path($filepath));
+                $image = Image::make($src)
+                    ->encode($mimetype, 100)
+                    ->save(public_path($filepath));
 
-				$new_src = asset($filepath);
-				$img->removeAttribute('src');
+                $new_src = asset($filepath);
+                $img->removeAttribute('src');
                 $img->setAttribute('src', $new_src);
 
                 Photo::create([
-                    'path'=>$filename.'.'.$mimetype,
-                    'type'=>'event_content_media',
+                    'path' => $filename . '.' . $mimetype,
+                    'type' => 'event_content_media',
                     'uploaded_by_user_id' => Auth::user()->id,
-                    ]);
-			}
-		}
+                ]);
+            }
+        }
         $input['details'] = $dom->saveHTML();
 
         // Event creation
@@ -136,18 +146,18 @@ class EventController extends Controller
         $event = Event::whereSlug($slug)->firstOrFail();
 
         // Event Image
-        if($file = $request->file('photo_id')){
+        if ($file = $request->file('photo_id')) {
 
-            $name = time().$file->getClientOriginalName();
-            $file->move('img/'.$event->imageFolder, $name);
+            $name = time() . $file->getClientOriginalName();
+            $file->move('img/' . $event->imageFolder, $name);
             $photo = Photo::create([
-                'path' => $event->imageFolder.$name,
+                'path' => $event->imageFolder . $name,
                 'type' => 'event_photo',
                 'uploaded_by_user_id' => Auth::user()->id,
-                ]);
+            ]);
             $input['photo_id'] = $photo->id;
 
-            if($event->photo){
+            if ($event->photo) {
 
                 unlink(public_path() . $event->photo->path);
                 Photo::findOrFail($event->photo->id)->delete();
@@ -156,34 +166,34 @@ class EventController extends Controller
 
         // Event Content Images
         $dom = new DomDocument();
-		$dom->loadHtml($request->details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $dom->loadHtml($request->details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $images = $dom->getElementsByTagName('img');
 
-		foreach($images as $img){
-			$src = $img->getAttribute('src');
+        foreach ($images as $img) {
+            $src = $img->getAttribute('src');
 
-			if(preg_match('/data:image/', $src)){
+            if (preg_match('/data:image/', $src)) {
 
-				preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
-				$mimetype = $groups['mime'];
+                preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
+                $mimetype = $groups['mime'];
 
-				$filename = uniqid();
-				$filepath = "/img/$filename.$mimetype";
+                $filename = uniqid();
+                $filepath = "/img/$filename.$mimetype";
 
-				$image = Image::make($src)
-				  ->encode($mimetype, 100)
-				  ->save(public_path($filepath));
+                $image = Image::make($src)
+                    ->encode($mimetype, 100)
+                    ->save(public_path($filepath));
 
-				$new_src = asset($filepath);
-				$img->removeAttribute('src');
+                $new_src = asset($filepath);
+                $img->removeAttribute('src');
                 $img->setAttribute('src', $new_src);
 
                 Photo::create([
-                    'path'=>$filename.'.'.$mimetype,
-                    'type'=>'event_content_media',
+                    'path' => $filename . '.' . $mimetype,
+                    'type' => 'event_content_media',
                     'uploaded_by_user_id' => Auth::user()->id,
-                    ]);
-			}
+                ]);
+            }
         }
         $input['details'] = $dom->saveHTML();
 
@@ -205,7 +215,7 @@ class EventController extends Controller
     public function destroy($id)
     {
         $event = Event::findOrFail($id);
-        if($event->photo){
+        if ($event->photo) {
             unlink(public_path() . $event->photo->path);
             Photo::findOrFail($event->photo->id)->delete();
         }
