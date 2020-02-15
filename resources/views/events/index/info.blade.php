@@ -38,6 +38,7 @@
                 <td>{{ $event->id }}</td>
                 <td><img src='{{ is_null($event->photo) ? $event->defaultImage : $event->photo->path }}' class="rounded-circle" width=40 height=40></td>
                 <td><a href="{{ route('events.show', $event->id) }}">{{ $event->title }}</a></td>
+                <td>{{ $event->type->name }}</td>
                 <td>{{ $event->event_date->diffForHumans() }}</td>
                 <td>{{ $event->created_at->diffForHumans() }}</td>
                 <td>{{ $event->updated_at->diffForHumans() }}</td>
