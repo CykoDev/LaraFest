@@ -9,9 +9,6 @@
     </div>
 
     <div class="row">
-
-
-
         <div class="col-lg-3 mb-4">
 
             {!! Form::model($user, ['method'=>'PATCH', 'action'=>['ProfileController@update', 'profile.edit'], 'files'=>true]) !!}
