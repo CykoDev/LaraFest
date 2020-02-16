@@ -27,14 +27,12 @@ class ProfileController extends Controller
 
     public function edit()
     {
-
         $user = Auth::user();
         return view('profile.edit', compact('user'));
     }
 
     public function update(Request $request, $route = null)
     {
-        // dd($request);
         $input = $request->all();
         $user = Auth::user();
         if ($images = $request->file('data')) {
