@@ -14,8 +14,6 @@ Route::get('/', function () {
     return view('public.page-one');
 })->name('home');
 
-Route::get('/dashboard', ['as' => 'dashboard', 'uses' => 'HomeController@index']);
-
 Route::get('/enroll/package/{id}', ['as' => 'enroll.package', 'uses' => 'ApplicantController@enrollPackage']);
 Route::post('/enroll/package', ['as' => 'enroll.package.store', 'uses' => 'ApplicantController@storePackage']);
 
@@ -38,12 +36,20 @@ Route::post('/enroll/event', ['as' => 'enroll.event.store', 'uses' => 'Applicant
 
 Route::group(['middleware' => 'verified'], function () {
 
+    Route::get('/dashboard', ['as' => 'dashboard', 'uses' => 'HomeController@index']);
+
     Route::resource('users', 'UserController');
     Route::get('/users-role/{role}', ['as' => 'users.index-role', 'uses' => 'UserController@indexRole']);
 
     Route::resource('roles', 'RoleController');
 
-    Route::resource('events', 'EventController');
+    Route::resource('manage/events', 'EventController');
+    Route::get('/browse/events', ['as' => 'events.browse', 'uses' => 'EventController@indexBrowse']);
+    Route::get('/events/{slug}', ['as' => 'events.view', 'uses' => 'EventController@showView']);
+    Route::post('/events/enroll/{slug}', ['as' => 'events.enroll', 'uses' => 'EventController@enroll']);
+    Route::post('/events/unenroll/{slug}', ['as' => 'events.unenroll', 'uses' => 'EventController@unEnroll']);
+
+
     Route::resource('event/types', 'EventTypeController');
     Route::resource('events/discounts', 'EventsDiscountController');
     Route::get('events/discounts/create/{id}', ['as' => 'events.discounts.create', 'uses' => 'EventsDiscountController@create']);
@@ -52,7 +58,7 @@ Route::group(['middleware' => 'verified'], function () {
     Route::get('packages/discounts/create/{id}', ['as' => 'packages.discounts.create', 'uses' => 'PackagesDiscountController@create']);
     Route::resource('packages', 'PackageController');
 
-    Route::get('/browse/events', ['as' => 'browse.events', 'uses' => 'EventController@indexBrowse']);
+
     Route::get('/browse/packages', ['as' => 'browse.packages', 'uses' => 'PackageController@indexBrowse']);
 
     Route::resource('media', 'MediaController');
@@ -96,3 +102,5 @@ Route::group(['middleware' => 'verified'], function () {
 | Test Routes
 |--------------------------------------------------------------------------
 */
+
+Route::get('/pdf', 'InvoiceController@generatepdf');

@@ -19,11 +19,20 @@ class EventController extends Controller
         $this->middleware('applicant')->only('indexBrowse');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function enroll($slug)
+    {
+        $event = Event::whereSlug($slug)->firstOrFail();
+        Auth::user()->events()->save($event);
+        return redirect()->back();
+    }
+
+    public function unEnroll($slug)
+    {
+        $event = Event::whereSlug($slug)->firstOrFail();
+        Auth::user()->events()->detach($event);
+        return redirect()->back();
+    }
+
     public function index()
     {
         $events = Event::all();
@@ -32,26 +41,16 @@ class EventController extends Controller
 
     public function indexBrowse()
     {
-        return view('events.index.browse');
+        $events = Event::paginate(9);
+        return view('events.index.browse', compact('events'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $types = EventType::pluck('name', 'id')->all();
         return view('events.create', compact('types'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $input = $request->all();
@@ -108,24 +107,18 @@ class EventController extends Controller
         return redirect(route('events.index'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show($slug)
     {
-        $event = Event::findOrFail($id);
-        return view('events.show', compact('event'));
+        $event = Event::whereSlug($slug)->firstOrFail();
+        return view('events.show.info', compact('event'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function showView($slug)
+    {
+        $event = Event::whereSlug($slug)->firstOrFail();
+        return view('events.show.view', compact('event'));
+    }
+
     public function edit($slug)
     {
         $event = Event::whereSlug($slug)->firstOrFail();
@@ -133,13 +126,6 @@ class EventController extends Controller
         return view('events.edit', compact('event', 'types'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $slug)
     {
         $input = $request->all();
@@ -206,12 +192,6 @@ class EventController extends Controller
         return redirect(route('events.index'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $event = Event::findOrFail($id);

@@ -16,7 +16,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('verified');
     }
 
     /**
@@ -27,16 +27,18 @@ class HomeController extends Controller
     public function index()
     {
         $user = Auth::user();
-        switch(true) {
+        switch (true) {
             case $user->isAdmin():
 
                 $users = User::all();
                 $roles = Role::all();
-                for($i=0; $i < 12; $i++){
-                    $userMonthCount[$i+1] = User::whereMonth('created_at', $i+1)->count();
+                for ($i = 0; $i < 12; $i++) {
+                    $userMonthCount[$i + 1] = User::whereMonth('created_at', $i + 1)->count();
                 }
                 return view('home.admin', compact(
-                    'users', 'userMonthCount', 'roles',
+                    'users',
+                    'userMonthCount',
+                    'roles',
                 ));
                 break;
 
@@ -54,13 +56,11 @@ class HomeController extends Controller
 
                 return view('home.applicant.comingsoon');
 
-                if (is_null($user->profile_completed_at)){
+                if (is_null($user->profile_completed_at)) {
                     return view('home.applicant.starter');
-                }
-                elseif (!is_null($user->events)){
+                } elseif (!is_null($user->events)) {
                     return view('home.applicant.browsing');
-                }
-                else {
+                } else {
                     return view('home.applicant.enrolled');
                 }
                 break;
