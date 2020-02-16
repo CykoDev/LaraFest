@@ -30,8 +30,7 @@
                         <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 20rem;" src="{{ asset('img/public/undraw_landscape_mode_53ej.svg') }}" alt="">
                     </div>
                     <p>
-                        Stay tuned for when our teams finalize and release the events for NLF 2020. You will be notified via email
-                        when the events are finally released!
+                        Stay tuned for when our teams finalize and release the events for NLF 2020. Be ready to get started!
                     </p>
                 </div>
             </div>

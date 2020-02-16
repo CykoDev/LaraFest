@@ -23,7 +23,7 @@
           </div>
           @if($items)
               <div class="mt-4 text-center small">
-                  @php ($colors = ['primary','success', 'default', 'default', 'light', 'warning'])
+                  @php ($colors = ['primary','success', 'info', 'default', 'light', 'warning'])
                   @for($i=0; $i < sizeOf($items); $i++)
                       @if($i % 3 == 0)
                           <br>

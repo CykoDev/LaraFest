@@ -64,6 +64,32 @@
                                     </span>
                                 @enderror
                             </div>
+
+                            {{-- <hr class="my-4" width='60%'>
+
+                            <h6 class="mb-3">Update Password</h6>
+
+                            <div class="form-group">
+                                <input id="current_password" type="password" class="form-control form-control-user @error('current_password') is-invalid @enderror" name="current_password" autocomplete="new-password" placeholder="Current Password">
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <input id="new_password" type="password" class="form-control form-control-user @error('new_password') is-invalid @enderror" name="new_password" autocomplete="new-password" placeholder="New Password">
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <input id="password_confirmation" type="password" class="form-control form-control-user @error('password_confirmation') is-invalid @enderror" name="password_confirmation" autocomplete="new-password" placeholder="Confirm Password">
+                            </div> --}}
                         </div>
                         <div class="col-4">
                             <div class="text-center">
