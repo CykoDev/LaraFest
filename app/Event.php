@@ -13,7 +13,7 @@ class Event extends Model
     protected $imageFolder = 'events/';
 
     protected $fillable = [
-        'name', 'event_date', 'photo_id', 'data', 'details', 'event_type_id',
+        'name', 'event_date', 'end_date', 'photo_id', 'data', 'details', 'event_type_id',
     ];
 
     protected $casts = [

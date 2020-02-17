@@ -31,18 +31,44 @@
             <p class="mb-3 text-primary px-5 font-weight-bold">Kickstarting on {{$event->event_date->isoFormat('D MMMM, Y') }}</p>
             <p class="px-5">{!! $event->details !!}</p>
             <div class="text-right">
-                @if (Auth::user()->events()->exists($event))
-                    {!! Form::open(['method'=>'POST', 'action'=>['EventController@unEnroll', $event->slug]]) !!}
-                        <div class="form=group">
-                            {!! Form::submit('UNENROLL', ['class'=>'btn btn-warning mr-5 px-5']) !!}
-                        </div>
-                    {!! Form::close() !!}
+                @php
+                    $overlap = false;
+                    $overlapEvent;
+                    foreach (Auth::user()->events as $e) {
+                        if ($event->event_date->lte($e->end_date) && $event->end_date->gte($e->event_date)) {
+                            $overlap = true;
+                            $overlapEvent = $e;
+                            break;
+                        }
+                    }
+                    if (!$overlap) {
+                        foreach (Auth::user()->package->events()->where('user_id', Auth::user()->id)->get() as $e) {
+                            if ($event->event_date->lte($e->end_date) && $event->end_date->gte($e->event_date)) {
+                                $overlap = true;
+                                $overlapEvent = $e;
+                                break;
+                            }
+                        }
+                    }
+                @endphp
+                @if (!$overlap)
+                    @if (Auth::user()->events->contains($event))
+                        {!! Form::open(['method'=>'POST', 'action'=>['EventController@unEnroll', $event->slug]]) !!}
+                            <div class="form=group">
+                                {!! Form::submit('UNENROLL', ['class'=>'btn btn-warning mr-5 px-5']) !!}
+                            </div>
+                        {!! Form::close() !!}
+                    @elsif (Auth::user()->package()->events->where('user_id', Auth::user()->id)->get()->contains($event))
+                        <p>You are enrolled in this event through the package.</p>
+                    @else
+                        {!! Form::open(['method'=>'POST', 'action'=>['EventController@enroll', $event->slug]]) !!}
+                            <div class="form=group">
+                                {!! Form::submit('ENROLL', ['class'=>'btn btn-primary mr-5 px-5']) !!}
+                            </div>
+                        {!! Form::close() !!}
+                    @endif
                 @else
-                    {!! Form::open(['method'=>'POST', 'action'=>['EventController@enroll', $event->slug]]) !!}
-                        <div class="form=group">
-                            {!! Form::submit('ENROLL', ['class'=>'btn btn-primary mr-5 px-5']) !!}
-                        </div>
-                    {!! Form::close() !!}
+                        <p>This event clashes in timing with <a href="{{ route('events.view', $overlapEvent->slug) }}" target="_blank">{{ $overlapEvent->name }}</a></p>
                 @endif
             </div>
         </div>
