@@ -5,7 +5,7 @@
 <div class="container-fluid">
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Let's Completed Your Profile</h1>
+        <h1 class="h3 mb-0 text-gray-800">Let's Complete Your Profile</h1>
     </div>
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -292,7 +292,7 @@
                     <div class="form-row py-2">
                         <div class="col-3 my-auto">
                             <span class="text-dark font-weight-bold">
-                                {!! Form::label('accommodation', 'Do You Need Accomodation? ') !!}
+                                {!! Form::label('data[accommodation]', 'Do You Need Accomodation? ') !!}
                             </span>
                         </div>
                         <div class="col-7">
@@ -308,7 +308,23 @@
                     <div class="form-row py-2">
                         <div class="col-3 my-auto">
                             <span class="text-dark font-weight-bold">
-                                {!! Form::label('ambassador_code', 'Ambassador Code (optional): ') !!}
+                                {!! Form::label('data[ambassador_name]', 'Ambassador Name (optional): ') !!}
+                            </span>
+                        </div>
+                        <div class="col-7">
+                            {!! Form::text('data[ambassador_name]', null, ['class'=>'form-control']) !!}
+                            @error('data[ambassador_name]')
+                                <span class="text-danger small">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="col-2"></div>
+                    </div>
+                    <div class="form-row py-2">
+                        <div class="col-3 my-auto">
+                            <span class="text-dark font-weight-bold">
+                                {!! Form::label('data[ambassador_code]', 'Ambassador Code (optional): ') !!}
                             </span>
                         </div>
                         <div class="col-7">

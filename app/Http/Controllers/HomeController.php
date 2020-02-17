@@ -58,8 +58,6 @@ class HomeController extends Controller
 
                 if (is_null($user->profile_completed_at)) {
                     return view('home.applicant.starter');
-                } elseif (!is_null($user->events)) {
-                    return view('home.applicant.browsing');
                 } else {
                     return view('home.applicant.enrolled');
                 }

@@ -94,7 +94,7 @@ class ProfileController extends Controller
         return redirect(route($route));
     }
 
-    public function updateApplicant(ApplicantProfileRequest $request)
+    public function updateApplicant(ApplicantProfileRequest $request, $route)
     {
         $input = $request->all();
         $user = Auth::user();
@@ -134,7 +134,7 @@ class ProfileController extends Controller
             $input['data'] = array_merge($user->data, $input['data']);
         }
         $user->update($input);
-        return redirect()->back();
+        return redirect(route($route));
     }
 
     public function editApplicant(Request $request)

@@ -5,11 +5,12 @@
 <div class="container-fluid">
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Let's Completed Your Profile</h1>
+        <h1 class="h3 mb-0 text-gray-800">Let's Complete Your Profile</h1>
     </div>
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <p class="mb-3">Well helloo we got a Professional here</p>
+        <p class="mb-3">What a Coincidence, We're from NUST Too!
+            <br><small>Oh You Dont Care</small></p>
     </div>
 
     <div class="row">

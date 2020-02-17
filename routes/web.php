@@ -101,7 +101,7 @@ Route::group(['middleware' => 'verified'], function () {
     Route::get('profile/edit', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
     Route::patch('profile/edit/{route}', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
     Route::get('applicant/profile', ['as' => 'profile.applicant.edit', 'uses' => 'ProfileController@editApplicant']);
-    Route::patch('applicant/profile', ['as' => 'profile.applicant.update', 'uses' => 'ProfileController@updateApplicant']);
+    Route::patch('applicant/profile/{route}', ['as' => 'profile.applicant.update', 'uses' => 'ProfileController@updateApplicant']);
 
 
     /*
