@@ -41,7 +41,7 @@
     @endswitch
 
     <li class="nav-item">
-      <a class="nav-link">
+        <a class="nav-link" href="{{ route('meet-the-creators') }}">
         <i class="fas fa-laptop-code"></i>
         <span>Meet The Developers</span></a>
     </li>
