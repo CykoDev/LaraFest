@@ -17,7 +17,7 @@ class CreateEventsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('photo_id')->unsigned()->index()->nullable();
             $table->unsignedBigInteger('event_type_id')->index();
-            $table->string('title');
+            $table->string('name');
             $table->string('slug');
             $table->timestamp('event_date')->nullable();
             $table->text('details')->nullable();

@@ -11,9 +11,9 @@
     {!! Form::open(['method'=>'POST', 'action'=>'EventController@store', 'files'=>true]) !!}
 
         <div class="form-group">
-            {!! Form::label('title', 'Title: ') !!}
-            {!! Form::text('title', null, ['class'=>'form-control']) !!}
-            @error('title')
+            {!! Form::label('name', 'name: ') !!}
+            {!! Form::text('name', null, ['class'=>'form-control']) !!}
+            @error('name')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>

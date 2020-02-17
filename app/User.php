@@ -71,17 +71,20 @@ class User extends Authenticatable implements MustVerifyEmail
     *--------------------------------------------------------------------------
     */
 
-    public function getDefaultImageAttribute($value){
+    public function getDefaultImageAttribute($value)
+    {
 
         return '/img/' . $this->defaultImage;
     }
 
-    public function getImageFolderAttribute($value){
+    public function getImageFolderAttribute($value)
+    {
 
         return $this->imageFolder;
     }
 
-    public function setPasswordAttribute($value){
+    public function setPasswordAttribute($value)
+    {
 
         $this->attributes['password'] = Hash::make($value);
     }
@@ -92,35 +95,44 @@ class User extends Authenticatable implements MustVerifyEmail
     *--------------------------------------------------------------------------
     */
 
-    public function role(){
+    public function role()
+    {
 
         return $this->belongsTo('App\Role');
     }
 
-    public function package(){
+    public function package()
+    {
 
         return $this->belongsTo('App\Package');
     }
 
-    public function invoice(){
-
-        return $this->belongsTo('App\Package');
+    public function expenses()
+    {
+        return $this->hasMany('App\Expense');
     }
 
-    public function photo($photo=null){
-        if (isset($photo)){
-            if (isset($this->data[$photo.'_id'])){
-                return Photo::whereId($this->data[$photo.'_id'])->firstOrFail();
-            }
-            else {
+    public function invoice()
+    {
+
+        return $this->belongsTo('App\Invoice');
+    }
+
+    public function photo($photo = null)
+    {
+        if (isset($photo)) {
+            if (isset($this->data[$photo . '_id'])) {
+                return Photo::whereId($this->data[$photo . '_id'])->firstOrFail();
+            } else {
                 return null;
             }
         }
         return $this->belongsTo('App\Photo');
     }
 
-    public function events($eventType=null){
-        if (isset($eventType)){
+    public function events($eventType = null)
+    {
+        if (isset($eventType)) {
             return EventType::whereName($eventType)->firstOrFail()->events();
         }
         return $this->morphToMany('App\Event', 'eventable');
@@ -132,75 +144,63 @@ class User extends Authenticatable implements MustVerifyEmail
     *--------------------------------------------------------------------------
     */
 
-    public function isAdmin() {
+    public function isAdmin()
+    {
 
-        if($this->role){
+        if ($this->role) {
 
-            if($this->role->name == 'admin' && $this->is_active == 1){
-
-                return true;
-            }
-            return false;
-        }
-        else {
-            return false;
-        }
-    }
-
-    public function isModerator() {
-
-        if($this->role){
-
-            if($this->role->name == 'moderator' && $this->is_active == 1){
+            if ($this->role->name == 'admin' && $this->is_active == 1) {
 
                 return true;
             }
             return false;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    public function isMonitor() {
+    public function isModerator()
+    {
 
-        if($this->role){
+        if ($this->role) {
 
-            if($this->role->name == 'monitor' && $this->is_active == 1){
+            if ($this->role->name == 'moderator' && $this->is_active == 1) {
 
                 return true;
             }
             return false;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    public function isApplicant() {
+    public function isMonitor()
+    {
 
-        if($this->role){
+        if ($this->role) {
 
-            if($this->role->name == 'applicant' && $this->is_active == 1){
+            if ($this->role->name == 'monitor' && $this->is_active == 1) {
 
                 return true;
             }
             return false;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
+    public function isApplicant()
+    {
 
-    /*
-    *--------------------------------------------------------------------------
-    * Mutators | Accessors
-    *--------------------------------------------------------------------------
-    */
-    /*
-    *--------------------------------------------------------------------------
-    * CRUD Relations
-    *--------------------------------------------------------------------------
-    */
+        if ($this->role) {
+
+            if ($this->role->name == 'applicant' && $this->is_active == 1) {
+
+                return true;
+            }
+            return false;
+        } else {
+            return false;
+        }
+    }
 }

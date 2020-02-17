@@ -13,7 +13,7 @@ class Event extends Model
     protected $imageFolder = 'events/';
 
     protected $fillable = [
-        'title', 'event_date', 'photo_id', 'data', 'details', 'event_type_id',
+        'name', 'event_date', 'photo_id', 'data', 'details', 'event_type_id',
     ];
 
     protected $casts = [
@@ -30,7 +30,7 @@ class Event extends Model
     {
         return [
             'slug' => [
-                'source' => 'title',
+                'source' => 'name',
                 'onUpdate' => true,
             ]
         ];
@@ -42,12 +42,14 @@ class Event extends Model
     *--------------------------------------------------------------------------
     */
 
-    public function getDefaultImageAttribute($value){
+    public function getDefaultImageAttribute($value)
+    {
 
         return '/img/' . $this->defaultImage;
     }
 
-    public function getImageFolderAttribute($value){
+    public function getImageFolderAttribute($value)
+    {
 
         return $this->imageFolder;
     }
@@ -59,28 +61,34 @@ class Event extends Model
     *--------------------------------------------------------------------------
     */
 
-    public function users() {
+    public function users()
+    {
         return $this->morphedByMany('App\User', 'eventable');
     }
 
-    public function packages() {
+    public function packages()
+    {
         return $this->morphedByMany('App\Package', 'eventable');
     }
 
-    public function photo(){
+    public function photo()
+    {
 
         return $this->belongsTo('App\Photo');
     }
 
-    public function discount() {
+    public function discount()
+    {
         return $this->morphOne('App\Discount', 'discountable');
     }
 
-    public function expense() {
+    public function expense()
+    {
         return $this->morphOne('App\Expense', 'expendable');
     }
 
-    public function type(){
+    public function type()
+    {
 
         return $this->belongsTo('App\EventType', 'event_type_id');
     }

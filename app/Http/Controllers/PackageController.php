@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Package;
 use App\PackageQuota;
 use App\EventType;
+use App\Event;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 
 class PackageController extends Controller
@@ -12,6 +15,25 @@ class PackageController extends Controller
     public function __construct()
     {
         $this->middleware('applicant')->only('indexBrowse');
+    }
+
+    public function enroll(Request $request, $route)
+    {
+        $user = Auth::user();
+        $package = Package::findOrFail($request->packageId);
+        $user->package()->associate($package)->save();
+        if ($request->eventIds) {
+            foreach ($request->eventIds as $id) {
+                $event = Event::findOrFail($id);
+                $user->package()->events()->save($event, ['user_id' => $user->id]);
+            }
+        }
+        $package->expense()->create(['price' => $package->price, 'user_id' => $user->id]);
+        return redirect(route($route));
+    }
+
+    public function unEnroll($slug)
+    {
     }
 
     /**
@@ -23,11 +45,6 @@ class PackageController extends Controller
     {
         $packages = Package::all();
         return view('packages.index.info', compact('packages'));
-    }
-
-    public function indexBrowse()
-    {
-        return view('packages.index.browse');
     }
 
     /**
@@ -51,15 +68,14 @@ class PackageController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Package  $package
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Package $package)
+    public function show($slug)
     {
-        return view('packages.show', compact('package'));
+    }
+
+    public function showView($slug)
+    {
+        $package = Package::whereSlug($slug)->firstOrFail();
+        return view('packages.show.view', compact('package'));
     }
 
     /**

@@ -59,8 +59,6 @@
         </div>
     </nav>
 
-
-    <!-- Header -->
     <header class="masthead" style="
             background: url({{ asset('img/public/backwithmorecarsbaby.jpg') }});
             background-size: cover;
@@ -69,45 +67,40 @@
         <div class="mx-auto text-center">
             <h1 class="mx-auto my-0 text-uppercase">{{ config('app.name', 'Laravel CMS') }}</h1>
             <h2 class="text-white-50 mx-auto mt-2 mb-5">Back for 2020</h2>
-            <a href="#about" class="btn btn-info js-scroll-trigger">Get Started</a>
+            <a href="{{ route('register') }}" class="btn btn-info js-scroll-trigger">Get Started</a>
         </div>
         </div>
     </header>
 
-    <!-- About Section -->
     <section id="about" class="about-section text-center">
         <div class="container">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-            <h2 class="text-white mb-4">NUST Literary Festival</h2>
-            <p class="text-white-50">
-                National Literary Festival, two years ago, achieved its envisioned goal; to revitalise the love and renew the thirst of literature among the youth. Filled with numerous talks, competitions and workshops, it was a fest one of its kind.
-            </p>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="text-white mb-4">National Literary Festival</h2>
+                    <p class="text-white-50">
+                        National Literary Festival, two years ago, achieved its envisioned goal; to revitalise the love and renew the thirst of literature among the youth. Filled with numerous talks, competitions and workshops, it was a fest one of its kind.
+                    </p>
+                </div>
             </div>
-        </div>
-        <img src="" class="img-fluid" alt="">
+            <img src="" class="img-fluid" alt="">
         </div>
     </section>
 
-    <!-- Projects Section -->
     <section id="projects" class="projects-section bg-light">
         <div class="container">
-
-        <!-- Featured Project Row -->
-        <div class="row align-items-center no-gutters mb-4 mb-lg-5">
-            <div class="col-xl-8 col-lg-7">
-            <img class="img-fluid mb-3 mb-lg-0" src="" alt="">
-            </div>
-            <div class="col-xl-4 col-lg-5">
-            <div class="featured-text text-center text-lg-left">
-                <br><br>
-                <h4>NLC Returns for 2020</h4>
-                <br><br>
-            </div>
+            <div class="row align-items-center no-gutters mb-4 mb-lg-5">
+                <div class="col-xl-8 col-lg-7">
+                <img class="img-fluid mb-3 mb-lg-0" src="" alt="">
+                </div>
+                <div class="col-xl-4 col-lg-5">
+                <div class="featured-text text-center text-lg-left">
+                    <br><br>
+                    <h4>NLC Returns for 2020</h4>
+                    <br><br>
+                </div>
             </div>
         </div>
 
-        <!-- Project One Row -->
         <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
             <div class="col-lg-6">
             <img class="img-fluid" src="{{ asset('img/public/wontfailagainipromise.jpg') }}" alt="">
@@ -125,7 +118,6 @@
             </div>
         </div>
 
-        <!-- Project Two Row -->
         <div class="row justify-content-center no-gutters">
             <div class="col-lg-6">
             <img class="img-fluid" src="{{ asset('img/public/backagainfor2020.jpg') }}" alt="">
@@ -146,7 +138,6 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section class="contact-section bg-black">
         <div class="container">
 
@@ -182,7 +173,7 @@
                 <i class="fas fa-mobile-alt text-primary mb-2"></i>
                 <h4 class="text-uppercase m-0">Phone</h4>
                 <hr class="my-4">
-                <div class="small text-black-50">+92 321 1354050</div>
+                <div class="small text-black-50">+92 336 5447388</div>
                 </div>
             </div>
             </div>
@@ -203,10 +194,11 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer class="bg-black small text-center text-white-50">
         <div class="container">
-            Copyright &copy; {{ config('app.name', 'LaraFest') }} {{   now()->year   }}
+            Created by
+            <a href="https://github.com/CykoDev" target="_blank">CykoDev</a>
+            {{ now()->year }}
         </div>
     </footer>
 
