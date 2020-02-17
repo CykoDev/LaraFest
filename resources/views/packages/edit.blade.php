@@ -49,7 +49,7 @@
                             <div class="col"></div>
                             <div class="col">
                                 {!! Form::hidden('quotas[id][]', $quota->id) !!}
-                                {!! Form::label('quotas[event_type_id][]', 'Role: ') !!}
+                                {!! Form::label('quotas[event_type_id][]', 'Event Type: ') !!}
                                 {!! Form::select('quotas[event_type_id][]', [''=>'Choose Type'] + $eventTypes, $quota->event_type_id, ['class'=>'form-control']) !!}
                                 @error('quotas[event_type_id][]')
                                     <span class="text-danger small">
@@ -58,7 +58,7 @@
                                 @enderror
                             </div>
                             <div class="col">
-                                {!! Form::label('quotas[quota_amount][]', 'Price: ') !!}
+                                {!! Form::label('quotas[quota_amount][]', 'Amount: ') !!}
                                 {!! Form::number('quotas[quota_amount][]', $quota->quota_amount, ['class'=>'form-control']) !!}
                                 @error('quotas[quota_amount][]')
                                     <span class="text-danger small">
@@ -115,7 +115,7 @@
                         <div class="col"></div>
                         <div class="col">
                             {!! Form::hidden('quotas[id][]', '.') !!}
-                            {!! Form::label('quotas[event_type_id][]', 'Role: ') !!}
+                            {!! Form::label('quotas[event_type_id][]', 'Event Type: ') !!}
                             {!! Form::select('quotas[event_type_id][]', [''=>'Choose Type'] + $eventTypes, null, ['class'=>'form-control']) !!}
                             @error('quotas[event_type_id][]')
                                 <span class="text-danger small">
@@ -124,7 +124,7 @@
                             @enderror
                         </div>
                         <div class="col">
-                            {!! Form::label('quotas[quota_amount][]', 'Price: ') !!}
+                            {!! Form::label('quotas[quota_amount][]', 'Amount: ') !!}
                             {!! Form::number('quotas[quota_amount][]', null, ['class'=>'form-control']) !!}
                             @error('quotas[quota_amount][]')
                                 <span class="text-danger small">

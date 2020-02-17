@@ -12,22 +12,6 @@
         <p class="mb-3">Well How About You Choose From The Two Packages Below?</p>
     </div>
 
-    {{-- <div>
-        {!! Form::open(['method'=>'PATCH', 'action'=>['ProfileController@update', 'profile.edit']]) !!}
-            <div class="form-group">
-                {!! Form::radio('data[registration_type]', 'non_nustian') !!}
-                {!! Form::label('customCheck1', 'Non Nustian ') !!}
-
-                {!! Form::radio('data[registration_type]', 'professional') !!}
-                {!! Form::label('customCheck2', 'Professional ') !!}
-            </div>
-            <div class="form-group">
-                {!! Form::submit('Continue', [ 'class'=>'btn btn-primary']) !!}
-            </div>
-        {!! Form::close() !!}
-    </div> --}}
-
-
     <div class="row">
         <div class="col-lg-6 mb-4 px-5">
             <div class="card shadow mb-4">

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Package;
 use App\PackageQuota;
 use App\EventType;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 
 class PackageController extends Controller
@@ -12,6 +14,14 @@ class PackageController extends Controller
     public function __construct()
     {
         $this->middleware('applicant')->only('indexBrowse');
+    }
+
+    public function enroll($slug)
+    {
+    }
+
+    public function unEnroll($slug)
+    {
     }
 
     /**
@@ -23,11 +33,6 @@ class PackageController extends Controller
     {
         $packages = Package::all();
         return view('packages.index.info', compact('packages'));
-    }
-
-    public function indexBrowse()
-    {
-        return view('packages.index.browse');
     }
 
     /**
@@ -51,15 +56,14 @@ class PackageController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Package  $package
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Package $package)
+    public function show($slug)
     {
-        return view('packages.show', compact('package'));
+    }
+
+    public function showView($slug)
+    {
+        $package = Package::whereSlug($slug)->firstOrFail();
+        return view('packages.show.view', compact('package'));
     }
 
     /**
