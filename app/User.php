@@ -123,7 +123,7 @@ class User extends Authenticatable implements MustVerifyEmail
         if (isset($eventType)){
             return EventType::whereName($eventType)->firstOrFail()->events();
         }
-        return $this->belongsToMany('App\Event');
+        return $this->morphToMany('App\Event', 'eventable');
     }
 
     /*

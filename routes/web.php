@@ -21,6 +21,8 @@ Route::post('/enroll/package', ['as' => 'enroll.package.store', 'uses' => 'Appli
 
 Route::get('/enroll/event/{id}', ['as' => 'enroll.event', 'uses' => 'ApplicantController@enrollEvent']);
 Route::post('/enroll/event', ['as' => 'enroll.event.store', 'uses' => 'ApplicantController@storeEvent']);
+
+Route::get('/invoice/print', ['as' => 'invoice.print', 'uses' => 'InvoiceController@generatepdf']);
 /*
 |--------------------------------------------------------------------------
 | Public Routes

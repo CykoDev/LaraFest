@@ -27,7 +27,7 @@ class ApplicantController extends Controller
             $event = Event::findOrFail($id);
             $package->events()->save($event, ['user_id' => $userId]);
         }
-        $package->expense()->create(['price' => $package->price, 'user_id' => $userId]);
+        $package->expense()->create(['name' => $package->name, 'price' => $package->price, 'user_id' => $userId]);
         dd($request->all());
     }
 
