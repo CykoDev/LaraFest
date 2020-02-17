@@ -4,16 +4,6 @@
 
 <div class="container-fluid">
 
-    @if(Session::has('status'))
-        <p class="text-{{ session('status')['class'] }}">{{ session('status')['message'] }}</p>
-    @endif
-
-
-
-    <div class="text-right">
-
-    </div>
-
     <div class="row mb-5">
         <div class="col text-right">
             <img src="{{ asset('img/public/undraw_browsing_urt9.svg') }}" height="150">

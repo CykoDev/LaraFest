@@ -3,14 +3,14 @@
 </div>
 
 <li class="nav-item">
-    <a class="nav-link">
+    <a class="nav-link" href="{{ route('packages.browse') }}">
         <i class="fas fa-calendar-alt"></i>
         <span>Browse Packages</span>
     </a>
 </li>
 
 <li class="nav-item">
-    <a class="nav-link">
+    <a class="nav-link" href="{{ route('events.browse') }}">
         <i class="fas fa-calendar-alt"></i>
         <span>Browse Events</span>
     </a>
@@ -24,10 +24,9 @@
     <div id="manageexpenses" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">See Your Enrollments</h6>
-        <a class="collapse-item">Enrolled Events</a>
-        <a class="collapse-item">Expenses Summary</a>
-        <a class="collapse-item">Generate Invoice</a>
-        <a class="collapse-item">Check Payment Status</a>
+        <a class="collapse-item" href="{{ route('enrolled.events') }}">Enrolled Events</a>
+        <a class="collapse-item" href="{{ route('expenses.summary') }}">Expenses Summary</a>
+        <a class="collapse-item" href="{{ route('payment.status') }}">Check Payment Status</a>
     </div>
     </div>
 </li>

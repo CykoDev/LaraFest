@@ -13,7 +13,7 @@ class FinanceController extends Controller
     public function enrolledEvents()
     {
         $user = Auth::user();
-        $packageEvents = $user->packag->events;
+        $packageEvents = $user->package->events($user->id);
         $events = $user->events;
         return view('expenses.enrolled-events', compact('packageEvents', 'events'));
     }

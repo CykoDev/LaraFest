@@ -36,15 +36,15 @@ class PackageController extends Controller
     {
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $packages = Package::all();
         return view('packages.index.info', compact('packages'));
+    }
+
+    public function indexBrowse()
+    {
+        return view('packages.index.browse');
     }
 
     /**

@@ -19,9 +19,9 @@
                     <h6 class="m-0 font-weight-bold text-primary">Package Events</h6>
                 </div>
                 <div class="card-body">
-                    <p>
-                        package info
-                    </p>
+                    @foreach(Auth::user()->package->events(Auth::id()) as $event)
+                        <p>{{ $event->name }}</p>
+                    @endforeach
                 </div>
             </div>
             <div class="card shadow mx-5">
@@ -29,9 +29,9 @@
                     <h6 class="m-0 font-weight-bold text-primary">Your Individually Enrolled Events</h6>
                 </div>
                 <div class="card-body">
-                    <p>
-                        package info
-                    </p>
+                    @foreach(Auth::user()->events as $event)
+                        <p>{{ $event->name }}</p>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -39,7 +39,7 @@
         <div class="col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Your Current Package </h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Your Current Package</h6>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -57,7 +57,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <a href="">
+                    <a href="{{ route('expenses.summary') }}">
                         <div class="card shadow p-3">
                             <div class="text-center">
                                 <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 10rem;" src="{{ asset('img/public/undraw_wallet_aym5.svg') }}" alt="">
@@ -67,7 +67,7 @@
                     </a>
                 </div>
                 <div class="col">
-                    <a href="">
+                    <a href="{{ route('meet-the-creators') }}">
                         <div class="card shadow p-3">
                             <div class="text-center">
                                 <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 10rem;" src="{{ asset('img/public/undraw_team_page_pgpr.svg') }}" alt="">

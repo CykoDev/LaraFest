@@ -26,7 +26,7 @@ Route::get('/invoice/print', ['as' => 'invoice.print', 'uses' => 'InvoiceControl
 |--------------------------------------------------------------------------
 */
 
-// Route::get('/page-one', function() { return view('public.page-one'); });
+
 
 
 /*
@@ -38,6 +38,10 @@ Route::get('/invoice/print', ['as' => 'invoice.print', 'uses' => 'InvoiceControl
 Route::group(['middleware' => 'verified'], function () {
 
     Route::get('dashboard', ['as' => 'dashboard', 'uses' => 'HomeController@index']);
+
+    Route::get('/meet-the-creators', function () {
+        return view('public.meet-the-creators');
+    })->name('meet-the-creators');
 
     Route::resource('manage/users', 'UserController');
     Route::get('manage/users-role/{role}', ['as' => 'users.index-role', 'uses' => 'UserController@indexRole']);
@@ -70,6 +74,7 @@ Route::group(['middleware' => 'verified'], function () {
     Route::get('packages/{slug}', ['as' => 'packages.view', 'uses' => 'PackageController@showView']);
     Route::post('packages/enroll/{route}', ['as' => 'packages.enroll', 'uses' => 'PackageController@enroll']);
     Route::post('packages/unenroll/{slug}', ['as' => 'packages.unenroll', 'uses' => 'PackageController@unEnroll']);
+    Route::get('browse/packages', ['as' => 'packages.browse', 'uses' => 'PackageController@indexBrowse']);
 
 
     /*
@@ -106,7 +111,7 @@ Route::group(['middleware' => 'verified'], function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Profile Routes
+    | Expense Routes
     |--------------------------------------------------------------------------
     */
 
