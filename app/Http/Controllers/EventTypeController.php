@@ -7,22 +7,19 @@ use Illuminate\Http\Request;
 
 class EventTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('monitor')->only('index');
+        $this->middleware('moderator')->except('index', 'destroy');
+        $this->middleware('admin')->only('destroy');
+    }
+
     public function index()
     {
         $types = EventType::all();
         return view('events.types.index', compact('types'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //

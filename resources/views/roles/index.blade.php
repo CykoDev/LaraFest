@@ -31,7 +31,11 @@
             <tr>
                 <td>{{ $role->id }}</td>
                 <td>
-                    <a href="{{ route('users.index-role', $role->slug) }}">{{ $role->name }}</a>
+                    @if(Auth::user()->isAdmin())
+                        <a href="{{ route('users.index-role', $role->slug) }}">{{ $role->name }}</a>
+                    @else
+                        {{ $role->name }}
+                    @endif
                 </td>
                 <td>{{ $role->description }}</td>
                 <td>{{ $role->created_at->diffForHumans() }}</td>

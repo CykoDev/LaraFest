@@ -14,7 +14,9 @@ class PackageController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('applicant')->only('indexBrowse');
+        $this->middleware('applicant')->only('indexBrowse', 'enroll', 'unEnroll', 'showView');
+        $this->middleware('monitor')->only('index');
+        $this->middleware('admin')->except('index', 'indexBrowse', 'enroll', 'unEnroll', 'showView');
     }
 
     public function enroll(Request $request, $route)

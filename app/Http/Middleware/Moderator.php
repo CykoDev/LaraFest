@@ -16,14 +16,14 @@ class Moderator
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::check()){
+        if (Auth::check()) {
 
-            if (Auth::user()->isAdmin() || Auth::user()->isModerator()){
+            if (Auth::user()->isAdmin() || Auth::user()->isModerator()) {
 
                 return $next($request);
             }
         }
 
-        return redirect(route('dashboard'));
+        abort(401);
     }
 }

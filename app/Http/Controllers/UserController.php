@@ -21,8 +21,8 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('admin')->only('edit', 'store', 'destroy', 'update', 'create');
-        $this->middleware('monitor')->only('index', 'show');
+        $this->middleware('monitor')->only('indexRole');
+        $this->middleware('admin')->except('indexRole');
     }
 
     /**
@@ -62,22 +62,21 @@ class UserController extends Controller
      */
     public function store(UsersCreateRequest $request)
     {
-        if(trim($request->password) == '' ) {
+        if (trim($request->password) == '') {
             $input = $request->except('password');
-        }
-        else {
+        } else {
             $input = $request->all();
         }
         $user = new User;
-        if($file = $request->file('photo_id')) {
+        if ($file = $request->file('photo_id')) {
 
             $name = time() . $file->getClientOriginalName();
-            $file->move('img/'.$user->imageFolder, $name);
+            $file->move('img/' . $user->imageFolder, $name);
             $photo = Photo::create([
-                'path' => $user->imageFolder.$name,
+                'path' => $user->imageFolder . $name,
                 'type' => 'user_photo',
                 'uploaded_by_user_id' => Auth::user()->id,
-                ]);
+            ]);
             $input['photo_id'] = $photo->id;
         }
         $user->create($input);
@@ -118,26 +117,25 @@ class UserController extends Controller
      */
     public function update(UsersUpdateRequest $request, $id)
     {
-        if(trim($request->password) == '') {
+        if (trim($request->password) == '') {
             $input = $request->except('password');
-        }
-        else {
+        } else {
             $input = $request->all();
         }
         $user = User::findOrFail($id);
 
-        if($file = $request->file('photo_id')){
+        if ($file = $request->file('photo_id')) {
 
-            $name = time().$file->getClientOriginalName();
-            $file->move('img/'.$user->imageFolder, $name);
+            $name = time() . $file->getClientOriginalName();
+            $file->move('img/' . $user->imageFolder, $name);
             $photo = Photo::create([
-                'path' => $user->imageFolder.$name,
+                'path' => $user->imageFolder . $name,
                 'type' => 'user_photo',
                 'uploaded_by_user_id' => Auth::user()->id,
-                ]);
+            ]);
             $input['photo_id'] = $photo->id;
 
-            if($user->photo){
+            if ($user->photo) {
 
                 unlink(public_path() . $user->photo->path);
                 Photo::findOrFail($user->photo->id)->delete();
@@ -161,7 +159,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        if($user->photo){
+        if ($user->photo) {
             unlink(public_path() . $user->photo->path);
             Photo::findOrFail($user->photo->id)->delete();
         }

@@ -10,6 +10,11 @@ use App\Invoice;
 
 class FinanceController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('applicant');
+    }
+
     public function enrolledEvents()
     {
         $user = Auth::user();

@@ -14,8 +14,7 @@ class RoleController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('monitor')->only('view', 'show');
-        $this->middleware('moderator')->except('view', 'show');
+        $this->middleware('monitor')->only('index');
     }
 
     /**
