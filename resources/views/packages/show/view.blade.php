@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    {!! Form::open(['method'=>'POST', 'action'=>['PackageController@enroll', $package->slug], 'files'=>false]) !!}
+    {!! Form::open(['method'=>'POST', 'action'=>['PackageController@enroll', 'profile.applicant.edit'], 'files'=>false]) !!}
 
         {!! Form::hidden('packageId', $package->id) !!}
 

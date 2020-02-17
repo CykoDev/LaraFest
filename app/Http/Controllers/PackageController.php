@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Package;
 use App\PackageQuota;
 use App\EventType;
+use App\Event;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
@@ -16,8 +17,19 @@ class PackageController extends Controller
         $this->middleware('applicant')->only('indexBrowse');
     }
 
-    public function enroll($slug)
+    public function enroll(Request $request, $route)
     {
+        $user = Auth::user();
+        $package = Package::findOrFail($request->packageId);
+        $user->package()->associate($package)->save();
+        if ($request->eventIds) {
+            foreach ($request->eventIds as $id) {
+                $event = Event::findOrFail($id);
+                $user->package()->events()->save($event, ['user_id' => $user->id]);
+            }
+        }
+        $package->expense()->create(['price' => $package->price, 'user_id' => $user->id]);
+        return redirect(route($route));
     }
 
     public function unEnroll($slug)

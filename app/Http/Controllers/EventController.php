@@ -22,7 +22,7 @@ class EventController extends Controller
     public function enroll($slug)
     {
         $event = Event::whereSlug($slug)->firstOrFail();
-        Auth::user()->events()->save($event);
+        Auth::user()->events()->save($event, ['user_id' => Auth::id()]);
         return redirect()->back();
     }
 

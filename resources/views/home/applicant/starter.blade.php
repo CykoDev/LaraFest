@@ -40,7 +40,7 @@
                         <sub>If you suddenly became a Nustian right here and now, that wont count. Other scenarios count but we dont wanna list them.</sub>
                     </p>
 
-                    {!! Form::open(['method'=>'PATCH','action'=>['ProfileController@update','profile.applicant.edit']]) !!}
+                    {!! Form::open(['method'=>'PATCH','action'=>['ProfileController@update', 'packages.view']]) !!}
                         {!! Form::hidden('data[registration_type]', 'nustian') !!}
                         <div class="form=group">
                             {!! Form::submit('Sign Me up as Nustian', ['class'=>'btn btn-primary mr-5 px-5']) !!}

@@ -37,13 +37,13 @@
                             <div class="card mb-4 box-shadow">
                                 <img height="150px" class="card-img-top" src='{{ is_null($event->photo) ? $event->defaultImage : $event->photo->path }}'>
                                 <div class="card-body">
-                                    <h5 class="text-primary">{{ mb_strimwidth($event->title, 0, 100, "...") }}</h5>
+                                    <h5 class="text-primary">{{ ucwords(mb_strimwidth($event->title, 0, 100, "...")) }}</h5>
                                     <small>{{ $event->type->name }}</small>
                                     <p class="card-text">{{ mb_strimwidth($event->details, 0, 100, "...") }}</p>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group">
                                             <a href="{{ route('events.view', $event->slug) }}" target="_blank" class="btn btn-sm btn-outline-secondary">View</a>
-                                            @if (Auth::user()->events()->exists($event))
+                                            @if (Auth::user()->events->contains($event))
                                                 {!! Form::open(['method'=>'POST', 'action'=>['EventController@unEnroll', $event->slug]]) !!}
                                                 {!! Form::submit('Un-enroll', ['class'=>'btn btn-sm btn-outline-warning']) !!}
                                                 {!! Form::close() !!}

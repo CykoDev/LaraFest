@@ -68,7 +68,7 @@ Route::group(['middleware' => 'verified'], function () {
     Route::get('packages/discounts/create/{id}', ['as' => 'packages-discounts.create', 'uses' => 'PackagesDiscountController@create']);
 
     Route::get('packages/{slug}', ['as' => 'packages.view', 'uses' => 'PackageController@showView']);
-    Route::post('packages/enroll/{slug}', ['as' => 'packages.enroll', 'uses' => 'PackageController@enroll']);
+    Route::post('packages/enroll/{route}', ['as' => 'packages.enroll', 'uses' => 'PackageController@enroll']);
     Route::post('packages/unenroll/{slug}', ['as' => 'packages.unenroll', 'uses' => 'PackageController@unEnroll']);
 
 
@@ -101,7 +101,7 @@ Route::group(['middleware' => 'verified'], function () {
     Route::get('profile/edit', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
     Route::patch('profile/edit/{route}', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
     Route::get('applicant/profile', ['as' => 'profile.applicant.edit', 'uses' => 'ProfileController@editApplicant']);
-    Route::patch('applicant/profile/{route}', ['as' => 'profile.applicant.update', 'uses' => 'ProfileController@updateApplicant']);
+    Route::patch('applicant/profile', ['as' => 'profile.applicant.update', 'uses' => 'ProfileController@updateApplicant']);
 
 
     /*

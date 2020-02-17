@@ -26,7 +26,7 @@
                         package info
                     </p>
                     <br>
-                    {!! Form::open(['method'=>'PATCH','action'=>['ProfileController@update','profile.applicant.edit']]) !!}
+                    {!! Form::open(['method'=>'PATCH','action'=>['ProfileController@update', 'packages.view']]) !!}
                         {!! Form::hidden('data[registration_type]', 'professional') !!}
                         <div class="form=group text-center">
                             {!! Form::submit('Signup', ['class'=>'btn btn-primary px-5']) !!}
@@ -49,7 +49,7 @@
                         package info
                     </p>
                     <br>
-                    {!! Form::open(['method'=>'PATCH','action'=>['ProfileController@update','profile.applicant.edit']]) !!}
+                    {!! Form::open(['method'=>'PATCH','action'=>['ProfileController@update', 'packages.view']]) !!}
                         {!! Form::hidden('data[registration_type]', 'non_nustian') !!}
                         <div class="form=group text-center">
                             {!! Form::submit('Signup', ['class'=>'btn btn-primary px-5']) !!}

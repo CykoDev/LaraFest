@@ -31,7 +31,7 @@ class ProfileController extends Controller
         return view('profile.edit', compact('user'));
     }
 
-    public function update(Request $request, $route = null)
+    public function update(Request $request, $route)
     {
         $input = $request->all();
         $user = Auth::user();
@@ -73,10 +73,28 @@ class ProfileController extends Controller
             $input['data'] = array_merge($user->data, $input['data']);
         }
         $user->update($input);
+
+        if ($route == 'packages.view') {
+            switch (Auth::user()->data['registration_type']) {
+                case 'nustian':
+                    return redirect(route('packages.view', 'nustian-package'));
+                    break;
+                case 'non_nustian':
+                    return redirect(route('packages.view', 'non-nustian-package'));
+                    break;
+                case 'professional':
+                    return redirect(route('packages.view', 'professional-package'));
+                    break;
+                default:
+                    abort(404);
+                    break;
+            }
+        }
+
         return redirect(route($route));
     }
 
-    public function updateApplicant(ApplicantProfileRequest $request, $route)
+    public function updateApplicant(ApplicantProfileRequest $request)
     {
         $input = $request->all();
         $user = Auth::user();
@@ -111,12 +129,12 @@ class ProfileController extends Controller
                 Photo::findOrFail($user->photo->id)->delete();
             }
         }
-        if(isset($input['data'])){
+        if (isset($input['data']) && isset($user->data)) {
             if ($user->data == null) $user->data = [];
             $input['data'] = array_merge($user->data, $input['data']);
         }
         $user->update($input);
-        return redirect(route($route));
+        return redirect()->back();
     }
 
     public function editApplicant(Request $request)
