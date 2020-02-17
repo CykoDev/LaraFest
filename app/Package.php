@@ -21,11 +21,13 @@ class Package extends Model
         return $this->currencySymbol;
     }
 
-    public function discount() {
+    public function discount()
+    {
         return $this->morphOne('App\Discount', 'discountable');
     }
 
-    public function expense() {
+    public function expense()
+    {
         return $this->morphOne('App\Expense', 'expendable');
     }
 
@@ -44,16 +46,22 @@ class Package extends Model
         ];
     }
 
-    public function users(){
+    public function users()
+    {
 
         return $this->hasMany('App\User');
     }
 
-    public function events() {
+    public function events($userId = null)
+    {
+        if (isset($userId)) {
+            return $this->events()->where('user_id', '=', $userId)->get();
+        }
         return $this->morphToMany('App\Event', 'eventable');
     }
 
-    public function quotas(){
+    public function quotas()
+    {
 
         return $this->hasMany('App\PackageQuota');
     }

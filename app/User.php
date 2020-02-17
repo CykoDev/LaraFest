@@ -107,10 +107,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo('App\Package');
     }
 
+    public function expenses()
+    {
+        return $this->hasMany('App\Expense');
+    }
+
     public function invoice()
     {
 
-        return $this->belongsTo('App\Package');
+        return $this->belongsTo('App\Invoice');
     }
 
     public function photo($photo = null)
@@ -198,16 +203,4 @@ class User extends Authenticatable implements MustVerifyEmail
             return false;
         }
     }
-
-
-    /*
-    *--------------------------------------------------------------------------
-    * Mutators | Accessors
-    *--------------------------------------------------------------------------
-    */
-    /*
-    *--------------------------------------------------------------------------
-    * CRUD Relations
-    *--------------------------------------------------------------------------
-    */
 }

@@ -106,6 +106,18 @@ Route::group(['middleware' => 'verified'], function () {
 
     /*
     |--------------------------------------------------------------------------
+    | Profile Routes
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get('enrolled-events', ['as' => 'enrolled.events', 'uses' => 'FinanceController@enrolledEvents']);
+    Route::get('expenses-summary', ['as' => 'expenses.summary', 'uses' => 'FinanceController@expensesSummary']);
+    Route::get('payment-status', ['as' => 'payment.status', 'uses' => 'FinanceController@paymentStatus']);
+    Route::post('generate-invoice', ['as' => 'generate.invoice', 'uses' => 'FinanceController@generateInvoice']);
+
+
+    /*
+    |--------------------------------------------------------------------------
     | Exports
     |--------------------------------------------------------------------------
     */

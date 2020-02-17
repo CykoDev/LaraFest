@@ -15,7 +15,7 @@
     <div class="card shadow mb-4 mx-5">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">
-                {{ ucwords($event->title) }}
+                {{ ucwords($event->name) }}
                 @if (Auth::user()->events->contains($event))
                     <sub class="ml-2 text-success font-weight-bold text-small">enrolled</sub>
                 @endif
