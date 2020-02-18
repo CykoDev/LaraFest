@@ -21,6 +21,14 @@ class Package extends Model
         return $this->currencySymbol;
     }
 
+    public function getPriceAttribute($value)
+    {
+        if ($this->discount) {
+            return $value - ($value * $this->discount->amount / 100);
+        }
+        return $value;
+    }
+
     public function discount()
     {
         return $this->morphOne('App\Discount', 'discountable');

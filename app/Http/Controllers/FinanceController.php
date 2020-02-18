@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\User;
 use App\Expense;
-use App\Invoice;
-
+use \PDF;
 class FinanceController extends Controller
 {
     public function __construct()
@@ -29,7 +27,7 @@ class FinanceController extends Controller
         return view('expenses.summary', compact('expenses'));
     }
 
-    public function generatepdf()
+    public function generateInvoice()
     {
         $user = Auth::user();
         $expenses = Expense::where('user_id', $user->id)->get();
@@ -43,9 +41,5 @@ class FinanceController extends Controller
     {
         $user = Auth::user();
         return view('expenses.payment-status', compact('user'));
-    }
-
-    public function generateInvoice()
-    {
     }
 }

@@ -54,6 +54,14 @@ class Event extends Model
         return $this->imageFolder;
     }
 
+    public function getPriceAttribute($value)
+    {
+        if ($this->discount) {
+            return $value - ($value * $this->discount->amount / 100);
+        }
+        return $value;
+    }
+
 
     /*
     *--------------------------------------------------------------------------

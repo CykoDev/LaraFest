@@ -17,13 +17,14 @@
             <div class="card shadow mt-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Muhammad Saad Hussaini</h6>
+                    <small>Deputy Director</small>
                 </div>
                 <div class="card-body">
                     <div class="text-center mt-2 mb-3">
                         <img height="200" heignt="200" src="{{ asset('img/public/creator_saad.jpg') }}" class="rounded-circle">
                     </div>
                     <div class="text-center">
-                        <small class="font-weight-bold text-primary">"The guy above me is stoned."</small>
+                        <small class="font-weight-bold text-primary">"Έχω ένα hoolala στο παντελόνι μου."</small>
                     </div>
                     <div class="text-center mt-4">
                         <div class="row">
@@ -52,7 +53,8 @@
         <div class="col-lg-6 mb-4 p-5">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Anas Imran Tasadduqq</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Anas Imran Tasadduq</h6>
+                    <small>Director</small>
                 </div>
                 <div class="card-body">
                     <div class="text-center mt-2 mb-3">
@@ -60,7 +62,7 @@
                     </div>
                     <div class="text-center">
                         <small class="font-weight-bold text-primary">
-                            "I Always Look Beyond Pluto."
+                            "Πάρε με πέρα ​​από τον Πλούτωνα."
                         </small>
                     </div>
                     <div class="text-center mt-4">
