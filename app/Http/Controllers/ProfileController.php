@@ -224,31 +224,4 @@ class ProfileController extends Controller
                 break;
         }
     }
-
-    public function uploadProof(Request $request) {
-        $user = Auth::user();
-        $input = $request->all();
-
-        if ($file = $request->file('invoice_proof')) {
-
-            $name = time() . $file->getClientOriginalName();
-            $file->move('img/' . $user->imageFolder . '/proofs/', $name);
-            $photo = Photo::create([
-                'path' => $user->imageFolder . '/proofs/' . $name,
-                'type' => 'user_invoice_proof',
-                'uploaded_by_user_id' => $user->id,
-            ]);
-            $input['invoice_proof'] = $photo->id;
-
-            if ($user->invoiceProof) {
-
-                unlink(public_path() . $user->invoiceProof->path);
-                Photo::findOrFail($user->invoiceProof->id)->delete();
-            }
-
-        }
-
-        $user->update($input);
-        return redirect()->back();
-    }
 }
