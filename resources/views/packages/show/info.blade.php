@@ -6,6 +6,10 @@
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Package Information</h1>
+        <a href="{{ route('packages.discounts.create', $package->id) }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-download fa-sm text-white-50"></i>
+            Create Discount
+        </a>
     </div>
 
     <div class="row">
@@ -30,7 +34,39 @@
         <div class="card-body">
             <p class="text-muted small">Created On: {{ $package->created_at->isoFormat('D MMMM, Y') }}</p>
             <p class="text-muted small">Updated On: {{ $package->updated_at->isoFormat('D MMMM, Y') }}</p>
-            <p class="mt-5 mb-3">{{ $package->description }}</p>
+            <section class="my-5">
+                <h5 class="text-primary">Active Discount</h5>
+                @if($package->discount)
+                    <table>
+                        <tr>
+                            <td class="text-dark font-weight-bold pr-5">Discount Name</td>
+                            <td>{{ ucwords($package->discount->name) }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-dark font-weight-bold pr-5">Discount Percentage</td>
+                            <td>{{ ucwords($package->discount->amount) }}%</td>
+                        </tr>
+                        <tr>
+                            <td class="text-dark font-weight-bold pr-5">Discount Expiry</td>
+                            <td>{{ ucwords($package->discount->expiry_at->isoFormat('D MMMM, Y')) }}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {!! Form::open(['method'=>'DELETE', 'action'=>['PackageController@destroyDiscount', $package->discount->id]]) !!}
+                                {!! Form::submit('Delete', ['class'=>'d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm']) !!}
+                                {!! Form::close() !!}
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+                @else
+                    <p>N/A</p>
+                @endif
+            </section>
+            <section class="my-5">
+                <h5 class="text-primary">Package Details</h5>
+                <p class="px-4">{{ $package->description }}</p>
+            </section>
         </div>
     </div>
 

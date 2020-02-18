@@ -57,7 +57,11 @@ class Event extends Model
     public function getPriceAttribute($value)
     {
         if ($this->discount) {
-            return $value - ($value * $this->discount->amount / 100);
+            if ($this->discount->expiry_at->isPast()) {
+                $this->discount->delete();
+            } else {
+                return $value - ($value * $this->discount->amount / 100);
+            }
         }
         return $value;
     }

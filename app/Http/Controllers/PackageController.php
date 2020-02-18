@@ -6,6 +6,7 @@ use App\Package;
 use App\PackageQuota;
 use App\EventType;
 use App\Event;
+use App\Discount;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
@@ -15,7 +16,8 @@ class PackageController extends Controller
     public function __construct()
     {
         $this->middleware('applicant')->only('indexBrowse', 'enroll', 'unEnroll', 'showView');
-        $this->middleware('monitor')->only('index',);
+        $this->middleware('monitor')->only('index');
+        $this->middleware('moderator')->only('createDiscount', 'storeDiscount', 'destroyDiscount');
         $this->middleware('admin')->except('index', 'indexBrowse', 'enroll', 'unEnroll', 'showView', 'show');
     }
 
@@ -104,9 +106,6 @@ class PackageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request->all());
-        // dd($request->quotas['id']);
-
         $package = Package::findOrFail($id);
         $quotas = $request->quotas;
 
@@ -149,14 +148,28 @@ class PackageController extends Controller
         return redirect(route('packages.index'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Package  $package
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Package $package)
     {
         //
+    }
+
+    public function createDiscount($id)
+    {
+        $package = Package::findOrFail($id);
+        return view('packages.discounts.create', compact('package'));
+    }
+
+    public function storeDiscount(Request $request)
+    {
+        $package = Package::findOrFail($request->packageId);
+        if ($package->discount) $package->discount()->delete();
+        $package->discount()->create($request->all());
+        return redirect(route('packages.show', $package->slug));
+    }
+
+    public function destroyDiscount($id)
+    {
+        Discount::findOrFail($id)->delete();
+        return redirect()->back();
     }
 }

@@ -6,10 +6,9 @@
 |--------------------------------------------------------------------------
 */
 
-
 Auth::routes(['verify' => true]);
 
-Route::get('/invoice/print', ['as' => 'invoice.print', 'uses' => 'FinanceController@generatepdf']);
+
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -60,8 +59,9 @@ Route::group(['middleware' => 'verified'], function () {
 
     Route::resource('manage/packages', 'PackageController');
 
-    Route::resource('manage/package-discounts', 'PackagesDiscountController')->except('create');
-    Route::get('packages/discounts/create/{id}', ['as' => 'packages-discounts.create', 'uses' => 'PackagesDiscountController@create']);
+    Route::get('manage/package-discounts/create/{id}', ['as' => 'packages.discounts.create', 'uses' => 'PackageController@createDiscount']);
+    Route::post('manage/package-discounts', ['as' => 'packages.discounts.store', 'uses' => 'PackageController@storeDiscount']);
+    Route::delete('manage/package-discounts/delete/{id}', ['as' => 'packages.discounts.delete', 'uses' => 'PackageController@destroyDiscount']);
 
     Route::get('packages/{slug}', ['as' => 'packages.view', 'uses' => 'PackageController@showView']);
     Route::post('packages/enroll/{route}', ['as' => 'packages.enroll', 'uses' => 'PackageController@enroll']);
@@ -80,11 +80,11 @@ Route::group(['middleware' => 'verified'], function () {
     Route::get('events/{slug}', ['as' => 'events.view', 'uses' => 'EventController@showView']);
     Route::post('events/enroll/{slug}', ['as' => 'events.enroll', 'uses' => 'EventController@enroll']);
     Route::post('events/unenroll/{slug}', ['as' => 'events.unenroll', 'uses' => 'EventController@unEnroll']);
-
-
     Route::resource('manage/event/types', 'EventTypeController');
-    Route::resource('manage/event-discounts', 'EventsDiscountController')->except('create');
-    Route::get('manage/discounts/events/create/{id}', ['as' => 'events-discounts.create', 'uses' => 'EventsDiscountController@create']);
+
+    Route::get('manage/event-discounts/create/{id}', ['as' => 'events.discounts.create', 'uses' => 'EventController@createDiscount']);
+    Route::post('manage/event-discounts', ['as' => 'events.discounts.store', 'uses' => 'EventController@storeDiscount']);
+    Route::delete('manage/event-discounts/delete/{id}', ['as' => 'events.discounts.delete', 'uses' => 'EventController@destroyDiscount']);
 
 
     /*
@@ -144,5 +144,3 @@ Route::group(['middleware' => 'verified'], function () {
 | Test Routes
 |--------------------------------------------------------------------------
 */
-
-Route::get('/pdf', 'InvoiceController@generatepdf');

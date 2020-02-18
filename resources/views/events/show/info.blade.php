@@ -6,6 +6,10 @@
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Event Information</h1>
+        <a href="{{ route('events.discounts.create', $event->id) }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+            <i class="fas fa-download fa-sm text-white-50"></i>
+            Create Discount
+        </a>
     </div>
 
     <div class="row">
@@ -28,9 +32,45 @@
             <h6 class="m-0 font-weight-bold text-primary">{{ ucwords($event->name) }}</h6>
         </div>
         <div class="card-body">
+            <div class="text-center">
+                <img class="img-fluid rounded px-3 px-sm-4 mt-3 mb-4" style="width: 40rem; height: 10rem; object-fit: cover;"
+                    src="{{ is_null($event->photo) ? $event->defaultImage : $event->photo->path }}" alt="">
+            </div>
             <p class="text-muted small">Created On: {{ $event->created_at->isoFormat('D MMMM, Y') }}</p>
             <p class="text-muted small">Updated On: {{ $event->updated_at->isoFormat('D MMMM, Y') }}</p>
-            <p class="mt-5 mb-3">{{ $event->description }}</p>
+            <section class="my-5">
+                <h5 class="text-primary">Active Discount</h5>
+                @if($event->discount)
+                    <table>
+                        <tr> 
+                            <td class="text-dark font-weight-bold pr-5">Discount Name</td>
+                            <td>{{ ucwords($event->discount->name) }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-dark font-weight-bold pr-5">Discount Percentage</td>
+                            <td>{{ ucwords($event->discount->amount) }}%</td>
+                        </tr>
+                        <tr>
+                            <td class="text-dark font-weight-bold pr-5">Discount Expiry</td>
+                            <td>{{ ucwords($event->discount->expiry_at->isoFormat('D MMMM, Y')) }}</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                {!! Form::open(['method'=>'DELETE', 'action'=>['EventController@destroyDiscount', $event->discount->id]]) !!}
+                                {!! Form::submit('Delete', ['class'=>'d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm']) !!}
+                                {!! Form::close() !!}
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+                @else
+                    <p>N/A</p>
+                @endif
+            </section>
+            <section class="my-5">
+                <h5 class="text-primary">Event Details</h5>
+                <p class="px-4">{{ $event->details }}</p>
+            </section>
         </div>
     </div>
 

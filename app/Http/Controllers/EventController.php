@@ -11,6 +11,7 @@ use \DOMDocument;
 use App\Photo;
 use App\Event;
 use App\EventType;
+use App\Discount;
 
 class EventController extends Controller
 {
@@ -18,6 +19,7 @@ class EventController extends Controller
     {
         $this->middleware('applicant')->only('indexBrowse', 'enroll', 'unEnroll', 'showView');
         $this->middleware('monitor')->only('index', 'show');
+        $this->middleware('moderator')->only('createDiscount', 'storeDiscount', 'destroyDiscount');
         $this->middleware('moderator')->except('index', 'show', 'indexBrowse', 'enroll', 'unEnroll', 'showView');
     }
 
@@ -209,5 +211,25 @@ class EventController extends Controller
             'message' => 'Event successfully deleted',
         ]);
         return redirect(route('events.index'));
+    }
+
+    public function createDiscount($id)
+    {
+        $event = Event::findOrFail($id);
+        return view('events.discounts.create', compact('event'));
+    }
+
+    public function storeDiscount(Request $request)
+    {
+        $event = Event::findOrFail($request->eventId);
+        if ($event->discount) $event->discount()->delete();
+        $event->discount()->create($request->all());
+        return redirect(route('events.show', $event->slug));
+    }
+
+    public function destroyDiscount($id)
+    {
+        Discount::findOrFail($id)->delete();
+        return redirect()->back();
     }
 }
