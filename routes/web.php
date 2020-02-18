@@ -19,7 +19,7 @@ Route::get('/', function () {
 // Route::get('/enroll/event/{id}', ['as' => 'enroll.event', 'uses' => 'ApplicantController@enrollEvent']);
 // Route::post('/enroll/event', ['as' => 'enroll.event.store', 'uses' => 'ApplicantController@storeEvent']);
 
-Route::get('/invoice/print', ['as' => 'invoice.print', 'uses' => 'InvoiceController@generatepdf']);
+Route::get('/invoice/print', ['as' => 'invoice.print', 'uses' => 'FinanceController@generatepdf']);
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -119,6 +119,7 @@ Route::group(['middleware' => 'verified'], function () {
     Route::get('expenses-summary', ['as' => 'expenses.summary', 'uses' => 'FinanceController@expensesSummary']);
     Route::get('payment-status', ['as' => 'payment.status', 'uses' => 'FinanceController@paymentStatus']);
     Route::post('generate-invoice', ['as' => 'generate.invoice', 'uses' => 'FinanceController@generateInvoice']);
+    Route::post('payment-status', ['as' => 'upload.proof', 'uses' => 'ProfileController@uploadProof']);
 
 
     /*

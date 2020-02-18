@@ -23,11 +23,11 @@
                         <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="height: 10rem;" src="{{ asset('img/public/undraw_feeling_proud_qne1.svg') }}" alt="">
                     </div>
                     <p>
-                        package info
+                        If you study at NUST, this package is for you.
                     </p>
                     <br>
                     {!! Form::open(['method'=>'PATCH','action'=>['ProfileController@update', 'packages.view']]) !!}
-                        {!! Form::hidden('data[registration_type]', 'professional') !!}
+                        {!! Form::hidden('data[registration_type]', 'nustian') !!}
                         <div class="form=group text-center">
                             {!! Form::submit('Signup', ['class'=>'btn btn-primary px-5']) !!}
                         </div>
@@ -46,7 +46,7 @@
                         <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="height: 10rem;" src="{{ asset('img/public/undraw_book_reading_kx9s.svg') }}" alt="">
                     </div>
                     <p>
-                        package info
+                        Wait, you aren't a student? Choose this package.
                     </p>
                     <br>
                     {!! Form::open(['method'=>'PATCH','action'=>['ProfileController@update', 'packages.view']]) !!}
@@ -69,7 +69,7 @@
                         <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="height: 10rem;" src="{{ asset('img/public/undraw_reading_0re1.svg') }}" alt="">
                     </div>
                     <p>
-                        package info
+                        You study outside NUST? This package is for you!
                     </p>
                     <br>
                     {!! Form::open(['method'=>'PATCH','action'=>['ProfileController@update', 'packages.view']]) !!}
