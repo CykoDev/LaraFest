@@ -10,21 +10,7 @@
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">{{ ucwords($role->name) }}s</h1>
-        @switch($role->name)
-            @case('admin')
-                {!! Form::open(['method'=>'POST', 'action'=>'ExportController@exportAdmins']) !!}
-                @break
-            @case('applicant')
-                {!! Form::open(['method'=>'POST', 'action'=>'ExportController@exportApplicants']) !!}
-                @break
-            @case('moderator')
-                {!! Form::open(['method'=>'POST', 'action'=>'ExportController@exportModerators']) !!}
-                @break
-            @case('monitor')
-                {!! Form::open(['method'=>'POST', 'action'=>'ExportController@exportMonitors']) !!}
-                @break
-        @endswitch
-
+        {!! Form::open(['method'=>'POST', 'action'=>['ExportController@exportRoleUsers', $role->name]]) !!}
         {!! Form::button('<i class="fas fa-download fa-sm text-white-50"></i> Generate Excel',
             ['type'=>'submit', 'class'=>'d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm']) !!}
         {!! Form::close() !!}

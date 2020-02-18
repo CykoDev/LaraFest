@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -14,19 +15,26 @@ use App\Event;
 class EventsExport implements FromCollection, ShouldAutoSize, WithHeadings, WithEvents, WithMapping
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         return Event::select(
-            'title', 'event_date', 'created_at', 'updated_at'
-            )->get();
+            'name',
+            'event_type_id',
+            'details',
+            'event_date',
+            'created_at',
+            'updated_at'
+        )->get();
     }
 
     public function headings(): array
     {
         return [
-            'Title',
+            'Name',
+            'Event Type',
+            'Details',
             'Event Date',
             'Created at',
             'Updated at',
@@ -36,7 +44,7 @@ class EventsExport implements FromCollection, ShouldAutoSize, WithHeadings, With
     public function registerEvents(): array
     {
         return [
-            AfterSheet::class => function(AfterSheet $event) {
+            AfterSheet::class => function (AfterSheet $event) {
                 $cellRange = 'A1:W1';
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(14);
             },
@@ -44,12 +52,14 @@ class EventsExport implements FromCollection, ShouldAutoSize, WithHeadings, With
     }
 
     /**
-    * @var Invoice $invoice
-    */
+     * @var Invoice $invoice
+     */
     public function map($invoice): array
     {
         return [
-            $invoice->title,
+            $invoice->name,
+            $invoice->type->name,
+            $invoice->details,
             $invoice->event_date->isoFormat('D MMMM, Y'),
             $invoice->created_at->isoFormat('D MMMM, Y'),
             $invoice->updated_at->isoFormat('D MMMM, Y'),

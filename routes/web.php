@@ -9,24 +9,15 @@
 
 Auth::routes(['verify' => true]);
 
-Route::get('/', function () {
-    return view('public.page-one');
-})->name('home');
-
-// Route::get('/enroll/package/{id}', ['as' => 'enroll.package', 'uses' => 'ApplicantController@enrollPackage']);
-// Route::post('/enroll/package', ['as' => 'enroll.package.store', 'uses' => 'ApplicantController@storePackage']);
-
-// Route::get('/enroll/event/{id}', ['as' => 'enroll.event', 'uses' => 'ApplicantController@enrollEvent']);
-// Route::post('/enroll/event', ['as' => 'enroll.event.store', 'uses' => 'ApplicantController@storeEvent']);
-
-
 /*
 |--------------------------------------------------------------------------
 | Public Routes
 |--------------------------------------------------------------------------
 */
 
-
+Route::get('/', function () {
+    return view('public.page-one');
+})->name('home');
 
 
 /*
@@ -128,14 +119,15 @@ Route::group(['middleware' => 'verified'], function () {
     */
 
     Route::post('export/users', 'ExportController@exportAllUsers');
+    Route::post('export/users-role/{role}', 'ExportController@exportRoleUsers');
     Route::post('export/applicants', 'ExportController@exportApplicants');
     Route::post('export/admins', 'ExportController@exportAdmins');
     Route::post('export/monitors', 'ExportController@exportMonitors');
     Route::post('export/moderators', 'ExportController@exportModerators');
     Route::post('export/events', 'ExportController@exportEvents');
-    Route::post('export/event-applicants', 'ExportController@exportEventApplicants');
+    Route::post('export/event-applicants/{id}', 'ExportController@exportEventApplicants');
     Route::post('export/packages', 'ExportController@exportPackages');
-    Route::post('export/packages-applicants', 'ExportController@exportPackageApplicants');
+    Route::post('export/packages-applicants/{id}', 'ExportController@exportPackageApplicants');
 });
 
 
