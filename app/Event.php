@@ -13,7 +13,7 @@ class Event extends Model
     protected $imageFolder = 'events/';
 
     protected $fillable = [
-        'name', 'event_date', 'photo_id', 'data', 'details', 'event_type_id',
+        'name', 'event_date', 'end_date', 'photo_id', 'data', 'details', 'event_type_id',
     ];
 
     protected $casts = [
@@ -52,6 +52,14 @@ class Event extends Model
     {
 
         return $this->imageFolder;
+    }
+
+    public function getPriceAttribute($value)
+    {
+        if ($this->discount) {
+            return $value - ($value * $this->discount->amount / 100);
+        }
+        return $value;
     }
 
 

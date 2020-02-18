@@ -9,6 +9,7 @@
 
 Auth::routes(['verify' => true]);
 
+Route::get('/invoice/print', ['as' => 'invoice.print', 'uses' => 'FinanceController@generatepdf']);
 /*
 |--------------------------------------------------------------------------
 | Public Routes
@@ -111,6 +112,10 @@ Route::group(['middleware' => 'verified'], function () {
     Route::get('expenses-summary', ['as' => 'expenses.summary', 'uses' => 'FinanceController@expensesSummary']);
     Route::get('payment-status', ['as' => 'payment.status', 'uses' => 'FinanceController@paymentStatus']);
     Route::post('generate-invoice', ['as' => 'generate.invoice', 'uses' => 'FinanceController@generateInvoice']);
+    Route::post('payment-status', ['as' => 'upload.proof', 'uses' => 'FinanceController@uploadProof']);
+    Route::post('verify-users-payment', ['as' => 'verify.users.payment', 'uses' => 'FinanceController@verifyUsersPayment']);
+    Route::get('verify-payment/{id}', ['as' => 'verify.payment', 'uses' => 'FinanceController@verifyUserPayment']);
+    Route::get('unverify-payment/{id}', ['as' => 'unverify.payment', 'uses' => 'FinanceController@unverifyUserPayment']);
 
 
     /*

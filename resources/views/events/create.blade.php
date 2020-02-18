@@ -32,9 +32,21 @@
         </div>
 
         <div class="form-group">
-            {!! Form::label('event_date', 'Event date: ') !!}
-            {!! Form::date('event_date', \Carbon\Carbon::now(), ['class'=>'form-control']) !!}
+            <label for="event_date">Event Date/Time: </label>
+            <br>
+            <input type="datetime-local" name="event_date">
             @error('event_date')
+                <span class="text-danger small">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+        </div>
+
+        <div class="form-group">
+            <label for="end_date">Ending Date/Time: </label>
+            <br>
+            <input type="datetime-local" name="end_date">
+            @error('end_date')
                 <span class="text-danger small">
                     <strong>{{ $message }}</strong>
                 </span>

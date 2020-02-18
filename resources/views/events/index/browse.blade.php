@@ -33,14 +33,33 @@
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group">
                                             <a href="{{ route('events.view', $event->slug) }}" target="_blank" class="btn btn-sm btn-outline-secondary">View</a>
-                                            @if (Auth::user()->events->contains($event))
-                                                {!! Form::open(['method'=>'POST', 'action'=>['EventController@unEnroll', $event->slug]]) !!}
-                                                {!! Form::submit('Un-enroll', ['class'=>'btn btn-sm btn-outline-warning']) !!}
-                                                {!! Form::close() !!}
-                                            @else
-                                                {!! Form::open(['method'=>'POST', 'action'=>['EventController@enroll', $event->slug]]) !!}
-                                                {!! Form::submit('Enroll', ['class'=>'btn btn-sm btn-outline-success']) !!}
-                                                {!! Form::close() !!}
+                                            @php
+                                                $overlap = false;
+                                                foreach (Auth::user()->events as $e) {
+                                                    if ($event->event_date->lte($e->end_date) && $event->end_date->gte($e->event_date)) {
+                                                        $overlap = true;
+                                                        break;
+                                                    }
+                                                }
+                                                if (!$overlap) {
+                                                    foreach (Auth::user()->package->events()->where('user_id', Auth::user()->id)->get() as $e) {
+                                                        if ($event->event_date->lte($e->end_date) && $event->end_date->gte($e->event_date)) {
+                                                            $overlap = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            @endphp
+                                            @if (!$overlap || !Auth::user()->package->events->where('user_id', Auth::user()->id)->get()->contains($event))
+                                                @if (Auth::user()->events->contains($event))
+                                                    {!! Form::open(['method'=>'POST', 'action'=>['EventController@unEnroll', $event->slug]]) !!}
+                                                    {!! Form::submit('Un-enroll', ['class'=>'btn btn-sm btn-outline-warning']) !!}
+                                                    {!! Form::close() !!}
+                                                @else
+                                                    {!! Form::open(['method'=>'POST', 'action'=>['EventController@enroll', $event->slug]]) !!}
+                                                    {!! Form::submit('Enroll', ['class'=>'btn btn-sm btn-outline-success']) !!}
+                                                    {!! Form::close() !!}
+                                                @endif
                                             @endif
                                         </div>
                                         <small class="text-muted">{{ $event->event_date->diffForHumans() }}</small>
