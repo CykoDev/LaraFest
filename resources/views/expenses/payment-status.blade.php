@@ -37,6 +37,18 @@
         </div>
     </div>
 
+    <p>Status: @switch($user->payment_status)
+        @case('unpaid')
+            You need to upload proof of payment
+            @break
+        @case('unverified')
+            Your payment is awaiting verification
+            @break
+        @case('paid')
+            Your payment has been verified
+            @break
+        @endswitch</p>
+
 </div>
 
 @endsection
