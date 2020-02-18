@@ -95,7 +95,8 @@ Route::group(['middleware' => 'verified'], function () {
     Route::get('profile', ['as' => 'profile.show', 'uses' => 'ProfileController@show']);
     Route::post('profile', ['as' => 'profile.store', 'uses' => 'ProfileController@store']);
     Route::get('profile/edit', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
-    Route::patch('profile/edit/{route}', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
+    Route::patch('profile/edit/{route}', ['as' => 'profile.updateProfile', 'uses' => 'ProfileController@updateProfile']);
+    Route::patch('profile-edit/{route}', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
     Route::get('applicant/profile', ['as' => 'profile.applicant.edit', 'uses' => 'ProfileController@editApplicant']);
     Route::patch('applicant/profile/{route}', ['as' => 'profile.applicant.update', 'uses' => 'ProfileController@updateApplicant']);
 
