@@ -25,6 +25,7 @@ class EventController extends Controller
     {
         $event = Event::whereSlug($slug)->firstOrFail();
         Auth::user()->events()->save($event, ['user_id' => Auth::id()]);
+        $event->expense()->create(['price' => $event->price, 'user_id' => Auth::id()]);
         return redirect()->back();
     }
 
@@ -32,6 +33,7 @@ class EventController extends Controller
     {
         $event = Event::whereSlug($slug)->firstOrFail();
         Auth::user()->events()->detach($event);
+        Auth::user()->expenses()->where('expendable_id', '=', $event->id)->delete();
         return redirect()->back();
     }
 

@@ -15,8 +15,8 @@ class PackageController extends Controller
     public function __construct()
     {
         $this->middleware('applicant')->only('indexBrowse', 'enroll', 'unEnroll', 'showView');
-        $this->middleware('monitor')->only('index');
-        $this->middleware('admin')->except('index', 'indexBrowse', 'enroll', 'unEnroll', 'showView');
+        $this->middleware('monitor')->only('index',);
+        $this->middleware('admin')->except('index', 'indexBrowse', 'enroll', 'unEnroll', 'showView', 'show');
     }
 
     public function enroll(Request $request, $route)
@@ -72,6 +72,8 @@ class PackageController extends Controller
 
     public function show($slug)
     {
+        $package = Package::whereSlug($slug)->firstOrFail();
+        return view('packages.show.info', compact('package'));
     }
 
     public function showView($slug)

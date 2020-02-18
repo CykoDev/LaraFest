@@ -22,30 +22,40 @@
     @endslot
     @slot('headings')
         <tr>
-        <th>Photo</th>
-        <th>name</th>
-        <th>Type</th>
-        <th>Users</th>
-        <th>Event Date</th>
-        <th>Created At</th>
-        <th>Updated At</th>
-        <th>Actions</th>
+        <th><small class="font-weight-bold">Photo</small></th>
+        <th><small class="font-weight-bold">Name</small></th>
+        <th><small class="font-weight-bold">Type</small></th>
+        <th><small class="font-weight-bold">Users</small></th>
+        <th><small class="font-weight-bold">Event Date</small></th>
+        <th><small class="font-weight-bold">Created At</small></th>
+        <th><small class="font-weight-bold">Updated At</small></th>
+        <th><small class="font-weight-bold">Actions</small></th>
+        <th><small class="font-weight-bold">Get Excel</small></th>
         </tr>
     @endslot
     @slot('body')
         @if($events)
             @foreach($events as $event)
             <tr>
-                <td><img src='{{ is_null($event->photo) ? $event->defaultImage : $event->photo->path }}' class="rounded-circle" width=40 height=40></td>
-                <td><a href="{{ route('events.show', $event->id) }}">{{ $event->name }}</a></td>
-                <td>{{ $event->type->name }}</td>
-                <td>{{ $event->users->count() }}</td>
-                <td>{{ $event->event_date->diffForHumans() }}</td>
-                <td>{{ $event->created_at->diffForHumans() }}</td>
-                <td>{{ $event->updated_at->diffForHumans() }}</td>
+                <td><img src='{{ is_null($event->photo) ? $event->defaultImage : $event->photo->path }}' class="rounded" width=50 height=30></td>
+                <td>
+                    <a href="{{ route('events.show', $event->slug) }}">
+                        <small>{{ $event->name }}</small>
+                    </a>
+                </td>
+                <td><small>{{ $event->type->name }}</small></td>
+                <td><small>{{ $event->users->count() }}</small></td>
+                <td><small>{{ $event->event_date->diffForHumans() }}</small></td>
+                <td><small>{{ $event->created_at->diffForHumans() }}</small></td>
+                <td><small>{{ $event->updated_at->diffForHumans() }}</small></td>
+                <td>
+                    <a href="{{ route('events.edit', $event->slug) }}" class="btn btn-default p-0 text-primary">
+                        <small class="font-weight-bold">Edit</small>
+                    </a>
+                </td>
                 <td>
                     {!! Form::open(['method'=>'POST', 'action'=>['ExportController@exportEventApplicants', $event->id]]) !!}
-                    {!! Form::button('<i class="fas fa-download fa-sm text-white-50"></i> Generate Excel',
+                    {!! Form::button('<i class="fas fa-download fa-sm text-white-50"></i> <small>Generate Excel</small>',
                         ['type'=>'submit', 'class'=>'d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm']) !!}
                     {!! Form::close() !!}
                 </td>

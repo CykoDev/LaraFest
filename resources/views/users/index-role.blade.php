@@ -47,16 +47,16 @@
     @endslot
     @slot('headings')
         <tr>
-        <th>{!! Form::checkbox('options', null, null, ['class'=>'checkAll']) !!}</th>
-        <th><small class="font-weight-bold">Photo</small></th>
-        <th><small class="font-weight-bold">Name</small></th>
-        <th><small class="font-weight-bold">Email</small></th>
-        <th><small class="font-weight-bold">Contact</small></th>
-        <th><small class="font-weight-bold">Payment Status</small></th>
-        <th><small class="font-weight-bold">Registered At</small></th>
-        @if (Auth::user()->role->name=='admin' ||  Auth::user()->role->name=='moderator')
-            <th><small class="font-weight-bold">Actions</small></th>
-        @endif
+            <th>{!! Form::checkbox('options', null, null, ['class'=>'checkAll']) !!}</th>
+            <th><small class="font-weight-bold">Photo</small></th>
+            <th><small class="font-weight-bold">Name</small></th>
+            <th><small class="font-weight-bold">Email</small></th>
+            <th><small class="font-weight-bold">Contact</small></th>
+            <th><small class="font-weight-bold">Payment Status</small></th>
+            <th><small class="font-weight-bold">Registered At</small></th>
+            @if (Auth::user()->role->name=='admin' ||  Auth::user()->role->name=='moderator')
+                <th><small class="font-weight-bold">Actions</small></th>
+            @endif
         </tr>
     @endslot
     @slot('body')
@@ -72,7 +72,11 @@
                         <a href="{{ route('users.show', $user->slug) }}">{{ $user->name }}</a>
                     </small>
                 </td>
-                <td><small>{{ $user->email }}</small></td>
+                <td>
+                    <a href="mailto:{{ $user->email }}">
+                        <small>{{ $user->email }}</small>
+                    </a>
+                </td>
                 <td><small>{{ $user->data['mobile_no'] ? $user->data['mobile_no'] : 'N/A' }}</small></td>
                 <td>
                     @if($user->payment_status == 'unpaid')
@@ -87,15 +91,15 @@
                 @if (Auth::user()->role->name=='admin' ||  Auth::user()->role->name=='moderator')
                     <td>
                         @if($user->payment_status == 'paid')
-                            <a href="{{ route('unverify.payment', $user->id) }}" class="btn btn-default p-0 text-warning font-weight-bold">
-                                <small>unverify payment</small>
+                            <a href="{{ route('unverify.payment', $user->id) }}" class="btn btn-default p-0 text-warning">
+                                <small class="font-weight-bold">unverify payment</small>
                             </a>
                         @elseif($user->payment_status == 'unverified')
-                            <a href="{{ route('verify.payment', $user->id) }}" class="btn btn-default p-0 text-primary font-weight-bold">
-                                <small>verify payment</small>
+                            <a href="{{ route('verify.payment', $user->id) }}" class="btn btn-default p-0 text-primary">
+                                <small class="font-weight-bold">verify payment</small>
                             </a>
                         @elseif($user->payment_status == 'unpaid')
-                            <small>proof not uploaded</small>
+                            <small class="font-weight-bold">proof not uploaded</small>
                         @endif
                     </td>
                 @endif

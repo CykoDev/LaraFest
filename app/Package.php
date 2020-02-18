@@ -15,6 +15,10 @@ class Package extends Model
         'name', 'price', 'description', 'data',
     ];
 
+    protected $casts = [
+        'data' => 'array',
+    ];
+
     public function getCurrencySymbolAttribute($value)
     {
 

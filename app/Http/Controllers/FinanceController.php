@@ -76,13 +76,14 @@ class FinanceController extends Controller
 
     public function verifyUsersPayment(Request $request)
     {
-        // dd($request);
-        $users = User::findOrFail($request->users);
-        foreach ($users as $user) {
+        if (!empty($request->checkBoxArray)) {
+            $users = User::findOrFail($request->users);
+            foreach ($users as $user) {
 
-            $user->update([
-                'payment_status' => 'paid',
-            ]);
+                $user->update([
+                    'payment_status' => 'paid',
+                ]);
+            }
         }
         return redirect()->back();
     }

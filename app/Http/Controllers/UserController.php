@@ -21,8 +21,8 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('monitor')->only('indexRole');
-        $this->middleware('admin')->except('indexRole');
+        $this->middleware('monitor')->only('indexRole', 'show');
+        $this->middleware('admin')->except('indexRole', 'show');
     }
 
     /**
@@ -92,7 +92,7 @@ class UserController extends Controller
     public function show($slug)
     {
         $user = User::whereSlug($slug)->firstOrFail();
-        return view('users.edit', compact('user'));
+        return view('users.show', compact('user'));
     }
 
     /**

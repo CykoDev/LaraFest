@@ -132,7 +132,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function invoiceProof()
     {
-        return $this->belongsTo('App\Photo', 'invoice_proof');
+        return $this->belongsTo('App\Photo', 'invoice_proof_id');
     }
 
     public function events($eventType = null)

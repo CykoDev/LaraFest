@@ -19,8 +19,6 @@ class CreatePackageQuotasTable extends Migration
             $table->unsignedBigInteger('event_type_id')->index();
             $table->integer('quota_amount');
             $table->timestamps();
-
-            $table->foreign('package_id')->references('id')->on('packages')->onDelete('cascade');
         });
     }
 
