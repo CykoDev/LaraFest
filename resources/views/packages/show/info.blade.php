@@ -7,7 +7,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Package Information</h1>
         <a href="{{ route('packages.discounts.create', $package->id) }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-download fa-sm text-white-50"></i>
+            <i class="fas fa-pen-fancy fa-sm text-white-50"></i>
             Create Discount
         </a>
     </div>
@@ -58,6 +58,29 @@
                             </td>
                             <td></td>
                         </tr>
+                    </table>
+                @else
+                    <p>N/A</p>
+                @endif
+            </section>
+            <section class="my-5">
+                <h5 class="text-primary">Package Quotas</h5>
+                @if($package->quotas()->exists())
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Event Type</th>
+                                <th>Number Allowed</th>
+                            <tr>
+                        </thead>
+                        <tbody>
+                            @foreach($package->quotas as $quota)
+                                <tr>
+                                    <td style="padding-right:60px">{{ $quota->eventType->name }}</td>
+                                    <td >{{ $quota->quota_amount }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
                     </table>
                 @else
                     <p>N/A</p>

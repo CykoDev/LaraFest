@@ -16,20 +16,20 @@
             'data' => $users->count(),
         ])
         @include('layouts.components.card', [
-            'textclass' => 'primary',
+            'textclass' => 'info',
             'title' => 'Applicants',
             'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
             'data' => $roles->where('name','=','applicant')->pluck('userCount')[0],
         ])
         @include('layouts.components.card', [
-            'textclass' => 'primary',
+            'textclass' => 'warning',
             'title' => 'Moderators',
             'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
             'data' => $roles->where('name','=','moderator')->pluck('userCount')[0],
         ])
         @include('layouts.components.card', [
             'textclass' => 'primary',
-            'title' => 'Monitors',
+            'title' => 'success',
             'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
             'data' => $roles->where('name','=','monitor')->pluck('userCount')[0],
         ])

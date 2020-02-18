@@ -19,10 +19,7 @@ class FinanceController extends Controller
 
     public function enrolledEvents()
     {
-        $user = Auth::user();
-        $packageEvents = $user->package->events($user->id);
-        $events = $user->events;
-        return view('expenses.enrolled-events', compact('packageEvents', 'events'));
+        return view('expenses.enrolled-events');
     }
 
     public function expensesSummary()
@@ -43,8 +40,7 @@ class FinanceController extends Controller
 
     public function paymentStatus()
     {
-        $user = Auth::user();
-        return view('expenses.payment-status', compact('user'));
+        return view('expenses.payment-status');
     }
 
     public function uploadProof(Request $request)
@@ -52,19 +48,18 @@ class FinanceController extends Controller
         $user = Auth::user();
         $input = $request->all();
 
-        if ($file = $request->file('invoice_proof')) {
+        if ($file = $request->file('invoice_proof_id')) {
 
             $name = time() . $file->getClientOriginalName();
-            $file->move('img/' . $user->imageFolder . '/proofs/', $name);
+            $file->move('img/' . $user->imageFolder . 'proofs/', $name);
             $photo = Photo::create([
-                'path' => $user->imageFolder . '/proofs/' . $name,
+                'path' => $user->imageFolder . 'proofs/' . $name,
                 'type' => 'user_invoice_proof',
                 'uploaded_by_user_id' => $user->id,
             ]);
-            $input['invoice_proof'] = $photo->id;
+            $input['invoice_proof_id'] = $photo->id;
 
             if ($user->invoiceProof) {
-
                 unlink(public_path() . $user->invoiceProof->path);
                 Photo::findOrFail($user->invoiceProof->id)->delete();
             }

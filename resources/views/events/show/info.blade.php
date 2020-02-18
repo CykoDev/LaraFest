@@ -7,7 +7,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">Event Information</h1>
         <a href="{{ route('events.discounts.create', $event->id) }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-            <i class="fas fa-download fa-sm text-white-50"></i>
+            <i class="fas fa-pen-fancy fa-sm text-white-50"></i>
             Create Discount
         </a>
     </div>
@@ -42,7 +42,7 @@
                 <h5 class="text-primary">Active Discount</h5>
                 @if($event->discount)
                     <table>
-                        <tr> 
+                        <tr>
                             <td class="text-dark font-weight-bold pr-5">Discount Name</td>
                             <td>{{ ucwords($event->discount->name) }}</td>
                         </tr>

@@ -12,14 +12,55 @@
         <h1 class="h3 mb-0 text-gray-800">Browse Packages</h1>
     </div>
 
-    <div>
-        {!! Form::open(['method' => 'POST', 'action' => 'ProfileController@resetProfile', 'files' => false]) !!}
-            {!! Form::hidden('payment_status', 'unpaid') !!}
-            {!! Form::hidden('profile_created_at', null) !!}
-            <div class="form=group">
-                {!! Form::submit('Reset Profile', ['class'=>'btn btn-primary px-5']) !!}
+    <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Are You ACTUALLY Serious?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+                </div>
+                <div class="modal-body">
+                    <p class="small">
+                        This Option will reset your profile along with all your enrollments and expenses. And even if you
+                        paid your invoice and/or uploaded your payment proof, it WILL not recognize your past payments. Only
+                        choose this option if you have not paid your invoice or if you really know what you are doing.
+                    </p>
+                    <p class="mt-3 text-danger small">
+                        If done by mistake, we are NOT responsible and WILL and CAN not fix your problem.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="d-none d-sm-inline-block btn btn-sm btn-secondary shadow-sm" type="button" data-dismiss="modal">Cancel</button>
+                    {!! Form::open(['method'=>'POST', 'action'=>'ProfileController@resetProfile']) !!}
+                    {!! Form::button('<i class="fas fa-biohazard mr-2"></i> Reset Profile',
+                        ['type'=>'submit', 'class'=>'d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm']) !!}
+                    {!! Form::close() !!}
+                </div>
             </div>
-        {!! Form::close() !!}
+        </div>
+    </div>
+
+    <div class="col-lg-8 mb-4">
+        <div class="card shadow">
+            <div class="card-header py-3">
+                <small class="m-0 font-weight-bold text-primary">Need To Change Your Package Details?</small>
+            </div>
+            <div class="card-body">
+                <small>
+                    You might then want to reset your profile, start anew and change your package or package options. Do not pay your
+                    invoice/due fees until you are satisfied with your expenses. Verify your expenses
+                    <a href="{{ route('expenses.summary') }}">here</a> before paying any money.<br>
+                    If you still want to reset your profile,
+                    head over here.
+                </small>
+                <br>
+                <a class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm mt-3" href="#" data-toggle="modal" data-target="#resetModal">
+                    <i class="fas fa-biohazard mr-2"></i> Reset Profile
+                </a>
+            </div>
+        </div>
     </div>
 
     <div class="row mt-5">
@@ -35,13 +76,6 @@
                     <p>
                         If you study at NUST, this package is for you.
                     </p>
-                    <br>
-                    {!! Form::open(['method'=>'PATCH','action'=>['ProfileController@update', 'packages.view']]) !!}
-                        {!! Form::hidden('data[registration_type]', 'nustian') !!}
-                        <div class="form=group text-center">
-                            {!! Form::submit('Signup', ['class'=>'btn btn-primary px-5']) !!}
-                        </div>
-                    {!! Form::close() !!}
                 </div>
             </div>
         </div>
@@ -58,13 +92,6 @@
                     <p>
                         Wait, you aren't a student? Choose this package.
                     </p>
-                    <br>
-                    {!! Form::open(['method'=>'PATCH','action'=>['ProfileController@update', 'packages.view']]) !!}
-                        {!! Form::hidden('data[registration_type]', 'professional') !!}
-                        <div class="form=group text-center">
-                            {!! Form::submit('Signup', ['class'=>'btn btn-primary px-5']) !!}
-                        </div>
-                    {!! Form::close() !!}
                 </div>
             </div>
         </div>
@@ -81,13 +108,6 @@
                     <p>
                         You study outside NUST? This package is for you!
                     </p>
-                    <br>
-                    {!! Form::open(['method'=>'PATCH','action'=>['ProfileController@update', 'packages.view']]) !!}
-                        {!! Form::hidden('data[registration_type]', 'non_nustian') !!}
-                        <div class="form=group text-center">
-                            {!! Form::submit('Signup', ['class'=>'btn btn-primary px-5']) !!}
-                        </div>
-                    {!! Form::close() !!}
                 </div>
             </div>
         </div>

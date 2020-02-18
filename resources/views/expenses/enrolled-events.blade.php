@@ -16,11 +16,19 @@
                 </div>
                 <div class="card-body">
                     <div class="text-center">
-                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="height: 10rem;" src="{{ asset('img/public/undraw_book_reading_kx9s.svg') }}" alt="">
+                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="height: 7rem;" src="{{ asset('img/public/undraw_book_reading_kx9s.svg') }}" alt="">
                     </div>
-                    @foreach(Auth::user()->package->events(Auth::id()) as $event)
-                        <p>{{ $event->name }}</p>
-                    @endforeach
+                    @if(Auth::user()->package->events()->exists())
+                        @foreach(Auth::user()->package->events(Auth::id()) as $event)
+                            <p>
+                                <a href="{{ route('events.show.view', $event->slug) }}">
+                                    {{ $event->name }}
+                                </a>
+                            </p>
+                        @endforeach
+                    @else
+                        <p>N/A</p>
+                    @endif
                 </div>
             </div>
         </div>
@@ -32,11 +40,15 @@
                 </div>
                 <div class="card-body">
                     <div class="text-center">
-                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="height: 10rem;" src="{{ asset('img/public/undraw_dev_productivity_umsq.svg') }}" alt="">
+                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="height: 7rem;" src="{{ asset('img/public/undraw_dev_productivity_umsq.svg') }}" alt="">
                     </div>
-                    @foreach(Auth::user()->events as $event)
-                        <p>{{ $event->name }}</p>
-                    @endforeach
+                    @if(Auth::user()->events()->exists())
+                        @foreach(Auth::user()->events as $event)
+                            <p>{{ $event->name }}</p>
+                        @endforeach
+                    @else
+                        <p>N/A</p>
+                    @endif
                 </div>
             </div>
         </div>

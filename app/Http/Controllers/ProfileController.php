@@ -224,4 +224,8 @@ class ProfileController extends Controller
                 break;
         }
     }
+
+    public function resetProfile()
+    {
+    }
 }
