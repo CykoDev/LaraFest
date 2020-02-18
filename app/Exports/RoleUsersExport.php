@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\User;
+use App\Role;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -11,16 +11,18 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-class ModeratorsExport implements FromCollection, ShouldAutoSize, WithHeadings, WithEvents, WithMapping
+class RoleUsersExport implements FromCollection, ShouldAutoSize, WithHeadings, WithEvents, WithMapping
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
+    protected $id;
+
+    function __construct($role)
+    {
+        $this->role = $role;
+    }
+
     public function collection()
     {
-        return User::select(
-            'name', 'email', 'email_verified_at', 'role_id', 'is_active', 'created_at', 'updated_at'
-            )->where('role_id', '=', 3)->get();
+        return Role::whereName($this->role)->firstOrFail()->users;
     }
 
     public function headings(): array
@@ -39,7 +41,7 @@ class ModeratorsExport implements FromCollection, ShouldAutoSize, WithHeadings, 
     public function registerEvents(): array
     {
         return [
-            AfterSheet::class => function(AfterSheet $event) {
+            AfterSheet::class => function (AfterSheet $event) {
                 $cellRange = 'A1:W1';
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(14);
             },
@@ -47,8 +49,8 @@ class ModeratorsExport implements FromCollection, ShouldAutoSize, WithHeadings, 
     }
 
     /**
-    * @var Invoice $invoice
-    */
+     * @var Invoice $invoice
+     */
     public function map($invoice): array
     {
         return [

@@ -11,7 +11,9 @@
     <div class="row">
         <div class="col-lg-3 mb-4">
 
-            {!! Form::model($user, ['method'=>'PATCH', 'action'=>['ProfileController@update', 'profile.edit'], 'files'=>true]) !!}
+            {!! Form::model($user, ['method'=>'PATCH', 'action'=>['ProfileController@updateProfile', 'profile.edit'], 'files'=>true]) !!}
+
+            {!! Form::hidden('id', $user->id) !!}
 
             <div class="text-center p-3 ml-5">
                 <div class="picCard">
@@ -27,6 +29,11 @@
                             </div>
                         </div>
                     </div>
+                    @error('photo_id')
+                        <span class="text-danger small">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
                 <br><br>
                 <div class="form=group mt-5">

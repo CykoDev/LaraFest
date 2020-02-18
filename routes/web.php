@@ -9,16 +9,6 @@
 
 Auth::routes(['verify' => true]);
 
-Route::get('/', function () {
-    return view('public.page-one');
-})->name('home');
-
-// Route::get('/enroll/package/{id}', ['as' => 'enroll.package', 'uses' => 'ApplicantController@enrollPackage']);
-// Route::post('/enroll/package', ['as' => 'enroll.package.store', 'uses' => 'ApplicantController@storePackage']);
-
-// Route::get('/enroll/event/{id}', ['as' => 'enroll.event', 'uses' => 'ApplicantController@enrollEvent']);
-// Route::post('/enroll/event', ['as' => 'enroll.event.store', 'uses' => 'ApplicantController@storeEvent']);
-
 Route::get('/invoice/print', ['as' => 'invoice.print', 'uses' => 'FinanceController@generatepdf']);
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +16,9 @@ Route::get('/invoice/print', ['as' => 'invoice.print', 'uses' => 'FinanceControl
 |--------------------------------------------------------------------------
 */
 
-
+Route::get('/', function () {
+    return view('public.page-one');
+})->name('home');
 
 
 /*
@@ -104,7 +96,8 @@ Route::group(['middleware' => 'verified'], function () {
     Route::get('profile', ['as' => 'profile.show', 'uses' => 'ProfileController@show']);
     Route::post('profile', ['as' => 'profile.store', 'uses' => 'ProfileController@store']);
     Route::get('profile/edit', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
-    Route::patch('profile/edit/{route}', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
+    Route::patch('profile/edit/{route}', ['as' => 'profile.updateProfile', 'uses' => 'ProfileController@updateProfile']);
+    Route::patch('profile-edit/{route}', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
     Route::get('applicant/profile', ['as' => 'profile.applicant.edit', 'uses' => 'ProfileController@editApplicant']);
     Route::patch('applicant/profile/{route}', ['as' => 'profile.applicant.update', 'uses' => 'ProfileController@updateApplicant']);
 
@@ -129,14 +122,15 @@ Route::group(['middleware' => 'verified'], function () {
     */
 
     Route::post('export/users', 'ExportController@exportAllUsers');
+    Route::post('export/users-role/{role}', 'ExportController@exportRoleUsers');
     Route::post('export/applicants', 'ExportController@exportApplicants');
     Route::post('export/admins', 'ExportController@exportAdmins');
     Route::post('export/monitors', 'ExportController@exportMonitors');
     Route::post('export/moderators', 'ExportController@exportModerators');
     Route::post('export/events', 'ExportController@exportEvents');
-    Route::post('export/event-applicants', 'ExportController@exportEventApplicants');
+    Route::post('export/event-applicants/{id}', 'ExportController@exportEventApplicants');
     Route::post('export/packages', 'ExportController@exportPackages');
-    Route::post('export/packages-applicants', 'ExportController@exportPackageApplicants');
+    Route::post('export/packages-applicants/{id}', 'ExportController@exportPackageApplicants');
 });
 
 

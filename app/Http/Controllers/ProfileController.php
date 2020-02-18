@@ -94,6 +94,69 @@ class ProfileController extends Controller
         return redirect(route($route));
     }
 
+    public function updateProfile(ProfileUpdateRequest $request)
+    {
+        $input = $request->all();
+        $user = Auth::user();
+        if ($images = $request->file('data')) {
+            foreach ($images as $key => $image) {
+                $type = substr($key, 0, strrpos($key, '_id'));
+                $name = time() . $image->getClientOriginalName();
+                $image->move('img/users/data/', $name);
+                $photo = Photo::create([
+                    'path' => 'users/data/' . $name,
+                    'type' => $type,
+                    'uploaded_by_user_id' => Auth::user()->id,
+                ]);
+                $input['data'][$key] = $photo->id;
+                if ($user->photo($type)) {
+                    unlink(public_path() . $user->photo($type)->path);
+                    Photo::findOrFail($user->photo($type)->id)->delete();
+                }
+            }
+        }
+        if ($file = $request->file('photo_id')) {
+
+            $name = time() . $file->getClientOriginalName();
+            $file->move('img/' . $user->imageFolder, $name);
+            $photo = Photo::create([
+                'path' => $user->imageFolder . $name,
+                'type' => 'user_photo',
+                'uploaded_by_user_id' => Auth::user()->id,
+            ]);
+            $input['photo_id'] = $photo->id;
+
+            if ($user->photo) {
+
+                unlink(public_path() . $user->photo->path);
+                Photo::findOrFail($user->photo->id)->delete();
+            }
+        }
+        if (isset($input['data']) && isset($user->data)) {
+            $input['data'] = array_merge($user->data, $input['data']);
+        }
+        $user->update($input);
+
+        if ($route == 'packages.view') {
+            switch (Auth::user()->data['registration_type']) {
+                case 'nustian':
+                    return redirect(route('packages.view', 'nustian-package'));
+                    break;
+                case 'non_nustian':
+                    return redirect(route('packages.view', 'non-nustian-package'));
+                    break;
+                case 'professional':
+                    return redirect(route('packages.view', 'professional-package'));
+                    break;
+                default:
+                    abort(404);
+                    break;
+            }
+        }
+
+        return redirect(route($route));
+    }
+
     public function updateApplicant(ApplicantProfileRequest $request, $route)
     {
         $input = $request->all();

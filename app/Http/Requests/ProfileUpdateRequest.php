@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ProfileUpdateRequest extends FormRequest
 {
@@ -16,21 +17,30 @@ class ProfileUpdateRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
     public function rules()
     {
         $rules =  [
-            'photo_id'  => 'nullable|image|mimes:jpeg,bmp,png|size:2000',
-            'name'      => 'required|string|max:255|unique:users,name,' . $this->id,
-            'email'     => 'required|email|max:255|unique:users,email,' . $this->id,
-            'new_password' => 'nullable|required_with:password_confirmation|string|confirmed',
-            'current_password' => 'required_with:new_password|string',
+            'photo_id'  => 'required|image|mimes:jpeg,bmp,png|size:2000',
+            'name'      => [
+                'required', 'string', 'max:255',
+                Rule::unique('users')->ignore($this->id),
+            ],
+            'email'     => [
+                'required', 'max:255', 'email:rfc,dns',
+                Rule::unique('users')->ignore($this->id),
+            ],
+            // 'new_password' => 'nullable|required_with:password_confirmation|string|confirmed',
+            // 'current_password' => 'required_with:new_password|string',
         ];
 
         return $rules;
+    }
+
+    public function attributes()
+    {
+        return [
+            'name' => 'Username',
+            'photo_id' => 'User Picture',
+        ];
     }
 }

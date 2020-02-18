@@ -16,7 +16,9 @@
         <div class="col-lg-3 mb-4">
 
             {!! Form::model(Auth::user(), ['method'=>'PATCH', 'action'=>['ProfileController@updateApplicant', 'dashboard'], 'files'=>true]) !!}
-            {{ Form::hidden('profile_completed_at', NOW()) }}
+
+            {!! Form::hidden('id', Auth::id()) !!}
+            {!! Form::hidden('profile_completed_at',NOW()) !!}
 
             <div class="text-center p-3 ml-5">
                 <div class="picCard">
@@ -32,6 +34,11 @@
                             </div>
                         </div>
                     </div>
+                    @error('photo_id')
+                        <span class="text-danger small">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
                 <br><br>
                 <div class="form=group mt-5">
@@ -105,7 +112,7 @@
                         </div>
                         <div class="col-7">
                             {!! Form::text('data[full_name]', null, ['class'=>'form-control']) !!}
-                            @error('data[full_name]')
+                            @error('data.full_name')
                                 <span class="text-danger small">
                                     <br><strong>{{ $message }}</strong>
                                 </span>
@@ -121,7 +128,7 @@
                         </div>
                         <div class="col-7">
                             {!! Form::number('data[cnic]', null, ['class'=>'form-control']) !!}
-                            @error('data[cnic]')
+                            @error('data.cnic')
                                 <span class="text-danger small">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -137,7 +144,7 @@
                         </div>
                         <div class="col-7">
                             {!! Form::file('data[cnic_photo_id]', null, ['class'=>'form-control']) !!}
-                            @error('data[cnic_photo_id]')
+                            @error('data.cnic_photo_id')
                                 <span class="text-danger small">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -153,7 +160,7 @@
                         </div>
                         <div class="col-7">
                             {!! Form::text('data[city]', null, ['class'=>'form-control']) !!}
-                            @error('data[city]')
+                            @error('data.city')
                                 <span class="text-danger small">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -169,7 +176,7 @@
                         </div>
                         <div class="col-7">
                             {!! Form::text('data[organization]', null, ['class'=>'form-control']) !!}
-                            @error('data[organization]')
+                            @error('data.organization')
                                 <span class="text-danger small">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -185,7 +192,7 @@
                         </div>
                         <div class="col-7">
                             {!! Form::text('data[occupation]', null, ['class'=>'form-control']) !!}
-                            @error('data[occupation]')
+                            @error('data.occupation')
                                 <span class="text-danger small">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -201,7 +208,7 @@
                         </div>
                         <div class="col-7">
                             {!! Form::select('data[gender]', [''=>'choose','male'=> 'male', 'female'=> 'female', 'other'=> 'other'], null, ['class'=>'form-control']) !!}
-                            @error('data[gender]')
+                            @error('data.gender')
                                 <span class="text-danger small">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -217,7 +224,7 @@
                         </div>
                         <div class="col-7">
                             {!! Form::number('data[mobile_no]', null, ['class'=>'form-control']) !!}
-                            @error('data[mobile_no]')
+                            @error('data.mobile_no')
                                 <span class="text-danger small">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -228,12 +235,12 @@
                     <div class="form-row py-2">
                         <div class="col-3 my-auto">
                             <span class="text-dark font-weight-bold">
-                                {!! Form::label('data[emegerncy_contact]', 'Emergency Contact: ') !!}
+                                {!! Form::label('data[emergency_contact]', 'Emergency Contact: ') !!}
                             </span>
                         </div>
                         <div class="col-7">
-                            {!! Form::number('data[emegerncy_contact]', null, ['class'=>'form-control']) !!}
-                            @error('data[emegerncy_contact]')
+                            {!! Form::number('data[emergency_contact]', null, ['class'=>'form-control']) !!}
+                            @error('data.emergency_contact')
                                 <span class="text-danger small">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -249,7 +256,7 @@
                         </div>
                         <div class="col-7">
                             {!! Form::select('data[accommodation]', [''=>'choose', 'yes'=> 'Sign me up!', 'no'=> 'Eh na I\'m fine'], null, ['class'=>'form-control']) !!}
-                            @error('data[accommodation]')
+                            @error('data.accommodation')
                                 <span class="text-danger small">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -265,7 +272,7 @@
                         </div>
                         <div class="col-7">
                             {!! Form::text('data[ambassador_code]', null, ['class'=>'form-control']) !!}
-                            @error('data[ambassador_code]')
+                            @error('data.ambassador_code')
                                 <span class="text-danger small">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -281,7 +288,7 @@
                         </div>
                         <div class="col-7">
                             {!! Form::text('data[assistance]', null, ['class'=>'form-control']) !!}
-                            @error('data[assistance]')
+                            @error('data.assistance')
                                 <span class="text-danger small">
                                     <strong>{{ $message }}</strong>
                                 </span>
