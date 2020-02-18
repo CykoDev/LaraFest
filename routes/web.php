@@ -46,7 +46,7 @@ Route::group(['middleware' => 'verified'], function () {
     Route::resource('manage/users', 'UserController');
     Route::get('manage/users-role/{role}', ['as' => 'users.index-role', 'uses' => 'UserController@indexRole']);
 
-    Route::resource('manage/users/roles', 'RoleController')->only('index');
+    Route::resource('manage/user/roles', 'RoleController')->only('index');
 
 
     /*
@@ -133,6 +133,9 @@ Route::group(['middleware' => 'verified'], function () {
     Route::post('export/monitors', 'ExportController@exportMonitors');
     Route::post('export/moderators', 'ExportController@exportModerators');
     Route::post('export/events', 'ExportController@exportEvents');
+    Route::post('export/event-applicants', 'ExportController@exportEventApplicants');
+    Route::post('export/packages', 'ExportController@exportPackages');
+    Route::post('export/packages-applicants', 'ExportController@exportPackageApplicants');
 });
 
 

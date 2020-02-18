@@ -16,14 +16,14 @@ class Applicant
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::check()){
+        if (Auth::check()) {
 
-            if (Auth::user()->isApplicant()){
+            if (Auth::user()->isApplicant()) {
 
                 return $next($request);
             }
         }
 
-        return redirect(route('dashboard'));
+        abort(401);
     }
 }

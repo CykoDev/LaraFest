@@ -30,15 +30,17 @@
         {!! Form::close() !!}
     </div>
 
-    <div class="row">
-        @include('layouts.components.card', [
-            'textclass' => 'primary',
-            'title' => 'View All Users',
-            'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
-            'data' => '',
-            'link' => route('users.index'),
-        ])
-    </div>
+    @if(Auth::user()->isAdmin())
+        <div class="row">
+            @include('layouts.components.card', [
+                'textclass' => 'primary',
+                'title' => 'View All Users',
+                'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
+                'data' => '',
+                'link' => route('users.index'),
+            ])
+        </div>
+    @endif
 
     @component('layouts.components.datatable')
     @slot('title')

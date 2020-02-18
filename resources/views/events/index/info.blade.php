@@ -26,9 +26,11 @@
         <th>Photo</th>
         <th>name</th>
         <th>Type</th>
+        <th>Users</th>
         <th>Event Date</th>
         <th>Created At</th>
         <th>Updated At</th>
+        <th>Actions</th>
         </tr>
     @endslot
     @slot('body')
@@ -39,9 +41,16 @@
                 <td><img src='{{ is_null($event->photo) ? $event->defaultImage : $event->photo->path }}' class="rounded-circle" width=40 height=40></td>
                 <td><a href="{{ route('events.show', $event->id) }}">{{ $event->name }}</a></td>
                 <td>{{ $event->type->name }}</td>
+                <td>{{ $event->users->count() }}</td>
                 <td>{{ $event->event_date->diffForHumans() }}</td>
                 <td>{{ $event->created_at->diffForHumans() }}</td>
                 <td>{{ $event->updated_at->diffForHumans() }}</td>
+                <td>
+                    {!! Form::open(['method'=>'POST', 'action'=>'ExportController@exportEvents']) !!}
+                    {!! Form::button('<i class="fas fa-download fa-sm text-white-50"></i> Generate Excel',
+                        ['type'=>'submit', 'class'=>'d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm']) !!}
+                    {!! Form::close() !!}
+                </td>
             </tr>
             @endforeach
         @endif

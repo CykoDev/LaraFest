@@ -8,14 +8,14 @@ use Illuminate\Http\Request;
 
 class EventsDiscountController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('monitor')->only('index', 'show');
+        $this->middleware('moderator')->except('index', 'show');
+    }
+
     public function index()
     {
-        //
         $discounts = Discount::all();
         return view('discounts.index', compact('discounts'));
     }
@@ -41,7 +41,7 @@ class EventsDiscountController extends Controller
     {
         $event = Event::findOrFail($request->eventId);
         if ($event->discount) $event->discount()->delete();
-        $event->discount()->create(['name'=>$request->name, 'amount'=>$request->amount, 'expiry_at'=>$request->expiry]);
+        $event->discount()->create(['name' => $request->name, 'amount' => $request->amount, 'expiry_at' => $request->expiry]);
         return redirect()->back();
     }
 

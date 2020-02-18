@@ -10,9 +10,17 @@ use App\Exports\ApplicantsExport;
 use App\Exports\ModeratorsExport;
 use App\Exports\MonitorsExport;
 use App\Exports\EventsExport;
+use App\Exports\EventApplicantsExport;
+use App\Exports\PackagesExport;
+use App\Exports\PackageApplicantsExport;
 
 class ExportController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('monitor');
+    }
+
     public function exportAllUsers()
     {
         return Excel::download(new UsersExport, 'all users.xlsx');
@@ -41,5 +49,20 @@ class ExportController extends Controller
     public function exportEvents()
     {
         return Excel::download(new EventsExport, 'all events.xlsx');
+    }
+
+    public function exportEventApplicants()
+    {
+        return Excel::download(new EventApplicantsExport, 'events details.xlsx');
+    }
+
+    public function exportPackages()
+    {
+        return Excel::download(new PackagesExport, 'all events.xlsx');
+    }
+
+    public function exportPackageApplicants()
+    {
+        return Excel::download(new PackageApplicantsExport, 'events details.xlsx');
     }
 }

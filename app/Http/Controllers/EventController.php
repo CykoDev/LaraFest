@@ -16,7 +16,9 @@ class EventController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('applicant')->only('indexBrowse');
+        $this->middleware('applicant')->only('indexBrowse', 'enroll', 'unEnroll', 'showView');
+        $this->middleware('monitor')->only('index', 'show');
+        $this->middleware('moderator')->except('index', 'show', 'indexBrowse', 'enroll', 'unEnroll', 'showView');
     }
 
     public function enroll($slug)
