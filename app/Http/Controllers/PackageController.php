@@ -37,7 +37,7 @@ class PackageController extends Controller
         if ($request->eventIds) {
             foreach ($request->eventIds as $id) {
                 $event = Event::findOrFail($id);
-                $user->package()->events()->save($event, ['user_id' => $user->id]);
+                $user->package->events()->save($event, ['user_id' => $user->id]);
             }
         }
 
