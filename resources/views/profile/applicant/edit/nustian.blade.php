@@ -10,7 +10,7 @@
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <p class="mb-3">What a Coincidence, We're from NUST Too!
-            <br><small>Oh You Dont Care</small></p>
+            <br><small>Oh you don't care</small></p>
     </div>
 
     <div class="row">

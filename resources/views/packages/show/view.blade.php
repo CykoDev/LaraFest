@@ -79,9 +79,24 @@
                         </div>
                     </div>
                     <div class="col my-auto">
-                        <div class="form=group text-center p-3">
+                        <div class="form-group text-center p-3">
                             {!! Form::submit('Enroll in Package', ['class'=>'btn btn-primary px-5 py-3']) !!}
                         </div>
+                        @if(isset(Auth::user()->data['registration_type']))
+                            @if (Auth::user()->data['registration_type'] == 'nustian')
+
+                            <div class="form-group text-right px-3 mt-5">
+                                <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm px-5 mr-2 mb-2" href="{{ route('profile.applicant.edit') }}">
+                                    <small>Skip</small>
+                                </a>
+                                <br>
+                                <small>
+                                    Since you're a Nustian, you can also skip enrollment in a package and directly enroll in individual events
+                                </small>
+                            </div>
+
+                            @endif
+                        @endif
                     </div>
                 </div>
             </div>
