@@ -89,7 +89,7 @@ class ApplicantProfileRequest extends FormRequest
                     'data.full_name' => 'required|string|max:255',
                     'data.date_of_birth' => 'required|date',
                     'data.cnic' => 'required|numeric',
-                    'data.cnic_photo_id' => 'required|image|mimes:jpeg,bmp,png|size:200',
+                    'data.cnic_photo_id' => 'required|image|mimes:jpeg,bmp,png|max:2000',
                     'data.city' => 'required|alpha',
                     'data.blood_group' => 'required',
                     'data.education_level' => 'required|string',
@@ -115,7 +115,7 @@ class ApplicantProfileRequest extends FormRequest
 
                     'data.full_name' => 'required|string|max:255',
                     'data.cnic' => 'required|numeric',
-                    'data.cnic_photo_id' => 'required|image|mimes:jpeg,bmp,png|size:200',
+                    'data.cnic_photo_id' => 'required|image|mimes:jpeg,bmp,png|max:2000',
                     'data.city' => 'required|alpha',
                     'data.organization' => 'required|string',
                     'data.occupation' => 'required|string',
