@@ -14,19 +14,19 @@ class PackagesTableSeeder extends Seeder
     {
         Package::create([
             'name'              => 'Nustian Package',
-            'price'             => 69696969,
+            'price'             => 1000,
             'description'       => 'a package. literally a package.',
         ]);
 
         Package::create([
             'name'              => 'Non Nustian Package',
-            'price'             => 69696969,
+            'price'             => 1300,
             'description'       => 'a package. literally a package.',
         ]);
 
         Package::create([
             'name'              => 'Professional Package',
-            'price'             => 69696969,
+            'price'             => 1500,
             'description'       => 'a package. literally a package.',
         ]);
     }

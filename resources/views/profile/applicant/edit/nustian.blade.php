@@ -101,7 +101,7 @@
                             @enderror
                         </div>
                         <div class="col-7">
-                            Non Nustian
+                            {{ ucwords(str_replace('_',' ', Auth::user()->data['registration_type'])) }}
                         </div>
                         <div class="col-2"></div>
                     </div>
@@ -256,7 +256,7 @@
                             </span>
                         </div>
                         <div class="col-7">
-                            {!! Form::select('data[assistance]', [''=>'choose', 'yes'=> 'Uh Yea', 'no'=> 'No Go Away'], null, ['class'=>'form-control']) !!}
+                            {!! Form::text('data[assistance]', null, ['class'=>'form-control']) !!}
                             @error('data.assistance')
                                 <span class="text-danger small">
                                     <strong>{{ $message }}</strong>
