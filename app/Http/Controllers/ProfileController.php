@@ -240,7 +240,34 @@ class ProfileController extends Controller
         }
     }
 
-    public function resetProfile()
+    public function resetProfile(Request $request)
     {
+        $user = Auth::user();
+
+        $user->package()->detach();
+
+        if ($user->events)
+        {
+            foreach($user->events as $event)
+            {
+                $user->events()->detach($event);
+            }
+        }
+
+        if ($user->expenses)
+        {
+            foreach($user->expenses as $expense)
+            {
+                $user->expenses()->delete($expense);
+            }
+        }
+
+        $proof = Photo::findOrFail($user->invoiceProof->id);
+        unlink(public_path() . $proof->path);
+        $proof->delete();
+
+        $user->update(['payment_status' => 'unpaid', 'profile_created_at' => null]);
+
+        return redirect(route('dashboard'));
     }
 }
