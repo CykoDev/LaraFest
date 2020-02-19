@@ -64,6 +64,9 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
+        $input['event_date'] = strtotime($input['event_date']);
+        $input['end_date'] = strtotime($input['end_date']);
+
         $event = new Event;
 
         // Event Image
@@ -80,37 +83,39 @@ class EventController extends Controller
         }
 
         // Event Content Images
-        $dom = new DomDocument();
-        $dom->loadHtml($request->details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $images = $dom->getElementsByTagName('img');
+        if ($request->details) {
+            $dom = new DomDocument();
+            $dom->loadHtml($request->details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            $images = $dom->getElementsByTagName('img');
 
-        foreach ($images as $img) {
-            $src = $img->getAttribute('src');
+            foreach ($images as $img) {
+                $src = $img->getAttribute('src');
 
-            if (preg_match('/data:image/', $src)) {
+                if (preg_match('/data:image/', $src)) {
 
-                preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
-                $mimetype = $groups['mime'];
+                    preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
+                    $mimetype = $groups['mime'];
 
-                $filename = uniqid();
-                $filepath = "/img/$filename.$mimetype";
+                    $filename = uniqid();
+                    $filepath = "/img/$filename.$mimetype";
 
-                $image = Image::make($src)
-                    ->encode($mimetype, 100)
-                    ->save(public_path($filepath));
+                    $image = Image::make($src)
+                        ->encode($mimetype, 100)
+                        ->save(public_path($filepath));
 
-                $new_src = asset($filepath);
-                $img->removeAttribute('src');
-                $img->setAttribute('src', $new_src);
+                    $new_src = asset($filepath);
+                    $img->removeAttribute('src');
+                    $img->setAttribute('src', $new_src);
 
-                Photo::create([
-                    'path' => $filename . '.' . $mimetype,
-                    'type' => 'event_content_media',
-                    'uploaded_by_user_id' => Auth::user()->id,
-                ]);
+                    Photo::create([
+                        'path' => $filename . '.' . $mimetype,
+                        'type' => 'event_content_media',
+                        'uploaded_by_user_id' => Auth::user()->id,
+                    ]);
+                }
             }
+            $input['details'] = $dom->saveHTML();
         }
-        $input['details'] = $dom->saveHTML();
 
         // Event creation
         $event->create($input);
@@ -139,6 +144,9 @@ class EventController extends Controller
     public function update(Request $request, $slug)
     {
         $input = $request->all();
+        $input['event_date'] = strtotime($input['event_date']);
+        $input['end_date'] = strtotime($input['end_date']);
+
         $event = Event::whereSlug($slug)->firstOrFail();
 
         // Event Image
@@ -161,37 +169,39 @@ class EventController extends Controller
         }
 
         // Event Content Images
-        $dom = new DomDocument();
-        $dom->loadHtml($request->details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $images = $dom->getElementsByTagName('img');
+        if ($request->details) {
+            $dom = new DomDocument();
+            $dom->loadHtml($request->details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            $images = $dom->getElementsByTagName('img');
 
-        foreach ($images as $img) {
-            $src = $img->getAttribute('src');
+            foreach ($images as $img) {
+                $src = $img->getAttribute('src');
 
-            if (preg_match('/data:image/', $src)) {
+                if (preg_match('/data:image/', $src)) {
 
-                preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
-                $mimetype = $groups['mime'];
+                    preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
+                    $mimetype = $groups['mime'];
 
-                $filename = uniqid();
-                $filepath = "/img/$filename.$mimetype";
+                    $filename = uniqid();
+                    $filepath = "/img/$filename.$mimetype";
 
-                $image = Image::make($src)
-                    ->encode($mimetype, 100)
-                    ->save(public_path($filepath));
+                    $image = Image::make($src)
+                        ->encode($mimetype, 100)
+                        ->save(public_path($filepath));
 
-                $new_src = asset($filepath);
-                $img->removeAttribute('src');
-                $img->setAttribute('src', $new_src);
+                    $new_src = asset($filepath);
+                    $img->removeAttribute('src');
+                    $img->setAttribute('src', $new_src);
 
-                Photo::create([
-                    'path' => $filename . '.' . $mimetype,
-                    'type' => 'event_content_media',
-                    'uploaded_by_user_id' => Auth::user()->id,
-                ]);
+                    Photo::create([
+                        'path' => $filename . '.' . $mimetype,
+                        'type' => 'event_content_media',
+                        'uploaded_by_user_id' => Auth::user()->id,
+                    ]);
+                }
             }
+            $input['details'] = $dom->saveHTML();
         }
-        $input['details'] = $dom->saveHTML();
 
         // Event update
         $event->update($input);

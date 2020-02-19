@@ -20,7 +20,8 @@ class CreateEventsTable extends Migration
             $table->string('name');
             $table->string('slug');
             $table->timestamp('event_date')->nullable();
-            $table->double('price');
+            $table->timestamp('end_date')->nullable();
+            $table->double('price')->default(0);
             $table->text('details')->nullable();
             $table->json('data')->nullable();
             $table->timestamps();

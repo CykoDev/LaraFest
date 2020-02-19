@@ -38,6 +38,9 @@
             </div>
             <p class="text-muted small">Created On: {{ $event->created_at->isoFormat('D MMMM, Y') }}</p>
             <p class="text-muted small">Updated On: {{ $event->updated_at->isoFormat('D MMMM, Y') }}</p>
+            <br>
+            <p class="text-muted small">Starts At: {{ $event->event_date->isoFormat('D MMMM, Y | hh:mm:ss') }}</p>
+            <p class="text-muted small">Ends At: {{ $event->end_date->isoFormat('D MMMM, Y') }}</p>
             <section class="my-5">
                 <h5 class="text-primary">Active Discount</h5>
                 @if($event->discount)
@@ -69,7 +72,7 @@
             </section>
             <section class="my-5">
                 <h5 class="text-primary">Event Details</h5>
-                <p class="px-4">{{ $event->details }}</p>
+                <p class="px-4">{!! $event->details !!}</p>
             </section>
         </div>
     </div>

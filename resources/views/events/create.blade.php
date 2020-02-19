@@ -33,6 +33,16 @@
             </div>
 
             <div class="form-group">
+                {!! Form::label('price', 'Event Price (optional): ') !!}
+                {!! Form::number('price', 0, ['class'=>'form-control', 'min'=>0]) !!}
+                @error('price')
+                    <span class="text-danger small">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+
+            <div class="form-group">
                 <label for="event_date">Event Date/Time: </label>
                 <br>
                 <input type="datetime-local" name="event_date">

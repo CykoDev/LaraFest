@@ -15,12 +15,13 @@ class Event extends Model
     protected $currencySymbol = 'Rs.';
 
     protected $fillable = [
-        'name', 'event_date', 'end_date', 'photo_id', 'data', 'details', 'event_type_id',
+        'name', 'event_date', 'end_date', 'photo_id', 'data', 'details', 'event_type_id', 'price',
     ];
 
     protected $casts = [
         'data' => 'array',
         'event_date' => 'datetime',
+        'end_date' => 'datetime',
     ];
 
     /**
