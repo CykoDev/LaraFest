@@ -25,8 +25,8 @@
         <th>{!! Form::checkbox('options', null, null, ['class'=>'checkAll']) !!}</th>
         <th>ID</th>
         <th>Thumbnail</th>
-        <th>Type</th>
-        <th>Size</th>
+        {{-- <th>Type</th>
+        <th>Size</th> --}}
         <th>Purpose</th>
         <th>Uploaded By</th>
         <th>Uploaded At</th>
@@ -45,8 +45,8 @@
                         <img src='{{ $photo->path }}' class="rounded" width=50 height=40>
                     </a>
                 </td>
-                <td><small>{{ File::mimeType(public_path().$photo->path) }}</small></td>
-                <td><small>{{ $photo->getSize() }}</small></td>
+                {{-- <td><small>{{ File::mimeType(public_path().$photo->path) }}</small></td> --}}
+                {{-- <td><small>{{ $photo->getSize() }}</small></td> --}}
                 <td><small>{{ str_replace('_', ' ', $photo->type) }}</small></td>
                 <td><small><a href="{{ route('users.edit', $photo->user->slug) }}">{{ $photo->user->name }}</a></small></td>
                 <td><small>{{ $photo->created_at->diffForHumans() }}</small></td>
