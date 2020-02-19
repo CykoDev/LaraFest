@@ -53,7 +53,11 @@
                 </div>
                 <div class="card-body">
                     @foreach(Auth::user()->package->events(Auth::id()) as $event)
-                        <p>{{ $event->name }}</p>
+                        <p>
+                            <a class="text-primary" href="{{ route('events.view', $event->slug) }}" target="_blank">
+                                {{ $event->name }}
+                            </a>
+                        </p>
                     @endforeach
                 </div>
             </div>
@@ -63,7 +67,11 @@
                 </div>
                 <div class="card-body">
                     @foreach(Auth::user()->events as $event)
-                        <p>{{ $event->name }}</p>
+                        <p>
+                            <a class="text-primary" href="{{ route('events.view', $event->slug) }}" target="_blank">
+                                {{ $event->name }}
+                            </a>
+                        </p>
                     @endforeach
                 </div>
             </div>

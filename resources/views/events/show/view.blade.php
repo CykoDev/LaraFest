@@ -60,19 +60,21 @@
 
                 @endphp
                 @if (!$overlap)
-                    <?php $enrolled = false; ?>
+                    @php ($enrolled = false)
                     @if (Auth::user()->events->contains($event))
                         {!! Form::open(['method'=>'POST', 'action'=>['EventController@unEnroll', $event->slug]]) !!}
                             <div class="form=group">
                                 {!! Form::submit('UNENROLL', ['class'=>'btn btn-warning mr-5 px-5']) !!}
                             </div>
                         {!! Form::close() !!}
-                        <?php $enrolled = true; ?>
+                        @php ($enrolled = true)
 
                     @elseif (Auth::user()->package()->exists())
                         @if (Auth::user()->package->events()->where('user_id', '=', Auth::user()->id)->get()->contains($event))
-                            <p>You are enrolled in this event through the package.</p>
-                            <?php $enrolled = true; ?>
+                            <h6 class="text-success font-weight-bold">
+                                You are enrolled in this event through the package.
+                            </h6    >
+                            @php ($enrolled = true)
                         @endif
                     @endif
                     @if (!$enrolled)
@@ -83,7 +85,12 @@
                         {!! Form::close() !!}
                     @endif
                 @else
-                        <p>This event clashes in timing with <a href="{{ route('events.view', $overlapEvent->slug) }}" target="_blank">{{ $overlapEvent->name }}</a></p>
+                        <h6 class="text-danger">
+                            This event clashes in timing with Event:
+                            <a href="{{ route('events.view', $overlapEvent->slug) }}" target="_blank">
+                                {{ $overlapEvent->name }}
+                            </a>
+                        </h6>
                 @endif
             </div>
         </div>

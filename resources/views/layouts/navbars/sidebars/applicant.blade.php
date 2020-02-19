@@ -9,12 +9,19 @@
     </a>
 </li>
 
-<li class="nav-item">
-    <a class="nav-link" href="{{ route('events.browse') }}">
-        <i class="fas fa-calendar-alt"></i>
-        <span>Browse Events</span>
-    </a>
-</li>
+
+@if(Auth::user()->data['registration_type'])
+    @if(Auth::user()->data['registration_type'] == 'nustian' || Auth::user()->package()->exists())
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('events.browse') }}">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Browse Events</span>
+        </a>
+    </li>
+
+    @endif
+@endif
 
 <li class="nav-item">
     <a class="nav-link collapsed" href="" data-toggle="collapse" data-target="#manageexpenses" aria-expanded="true" aria-controls="manageexpenses">
