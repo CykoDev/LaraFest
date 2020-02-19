@@ -20,6 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $defaultImage = 'defaults/user.png';
     protected $imageFolder = 'users/';
+    protected $accomodationPrice = 1200;
 
     /**
      * The attributes that are mass assignable.
@@ -77,6 +78,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return '/img/' . $this->defaultImage;
     }
 
+    public function getAccomodationPrice($value)
+    {
+
+        return $this->accomodationPrice;
+    }
+
     public function getImageFolderAttribute($value)
     {
 
@@ -132,7 +139,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function invoiceProof()
     {
-        return $this->belongsTo('App\Photo', 'invoice_proof');
+        return $this->belongsTo('App\Photo', 'invoice_proof_id');
     }
 
     public function events($eventType = null)

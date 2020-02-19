@@ -255,7 +255,12 @@
                             </span>
                         </div>
                         <div class="col-7">
-                            {!! Form::select('data[accommodation]', [''=>'choose', 'yes'=> 'Sign me up!', 'no'=> 'Eh na I\'m fine'], null, ['class'=>'form-control']) !!}
+                            {!! Form::select('data[accommodation]', [
+                                ''=>'choose',
+                                'yes'=> 'Sign me up!',
+                                'no' => 'Eh na I\'m fine',
+                                'external' => 'I dont want to stay inside NUST',
+                                ], null, ['class'=>'form-control']) !!}
                             @error('data.accommodation')
                                 <span class="text-danger small">
                                     <strong>{{ $message }}</strong>

@@ -62,7 +62,7 @@ class ApplicantProfileRequest extends FormRequest
                         'required', 'max:255', 'email:rfc,dns',
                         Rule::unique('users')->ignore($this->id),
                     ],
-                    'photo_id' => 'required|image|mimes:jpeg,bmp,png|size:200',
+                    'photo_id' => 'required|image|mimes:jpeg,bmp,png|max:2000',
 
                     'data.full_name' => 'required|string|max:255',
                     'data.cms_id' => 'required|numeric|digits:6',
@@ -84,7 +84,7 @@ class ApplicantProfileRequest extends FormRequest
                         'required', 'max:255', 'email:rfc,dns',
                         Rule::unique('users')->ignore($this->id),
                     ],
-                    'photo_id' => 'required|image|mimes:jpeg,bmp,png|size:200',
+                    'photo_id' => 'required|image|mimes:jpeg,bmp,png|max:2000',
 
                     'data.full_name' => 'required|string|max:255',
                     'data.date_of_birth' => 'required|date',
@@ -111,7 +111,7 @@ class ApplicantProfileRequest extends FormRequest
                         'required', 'max:255', 'email:rfc,dns',
                         Rule::unique('users')->ignore($this->id),
                     ],
-                    'photo_id' => 'required|image|mimes:jpeg,bmp,png|size:200',
+                    'photo_id' => 'required|image|mimes:jpeg,bmp,png|max:2000',
 
                     'data.full_name' => 'required|string|max:255',
                     'data.cnic' => 'required|numeric',

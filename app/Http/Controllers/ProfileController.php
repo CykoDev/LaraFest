@@ -138,10 +138,17 @@ class ProfileController extends Controller
         if ($request->data['accomodation']) {
             switch ($request->data['accomodation']) {
                 case 'yes':
-
+                    if (!$user->expenses()->whereName('accomodation')->first()) {
+                        $user->expenses->create([
+                            'name' => 'accomodation',
+                            'price' => $user->accomodationPrice,
+                        ]);
+                    }
                     break;
-                case 'no':
-
+                default:
+                    if ($user->expenses()->whereName('accomodation')->first()) {
+                        $user->expenses()->whereName('accomodation')->delete();
+                    }
                     break;
             }
         }
@@ -244,29 +251,33 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
-        $user->package()->detach();
-
-        if ($user->events)
-        {
-            foreach($user->events as $event)
-            {
+        if ($user->events) {
+            foreach ($user->events as $event) {
                 $user->events()->detach($event);
             }
         }
 
-        if ($user->expenses)
-        {
-            foreach($user->expenses as $expense)
-            {
+        if ($user->expenses) {
+            foreach ($user->expenses as $expense) {
                 $user->expenses()->delete($expense);
             }
         }
+        if ($user->invoiceProof) {
+            $proof = Photo::findOrFail($user->invoiceProof->id);
+            unlink(public_path() . $proof->path);
+            $user->invoiceProof->delete();
+        }
+        if ($user->photo) {
+            $photo = Photo::findOrFail($user->photo->id);
+            unlink(public_path() . $photo->path);
+            $user->photo->delete();
+        }
 
-        $proof = Photo::findOrFail($user->invoiceProof->id);
-        unlink(public_path() . $proof->path);
-        $proof->delete();
-
-        $user->update(['payment_status' => 'unpaid', 'profile_created_at' => null]);
+        $user->update([
+            'payment_status' => 'unpaid',
+            'profile_completed_at' => null,
+            'package_id' => null,
+        ]);
 
         return redirect(route('dashboard'));
     }

@@ -29,7 +29,7 @@
                                 <div class="card-body">
                                     <h5 class="text-primary">{{ ucwords(mb_strimwidth($event->name, 0, 100, "...")) }}</h5>
                                     <small>{{ $event->type->name }}</small>
-                                    <p class="card-text">{{ mb_strimwidth($event->details, 0, 100, "...") }}</p>
+                                    <p class="card-text text-warning">Price: {{$event->currencySymbol }}  {{ $event->price }}</p>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="btn-group">
                                             <a href="{{ route('events.view', $event->slug) }}" target="_blank" class="btn btn-sm btn-outline-secondary">View</a>

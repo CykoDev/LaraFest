@@ -20,7 +20,7 @@ class ProfileUpdateRequest extends FormRequest
     public function rules()
     {
         $rules =  [
-            'photo_id'  => 'required|image|mimes:jpeg,bmp,png|size:2000',
+            'photo_id'  => 'required|image|mimes:jpeg,bmp,png|max:2000',
             'name'      => [
                 'required', 'string', 'max:255',
                 Rule::unique('users')->ignore($this->id),
