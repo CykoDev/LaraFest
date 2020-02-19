@@ -24,19 +24,29 @@ class PackageController extends Controller
     public function enroll(Request $request, $route)
     {
         $user = Auth::user();
+
+        if ($user->package()->exists()) {
+
+            $user->update(['package_id' => null]);
+            $user->expenses()->where('expendable_type', 'App/Package')->delete();
+        }
+
         $package = Package::findOrFail($request->packageId);
         $user->package()->associate($package)->save();
+
         if ($request->eventIds) {
             foreach ($request->eventIds as $id) {
                 $event = Event::findOrFail($id);
                 $user->package()->events()->save($event, ['user_id' => $user->id]);
             }
         }
+
         $package->expense()->create([
             'price' => $package->price,
             'user_id' => $user->id,
             'name' => 'Package: ' . $package->name,
         ]);
+
         return redirect(route($route));
     }
 
