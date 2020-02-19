@@ -277,6 +277,7 @@ class ProfileController extends Controller
             'payment_status' => 'unpaid',
             'profile_completed_at' => null,
             'package_id' => null,
+            'data' => null,
         ]);
 
         return redirect(route('dashboard'));

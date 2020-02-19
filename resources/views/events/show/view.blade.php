@@ -32,46 +32,27 @@
             <p class="mb-3 text-primary px-5 font-weight-bold">Price: {{$event->currencySymbol }}  {{ $event->price }}</p>
             <p class="px-5">{!! $event->details !!}</p>
             <div class="text-right">
-                @php
-                    $overlap = false;
-                    $overlapEvent;
-                    foreach (Auth::user()->events as $e) {
-                        if ($event->event_date->lte($e->end_date) && $event->end_date->gte($e->event_date)) {
-                            $overlap = true;
-                            $overlapEvent = $e;
-                            break;
-                        }
-                    }
-                    if (!$overlap && Auth::user()->package()->exists()) {
-                        foreach (Auth::user()->package->events()->where('user_id', Auth::user()->id)->get() as $e) {
-                            if ($event->event_date->lte($e->end_date) && $event->end_date->gte($e->event_date)) {
-                                $overlap = true;
-                                $overlapEvent = $e;
-                                break;
-                            }
-                        }
-                    }
-                @endphp
-                @if (!$overlap)
-                    @if (Auth::user()->events->contains($event))
-                        {!! Form::open(['method'=>'POST', 'action'=>['EventController@unEnroll', $event->slug]]) !!}
-                            <div class="form=group">
-                                {!! Form::submit('UNENROLL', ['class'=>'btn btn-warning mr-5 px-5']) !!}
-                            </div>
-                        {!! Form::close() !!}
-                    @elseif (Auth::user()->package()->exists())
-                        @if (Auth::user()->package->events->where('user_id', Auth::user()->id)->get()->contains($event))
-                            <p>You are enrolled in this event through the package.</p>
-                        @endif
+                @if (Auth::user()->events->contains($event))
+                    {!! Form::open(['method'=>'POST', 'action'=>['EventController@unEnroll', $event->slug]]) !!}
+                    {!! Form::submit('Un-enroll', ['class'=>'btn btn-sm btn-outline-warning']) !!}
+                    {!! Form::close() !!}
+                @elseif (!Auth::user()->package->events()->where('user_id', '=', Auth::user()->id)->get()->contains($event))
+                    @if ($overlap = $event->checkConflict(Auth::user()->id))
+                        <h6 class="text-danger">
+                            This event clashes in timing with Event:
+                            <a href="{{ route('events.view', $overlap->slug) }}" target="_blank">
+                                {{ $overlap->name }}
+                            </a>
+                        </h6>
                     @else
                         {!! Form::open(['method'=>'POST', 'action'=>['EventController@enroll', $event->slug]]) !!}
-                            <div class="form=group">
-                                {!! Form::submit('ENROLL', ['class'=>'btn btn-primary mr-5 px-5']) !!}
-                            </div>
+                        {!! Form::submit('Enroll', ['class'=>'btn btn-sm btn-outline-success']) !!}
                         {!! Form::close() !!}
                     @endif
                 @else
-                        <p>This event clashes in timing with <a href="{{ route('events.view', $overlapEvent->slug) }}" target="_blank">{{ $overlapEvent->name }}</a></p>
+                    <h6 class="text-success font-weight-bold">
+                        You are enrolled in this event through the package
+                    </h6>
                 @endif
             </div>
         </div>

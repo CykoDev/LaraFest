@@ -53,6 +53,7 @@
             <th><small class="font-weight-bold">Email</small></th>
             <th><small class="font-weight-bold">Contact</small></th>
             <th><small class="font-weight-bold">Payment Status</small></th>
+            <th><small class="font-weight-bold">Invoice ID</small></th>
             <th><small class="font-weight-bold">Registered At</small></th>
             @if (Auth::user()->role->name=='admin' ||  Auth::user()->role->name=='moderator')
                 <th><small class="font-weight-bold">Actions</small></th>
@@ -77,7 +78,7 @@
                         <small>{{ $user->email }}</small>
                     </a>
                 </td>
-                <td><small>{{ $user->data['mobile_no'] ? $user->data['mobile_no'] : 'N/A' }}</small></td>
+                <td><small>{{ isset($user->data['mobile_no']) ? $user->data['mobile_no'] : 'N/A' }}</small></td>
                 <td>
                     @if($user->payment_status == 'unpaid')
                         <small class="text-danger font-weight-bold">{{ $user->payment_status }}</small>
@@ -87,6 +88,7 @@
                         <small class="text-success font-weight-bold">{{ $user->payment_status }}</small>
                     @endif
                 </td>
+                <td><small>{{ substr(bin2hex($user->id.$user->name),0,10) }}</small></td>
                 <td><small>{{ $user->created_at->isoFormat('D MMMM, Y') }}</small></td>
                 @if (Auth::user()->role->name=='admin' ||  Auth::user()->role->name=='moderator')
                     <td>

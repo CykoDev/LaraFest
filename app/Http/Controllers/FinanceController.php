@@ -34,7 +34,7 @@ class FinanceController extends Controller
         $expenses = Expense::where('user_id', $user->id)->get();
         $total = 0;
         foreach ($expenses as $expense) $total += $expense->price;
-        $pdf = PDF::loadView('pdf.invoice', ['expenses' => $expenses, 'total' => $total])->setPaper('A4', 'landscape');
+        $pdf = PDF::loadView('pdf.invoice', ['expenses' => $expenses, 'total' => $total, 'user' => $user])->setPaper('A4', 'landscape');
         return $pdf->download('invoice.pdf');
     }
 

@@ -28,7 +28,7 @@ class PackageController extends Controller
         if ($user->package()->exists()) {
 
             $user->update(['package_id' => null]);
-            $user->expenses()->where('expendable_type', 'App/Package')->delete();
+            $user->expenses()->where('expendable_type', 'App\Package')->delete();
         }
 
         $package = Package::findOrFail($request->packageId);
@@ -37,7 +37,7 @@ class PackageController extends Controller
         if ($request->eventIds) {
             foreach ($request->eventIds as $id) {
                 $event = Event::findOrFail($id);
-                $user->package()->events()->save($event, ['user_id' => $user->id]);
+                $user->package->events()->save($event, ['user_id' => $user->id]);
             }
         }
 

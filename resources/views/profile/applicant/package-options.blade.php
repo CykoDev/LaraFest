@@ -23,7 +23,8 @@
                         <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 15rem;" src="{{ asset('img/public/undraw_book_reading_kx9s.svg') }}" alt="">
                     </div>
                     <p>
-                        package info
+                        {!! App\Package::whereName('Professional Package')->firstOrFail()->description !!}
+                        <br><br>Price: Rs. 1300
                     </p>
                     <br>
                     {!! Form::open(['method'=>'PATCH','action'=>['ProfileController@update', 'packages.view']]) !!}
@@ -46,7 +47,8 @@
                         <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 15rem;" src="{{ asset('img/public/undraw_reading_0re1.svg') }}" alt="">
                     </div>
                     <p>
-                        package info
+                        {!! App\Package::whereName('Non Nustian Package')->firstOrFail()->description !!}
+                        <br><br>Price: Rs. 1300
                     </p>
                     <br>
                     {!! Form::open(['method'=>'PATCH','action'=>['ProfileController@update', 'packages.view']]) !!}

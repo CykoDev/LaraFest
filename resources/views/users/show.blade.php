@@ -30,6 +30,7 @@
                             <sub>Email verified at {{ $user->email_verified_at->isoFormat('D MMMM, Y') }}</sub><br>
                             <sub>Signedup at {{ $user->created_at->isoFormat('D MMMM, Y') }}</sub><br>
                             <sub>Profile last updated at {{ $user->updated_at->isoFormat('D MMMM, Y') }}</sub><br>
+                            <sub class="text-primary">Invoice ID: {{ substr(bin2hex($user->id.$user->name),0,10) }}</sub><br>
                         </div>
                         <div class="col-4">
                             <div class="text-center">
@@ -39,7 +40,6 @@
                     </div>
                 </div>
             </div>
-
             @if($user->data)
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">

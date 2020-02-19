@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
-
+use App\User;
 class Event extends Model
 {
     use Sluggable;
@@ -111,5 +111,24 @@ class Event extends Model
     {
 
         return $this->belongsTo('App\EventType', 'event_type_id');
+    }
+
+    public function checkConflict($id) {
+        $user = User::find($id);
+        if ($user->events) {
+            foreach ($user->events as $event) {
+                if ($this->event_date->lte($event->end_date) && $this->end_date->gte($event->event_date)) {
+                    if ($event->id != $this->id) return $event;
+                }
+            }
+        }
+        if ($user->package()->exists()) {
+            foreach ($user->package->events()->where('user_id', $id)->get() as $event) {
+                if ($this->event_date->lte($event->end_date) && $this->end_date->gte($event->event_date)) {
+                    if ($event->id != $this->id) return $event;
+                }
+            }
+        }
+        return false;
     }
 }

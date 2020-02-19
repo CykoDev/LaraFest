@@ -44,44 +44,49 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td style="text-align: center;">
+            <tr style="text-align: center;">
+                <td colspan="2">Invoice Code: {{ substr(bin2hex($user->id.$user->name),0,10) }}</td>
+                <td colspan="2">Invoice Code: {{ substr(bin2hex($user->id.$user->name),0,10) }}</td>
+                <td colspan="2">Invoice Code: {{ substr(bin2hex($user->id.$user->name),0,10) }}</td>
+            </tr>
+            <tr style="text-align: center;">
+                <td>
                     <h4>Item</h4>
                 </td>
-                <td style="text-align: center;">
+                <td>
                     <h4>Price</h4>
                 </td>
-                <td style="text-align: center;">
+                <td>
                     <h4>Item</h4>
                 </td>
-                <td style="text-align: center;">
+                <td>
                     <h4>Price</h4>
                 </td>
-                <td style="text-align: center;">
+                <td>
                     <h4>Item</h4>
                 </td>
-                <td style="text-align: center;">
+                <td>
                     <h4>Price</h4>
                 </td>
             </tr>
             @foreach ($expenses as $expense)
-            <tr>
-                <td style="text-align: center;">
+            <tr style="text-align: center;">
+                <td>
                     <p>{{$expense->name}}</p>
                 </td>
-                <td style="text-align: center;">
+                <td>
                     <p>Rs. {{$expense->price}}</p>
                 </td>
-                <td style="text-align: center;">
+                <td>
                     <p>{{$expense->name}}</p>
                 </td>
-                <td style="text-align: center;">
+                <td>
                     <p>Rs. {{$expense->price}}</p>
                 </td>
-                <td style="text-align: center;">
+                <td>
                     <p>{{$expense->name}}</p>
                 </td>
-                <td style="text-align: center;">
+                <td>
                     <p>Rs. {{$expense->price}}</p>
                 </td>
             </tr>

@@ -51,8 +51,13 @@ class EventController extends Controller
 
     public function indexBrowse()
     {
-        $events = Event::paginate(9);
-        return view('events.index.browse', compact('events'));
+        if (Auth::user()->data['registration_type']) {
+            if (Auth::user()->data['registration_type'] == 'nustian' || Auth::user()->package()->exists()) {
+                $events = Event::paginate(9);
+                return view('events.index.browse', compact('events'));
+            }
+        }
+        return redirect()->back();
     }
 
     public function create()
