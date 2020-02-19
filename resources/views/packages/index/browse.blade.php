@@ -12,16 +12,6 @@
         <h1 class="h3 mb-0 text-gray-800">Browse Packages</h1>
     </div>
 
-    <div>
-        {!! Form::open(['method' => 'POST', 'action' => 'ProfileController@resetProfile', 'files' => false]) !!}
-            {!! Form::hidden('payment_status', 'unpaid') !!}
-            {!! Form::hidden('profile_created_at', null) !!}
-            <div class="form=group">
-                {!! Form::submit('Reset Profile', ['class'=>'btn btn-primary px-5']) !!}
-            </div>
-        {!! Form::close() !!}
-    </div>
-
     <div class="row mt-5">
         <div class="col-lg-4 mb-4">
             <div class="card shadow mb-4">
