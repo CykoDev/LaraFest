@@ -32,7 +32,7 @@
                     <h3>{{ ucwords($package->name) }}</h3>
                     <span class="font-weight-bold text-primary mt-2">Price:</span>
                     <span>{{ $package->currencySymbol.' '.$package->price }}</span>
-                    <p class="mt-3">{{ $package->description }}</p>
+                    <p class="mt-3">{!! $package->description !!}</p>
                 </div>
             </div>
         </div>

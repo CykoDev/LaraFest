@@ -20,7 +20,8 @@
                 </div>
                 <div class="card-body">
                     <p>
-                        package info
+                        {!! App\Package::whereName('Nustian Package')->firstOrFail()->description !!}
+                        <br>Price: Rs. 1000
                     </p>
                 </div>
             </div>

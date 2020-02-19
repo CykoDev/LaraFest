@@ -10,7 +10,7 @@
 </li>
 
 
-@if(Auth::user()->data['registration_type'])
+@if(isset(Auth::user()->data['registration_type']))
     @if(Auth::user()->data['registration_type'] == 'nustian' || Auth::user()->package()->exists())
 
     <li class="nav-item">

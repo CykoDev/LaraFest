@@ -76,6 +76,8 @@
                     <p>
                         If you study at NUST, this package is for you.
                     </p>
+                    {!! App\Package::whereName('Nustian Package')->firstOrFail()->description !!}
+                    <br><br>Price: Rs. 1000
                 </div>
             </div>
         </div>
@@ -92,6 +94,8 @@
                     <p>
                         Wait, you aren't a student? Choose this package.
                     </p>
+                    {!! App\Package::whereName('Professional Package')->firstOrFail()->description !!}
+                    <br><br>Price: Rs. 1300
                 </div>
             </div>
         </div>
@@ -108,6 +112,8 @@
                     <p>
                         You study outside NUST? This package is for you!
                     </p>
+                    {!! App\Package::whereName('Non Nustian Package')->firstOrFail()->description !!}
+                    <br><br>Price: Rs. 1300
                 </div>
             </div>
         </div>
