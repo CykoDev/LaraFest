@@ -5,15 +5,33 @@
 <div class="container-fluid">
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Admin Home</h1>
+        <h1 class="h3 mb-0 text-gray-800">Admin Dashboard</h1>
     </div>
 
     <div class="row">
         @include('layouts.components.card', [
             'textclass' => 'primary',
-            'title' => 'Users',
+            'title' => 'Total Users',
             'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
             'data' => $users->count(),
+        ])
+        @include('layouts.components.card', [
+            'textclass' => 'info',
+            'title' => 'Applicants',
+            'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
+            'data' => $roles->where('name','=','applicant')->pluck('userCount')[0],
+        ])
+        @include('layouts.components.card', [
+            'textclass' => 'warning',
+            'title' => 'Moderators',
+            'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
+            'data' => $roles->where('name','=','moderator')->pluck('userCount')[0],
+        ])
+        @include('layouts.components.card', [
+            'textclass' => 'success',
+            'title' => 'Monitors',
+            'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
+            'data' => $roles->where('name','=','monitor')->pluck('userCount')[0],
         ])
     </div>
 

@@ -11,19 +11,38 @@ use \DOMDocument;
 use App\Photo;
 use App\Event;
 use App\EventType;
+use App\Discount;
 
 class EventController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('applicant')->only('indexBrowse');
+        $this->middleware('applicant')->only('indexBrowse', 'enroll', 'unEnroll', 'showView');
+        $this->middleware('monitor')->only('index', 'show');
+        $this->middleware('moderator')->only('createDiscount', 'storeDiscount', 'destroyDiscount');
+        $this->middleware('moderator')->except('index', 'show', 'indexBrowse', 'enroll', 'unEnroll', 'showView');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function enroll($slug)
+    {
+        $event = Event::whereSlug($slug)->firstOrFail();
+        Auth::user()->events()->save($event, ['user_id' => Auth::id()]);
+        $event->expense()->create([
+            'price' => $event->price,
+            'user_id' => Auth::id(),
+            'name' => 'Event: ' . $event->name,
+        ]);
+        return redirect()->back();
+    }
+
+    public function unEnroll($slug)
+    {
+        $event = Event::whereSlug($slug)->firstOrFail();
+        Auth::user()->events()->detach($event);
+        Auth::user()->expenses()->where('expendable_id', '=', $event->id)->delete();
+        return redirect()->back();
+    }
+
     public function index()
     {
         $events = Event::all();
@@ -32,29 +51,27 @@ class EventController extends Controller
 
     public function indexBrowse()
     {
-        return view('events.index.browse');
+        if (Auth::user()->data['registration_type']) {
+            if (Auth::user()->data['registration_type'] == 'nustian' || Auth::user()->package()->exists()) {
+                $events = Event::paginate(9);
+                return view('events.index.browse', compact('events'));
+            }
+        }
+        return redirect()->back();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $types = EventType::pluck('name', 'id')->all();
         return view('events.create', compact('types'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $input = $request->all();
+        $input['event_date'] = strtotime($input['event_date']);
+        $input['end_date'] = strtotime($input['end_date']);
+
         $event = new Event;
 
         // Event Image
@@ -71,61 +88,57 @@ class EventController extends Controller
         }
 
         // Event Content Images
-        $dom = new DomDocument();
-        $dom->loadHtml($request->details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $images = $dom->getElementsByTagName('img');
+        if ($request->details) {
+            $dom = new DomDocument();
+            $dom->loadHtml($request->details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            $images = $dom->getElementsByTagName('img');
 
-        foreach ($images as $img) {
-            $src = $img->getAttribute('src');
+            foreach ($images as $img) {
+                $src = $img->getAttribute('src');
 
-            if (preg_match('/data:image/', $src)) {
+                if (preg_match('/data:image/', $src)) {
 
-                preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
-                $mimetype = $groups['mime'];
+                    preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
+                    $mimetype = $groups['mime'];
 
-                $filename = uniqid();
-                $filepath = "/img/$filename.$mimetype";
+                    $filename = uniqid();
+                    $filepath = "/img/$filename.$mimetype";
 
-                $image = Image::make($src)
-                    ->encode($mimetype, 100)
-                    ->save(public_path($filepath));
+                    $image = Image::make($src)
+                        ->encode($mimetype, 100)
+                        ->save(public_path($filepath));
 
-                $new_src = asset($filepath);
-                $img->removeAttribute('src');
-                $img->setAttribute('src', $new_src);
+                    $new_src = asset($filepath);
+                    $img->removeAttribute('src');
+                    $img->setAttribute('src', $new_src);
 
-                Photo::create([
-                    'path' => $filename . '.' . $mimetype,
-                    'type' => 'event_content_media',
-                    'uploaded_by_user_id' => Auth::user()->id,
-                ]);
+                    Photo::create([
+                        'path' => $filename . '.' . $mimetype,
+                        'type' => 'event_content_media',
+                        'uploaded_by_user_id' => Auth::user()->id,
+                    ]);
+                }
             }
+            $input['details'] = $dom->saveHTML();
         }
-        $input['details'] = $dom->saveHTML();
 
         // Event creation
         $event->create($input);
         return redirect(route('events.index'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show($slug)
     {
-        $event = Event::findOrFail($id);
-        return view('events.show', compact('event'));
+        $event = Event::whereSlug($slug)->firstOrFail();
+        return view('events.show.info', compact('event'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function showView($slug)
+    {
+        $event = Event::whereSlug($slug)->firstOrFail();
+        return view('events.show.view', compact('event'));
+    }
+
     public function edit($slug)
     {
         $event = Event::whereSlug($slug)->firstOrFail();
@@ -133,16 +146,12 @@ class EventController extends Controller
         return view('events.edit', compact('event', 'types'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $slug)
     {
         $input = $request->all();
+        $input['event_date'] = strtotime($input['event_date']);
+        $input['end_date'] = strtotime($input['end_date']);
+
         $event = Event::whereSlug($slug)->firstOrFail();
 
         // Event Image
@@ -165,37 +174,39 @@ class EventController extends Controller
         }
 
         // Event Content Images
-        $dom = new DomDocument();
-        $dom->loadHtml($request->details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $images = $dom->getElementsByTagName('img');
+        if ($request->details) {
+            $dom = new DomDocument();
+            $dom->loadHtml($request->details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            $images = $dom->getElementsByTagName('img');
 
-        foreach ($images as $img) {
-            $src = $img->getAttribute('src');
+            foreach ($images as $img) {
+                $src = $img->getAttribute('src');
 
-            if (preg_match('/data:image/', $src)) {
+                if (preg_match('/data:image/', $src)) {
 
-                preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
-                $mimetype = $groups['mime'];
+                    preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
+                    $mimetype = $groups['mime'];
 
-                $filename = uniqid();
-                $filepath = "/img/$filename.$mimetype";
+                    $filename = uniqid();
+                    $filepath = "/img/$filename.$mimetype";
 
-                $image = Image::make($src)
-                    ->encode($mimetype, 100)
-                    ->save(public_path($filepath));
+                    $image = Image::make($src)
+                        ->encode($mimetype, 100)
+                        ->save(public_path($filepath));
 
-                $new_src = asset($filepath);
-                $img->removeAttribute('src');
-                $img->setAttribute('src', $new_src);
+                    $new_src = asset($filepath);
+                    $img->removeAttribute('src');
+                    $img->setAttribute('src', $new_src);
 
-                Photo::create([
-                    'path' => $filename . '.' . $mimetype,
-                    'type' => 'event_content_media',
-                    'uploaded_by_user_id' => Auth::user()->id,
-                ]);
+                    Photo::create([
+                        'path' => $filename . '.' . $mimetype,
+                        'type' => 'event_content_media',
+                        'uploaded_by_user_id' => Auth::user()->id,
+                    ]);
+                }
             }
+            $input['details'] = $dom->saveHTML();
         }
-        $input['details'] = $dom->saveHTML();
 
         // Event update
         $event->update($input);
@@ -206,12 +217,6 @@ class EventController extends Controller
         return redirect(route('events.index'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $event = Event::findOrFail($id);
@@ -225,5 +230,25 @@ class EventController extends Controller
             'message' => 'Event successfully deleted',
         ]);
         return redirect(route('events.index'));
+    }
+
+    public function createDiscount($id)
+    {
+        $event = Event::findOrFail($id);
+        return view('events.discounts.create', compact('event'));
+    }
+
+    public function storeDiscount(Request $request)
+    {
+        $event = Event::findOrFail($request->eventId);
+        if ($event->discount) $event->discount()->delete();
+        $event->discount()->create($request->all());
+        return redirect(route('events.show', $event->slug));
+    }
+
+    public function destroyDiscount($id)
+    {
+        Discount::findOrFail($id)->delete();
+        return redirect()->back();
     }
 }

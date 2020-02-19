@@ -15,17 +15,34 @@ class Package extends Model
         'name', 'price', 'description', 'data',
     ];
 
+    protected $casts = [
+        'data' => 'array',
+    ];
+
     public function getCurrencySymbolAttribute($value)
     {
-
         return $this->currencySymbol;
     }
 
-    public function discount() {
+    public function getPriceAttribute($value)
+    {
+        if ($this->discount) {
+            if ($this->discount->expiry_at->isPast()) {
+                $this->discount->delete();
+            } else {
+                return $value - ($value * $this->discount->amount / 100);
+            }
+        }
+        return $value;
+    }
+
+    public function discount()
+    {
         return $this->morphOne('App\Discount', 'discountable');
     }
 
-    public function expense() {
+    public function expense()
+    {
         return $this->morphOne('App\Expense', 'expendable');
     }
 
@@ -44,16 +61,21 @@ class Package extends Model
         ];
     }
 
-    public function users(){
-
+    public function users()
+    {
         return $this->hasMany('App\User');
     }
 
-    public function events() {
+    public function events($userId = null)
+    {
+        if (isset($userId)) {
+            return $this->events()->where('user_id', '=', $userId)->get();
+        }
         return $this->morphToMany('App\Event', 'eventable');
     }
 
-    public function quotas(){
+    public function quotas()
+    {
 
         return $this->hasMany('App\PackageQuota');
     }

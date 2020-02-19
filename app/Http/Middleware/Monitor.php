@@ -16,14 +16,14 @@ class Monitor
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::check()){
+        if (Auth::check()) {
 
-            if (Auth::user()->isAdmin() || Auth::user()->isModerator() || Auth::user()->isMonitor()){
+            if (Auth::user()->isAdmin() || Auth::user()->isModerator() || Auth::user()->isMonitor()) {
 
                 return $next($request);
             }
         }
 
-        return redirect(route('dashboard'));
+        abort(401);
     }
 }

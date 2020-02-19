@@ -18,26 +18,41 @@
     @endslot
     @slot('headings')
         <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Users</th>
-        <th>Description</th>
-        <th>Created At</th>
-        <th>Updated At</th>
+        <th><small class="font-weight-bold">Name</small></th>
+        <th><small class="font-weight-bold">Price</small></th>
+        <th><small class="font-weight-bold">Users</small></th>
+        <th><small class="font-weight-bold">Description</small></th>
+        <th><small class="font-weight-bold">Created At</small></th>
+        <th><small class="font-weight-bold">Updated At</small></th>
+        <th><small class="font-weight-bold">Actions</small></th>
+        <th><small class="font-weight-bold">Get Excel</small></th>
         </tr>
     @endslot
     @slot('body')
         @if($packages)
             @foreach($packages as $package)
             <tr>
-                <td>{{ $package->id }}</td>
-                <td><a href="{{ route('packages.edit', $package->slug) }}">{{ $package->name }}</a></td>
-                <td>{{ $package->currencySymbol }} {{ $package->price  }}</td>
-                <td>{{ $package->users->count() }}</td>
-                <td>{{ $package->description }}</td>
-                <td>{{ $package->created_at->diffForHumans() }}</td>
-                <td>{{ $package->updated_at->diffForHumans() }}</td>
+                <td>
+                    <a href="{{ route('packages.show', $package->slug) }}">
+                        <small>{{ $package->name }}</small>
+                    </a>
+                </td>
+                <td><small>{{ $package->currencySymbol }} {{ $package->price  }}</small></td>
+                <td><small>{{ $package->users->count() }}</small></td>
+                <td><small>{{ mb_strimwidth($package->description, 0, 40, "...") }}</small></td>
+                <td><small>{{ $package->created_at->diffForHumans() }}</small></td>
+                <td><small>{{ $package->updated_at->diffForHumans() }}</small></td>
+                <td>
+                    <a href="{{ route('packages.edit', $package->slug) }}" class="btn btn-default p-0 text-primary">
+                        <small class="font-weight-bold">Edit</small>
+                    </a>
+                </td>
+                <td>
+                    {!! Form::open(['method'=>'POST', 'action'=>['ExportController@exportPackageApplicants', $package->id]]) !!}
+                    {!! Form::button('<i class="fas fa-download fa-sm text-white-50"></i> <small>Generate Excel</small>',
+                        ['type'=>'submit', 'class'=>'d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm']) !!}
+                    {!! Form::close() !!}
+                </td>
             </tr>
             @endforeach
         @endif
