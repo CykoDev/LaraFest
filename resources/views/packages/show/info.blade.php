@@ -157,7 +157,7 @@
                         <small>{{ $user->email }}</small>
                     </a>
                 </td>
-                <td><small>{{ $user->data['mobile_no'] ? $user->data['mobile_no'] : 'N/A' }}</small></td>
+                <td><small>{{ isset($user->data['mobile_no']) ? $user->data['mobile_no'] : 'N/A' }}</small></td>
             </tr>
             @endforeach
         @endif

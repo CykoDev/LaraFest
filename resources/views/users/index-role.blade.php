@@ -77,7 +77,7 @@
                         <small>{{ $user->email }}</small>
                     </a>
                 </td>
-                <td><small>{{ $user->data['mobile_no'] ? $user->data['mobile_no'] : 'N/A' }}</small></td>
+                <td><small>{{ isset($user->data['mobile_no']) ? $user->data['mobile_no'] : 'N/A' }}</small></td>
                 <td>
                     @if($user->payment_status == 'unpaid')
                         <small class="text-danger font-weight-bold">{{ $user->payment_status }}</small>

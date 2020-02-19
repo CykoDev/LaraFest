@@ -35,10 +35,10 @@
                 @php
                     $overlap = false;
                     $overlapEvent;
-                    if (!Auth::user()->package->events()->where('user_id', '=', Auth::user()->id)->get()->contains($event)) {
+                    if (!Auth::user()->package->events()->where('user_id', '=', Auth::user()->id)->get()->contains($event) && !Auth::user()->events->contains($event)) {
                         foreach (Auth::user()->events as $e) {
                             if ($event->event_date->lte($e->end_date) && $event->end_date->gte($e->event_date)) {
-                                if ($event != $e) {
+                                if ($event->id != $e->id) {
                                     $overlap = true;
                                     $overlapEvent = $e;
                                     break;
@@ -48,7 +48,7 @@
                         if (!$overlap && Auth::user()->package()->exists()) {
                             foreach (Auth::user()->package->events()->where('user_id', Auth::user()->id)->get() as $e) {
                                 if ($event->event_date->lte($e->end_date) && $event->end_date->gte($e->event_date)) {
-                                    if ($event != $e) {
+                                    if ($event->id != $e->id) {
                                         $overlap = true;
                                         $overlapEvent = $e;
                                         break;
