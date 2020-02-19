@@ -28,7 +28,7 @@ class PackageController extends Controller
         if ($user->package()->exists()) {
 
             $user->update(['package_id' => null]);
-            $user->expenses()->where('expendable_type', 'App/Package')->delete();
+            $user->expenses()->where('expendable_type', 'App\Package')->delete();
         }
 
         $package = Package::findOrFail($request->packageId);
