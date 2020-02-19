@@ -40,7 +40,7 @@
 
                 <div class="form-group">
                     {!! Form::label('price', 'Event Price (optional): ') !!}
-                    {!! Form::number('price', 0, ['class'=>'form-control', 'min'=>0]) !!}
+                    {!! Form::number('price', null, ['class'=>'form-control', 'min'=>0]) !!}
                     @error('price')
                         <span class="text-danger small">
                             <strong>{{ $message }}</strong>

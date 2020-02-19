@@ -28,8 +28,8 @@
             'data' => $roles->where('name','=','moderator')->pluck('userCount')[0],
         ])
         @include('layouts.components.card', [
-            'textclass' => 'primary',
-            'title' => 'success',
+            'textclass' => 'success',
+            'title' => 'Monitors',
             'faIcon' => '<i class="fas fa-users fa-2x text-gray-300"></i>',
             'data' => $roles->where('name','=','monitor')->pluck('userCount')[0],
         ])

@@ -4,11 +4,17 @@
 
 <div class="container-fluid">
 
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <div class="d-sm-flex align-items-center justify-content-between mb-2">
         <h1 class="h3 mb-0 text-gray-800">Event Information</h1>
         <a href="{{ route('events.discounts.create', $event->id) }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-pen-fancy fa-sm text-white-50"></i>
             Create Discount
+        </a>
+    </div>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <span></span>
+        <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="{{ route('events.edit', $event->slug) }}">
+            <i class="fas fa-pen-fancy fa-sm text-white-50 mr-2"></i> Edit Event
         </a>
     </div>
 
@@ -40,7 +46,7 @@
             <p class="text-muted small">Updated On: {{ $event->updated_at->isoFormat('D MMMM, Y') }}</p>
             <br>
             <p class="text-muted small">Starts At: {{ $event->event_date->isoFormat('D MMMM, Y | hh:mm:ss') }}</p>
-            <p class="text-muted small">Ends At: {{ $event->end_date->isoFormat('D MMMM, Y') }}</p>
+            <p class="text-muted small">Ends At: {{ $event->end_date->isoFormat('D MMMM, Y | hh:mm:ss') }}</p>
             <section class="my-5">
                 <h5 class="text-primary">Active Discount</h5>
                 @if($event->discount)

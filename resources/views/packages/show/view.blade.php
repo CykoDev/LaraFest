@@ -53,7 +53,7 @@
                     @for($i = 0; $i < $quota->quota_amount; $i++)
                         <div class="form-group px-5 mx-5">
                             {!! Form::label('eventIds[]', $quota->eventType->name . ': ') !!}
-                            {!! Form::select('eventIds[]', $quota->eventType->events->pluck('title', 'id'), null, ['class'=>'form-control']) !!}
+                            {!! Form::select('eventIds[]', ['' => 'Choose'] + $quota->eventType->events->pluck('name', 'id')->all(), null, ['class'=>'form-control']) !!}
                             @error('eventIds[]')
                                 <span class="text-danger small">
                                     <strong>{{ $message }}</strong>

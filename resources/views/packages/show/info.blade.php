@@ -4,11 +4,17 @@
 
 <div class="container-fluid">
 
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <div class="d-sm-flex align-items-center justify-content-between mb-2">
         <h1 class="h3 mb-0 text-gray-800">Package Information</h1>
         <a href="{{ route('packages.discounts.create', $package->id) }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
             <i class="fas fa-pen-fancy fa-sm text-white-50"></i>
             Create Discount
+        </a>
+    </div>
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <span></span>
+        <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="{{ route('packages.edit', $package->slug) }}">
+            <i class="fas fa-pen-fancy fa-sm text-white-50 mr-2"></i> Edit Package
         </a>
     </div>
 
