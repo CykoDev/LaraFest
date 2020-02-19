@@ -35,35 +35,47 @@
                 @php
                     $overlap = false;
                     $overlapEvent;
-                    foreach (Auth::user()->events as $e) {
-                        if ($event->event_date->lte($e->end_date) && $event->end_date->gte($e->event_date)) {
-                            $overlap = true;
-                            $overlapEvent = $e;
-                            break;
-                        }
-                    }
-                    if (!$overlap && Auth::user()->package()->exists()) {
-                        foreach (Auth::user()->package->events()->where('user_id', Auth::user()->id)->get() as $e) {
+                    if (!Auth::user()->package->events()->where('user_id', '=', Auth::user()->id)->get()->contains($event)) {
+                        foreach (Auth::user()->events as $e) {
                             if ($event->event_date->lte($e->end_date) && $event->end_date->gte($e->event_date)) {
-                                $overlap = true;
-                                $overlapEvent = $e;
-                                break;
+                                if ($event != $e) {
+                                    $overlap = true;
+                                    $overlapEvent = $e;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!$overlap && Auth::user()->package()->exists()) {
+                            foreach (Auth::user()->package->events()->where('user_id', Auth::user()->id)->get() as $e) {
+                                if ($event->event_date->lte($e->end_date) && $event->end_date->gte($e->event_date)) {
+                                    if ($event != $e) {
+                                        $overlap = true;
+                                        $overlapEvent = $e;
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
+
                 @endphp
                 @if (!$overlap)
+                    <?php $enrolled = false; ?>
                     @if (Auth::user()->events->contains($event))
                         {!! Form::open(['method'=>'POST', 'action'=>['EventController@unEnroll', $event->slug]]) !!}
                             <div class="form=group">
                                 {!! Form::submit('UNENROLL', ['class'=>'btn btn-warning mr-5 px-5']) !!}
                             </div>
                         {!! Form::close() !!}
+                        <?php $enrolled = true; ?>
+
                     @elseif (Auth::user()->package()->exists())
-                        @if (Auth::user()->package->events->where('user_id', Auth::user()->id)->get()->contains($event))
+                        @if (Auth::user()->package->events()->where('user_id', '=', Auth::user()->id)->get()->contains($event))
                             <p>You are enrolled in this event through the package.</p>
+                            <?php $enrolled = true; ?>
                         @endif
-                    @else
+                    @endif
+                    @if (!$enrolled)
                         {!! Form::open(['method'=>'POST', 'action'=>['EventController@enroll', $event->slug]]) !!}
                             <div class="form=group">
                                 {!! Form::submit('ENROLL', ['class'=>'btn btn-primary mr-5 px-5']) !!}

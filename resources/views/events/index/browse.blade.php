@@ -50,7 +50,7 @@
                                                     }
                                                 }
                                             @endphp
-                                            @if (!$overlap || !Auth::user()->package->events->where('user_id', Auth::user()->id)->get()->contains($event))
+                                            @if (!$overlap || !Auth::user()->package->events()->where('user_id', Auth::user()->id)->get()->contains($event))
                                                 @if (Auth::user()->events->contains($event))
                                                     {!! Form::open(['method'=>'POST', 'action'=>['EventController@unEnroll', $event->slug]]) !!}
                                                     {!! Form::submit('Un-enroll', ['class'=>'btn btn-sm btn-outline-warning']) !!}
