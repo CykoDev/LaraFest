@@ -29,6 +29,7 @@
                 height: 300px;
             " class="mb-5">
             <p class="mb-3 text-primary px-5 font-weight-bold">Kickstarting on {{$event->event_date->isoFormat('D MMMM, Y') }}</p>
+            <p class="mb-3 text-primary px-5 font-weight-bold">Price: {{$event->currencySymbol }}  {{ $event->price }}</p>
             <p class="px-5">{!! $event->details !!}</p>
             <div class="text-right">
                 @php
@@ -41,7 +42,7 @@
                             break;
                         }
                     }
-                    if (!$overlap) {
+                    if (!$overlap && Auth::user()->package()->exists()) {
                         foreach (Auth::user()->package->events()->where('user_id', Auth::user()->id)->get() as $e) {
                             if ($event->event_date->lte($e->end_date) && $event->end_date->gte($e->event_date)) {
                                 $overlap = true;
@@ -58,8 +59,10 @@
                                 {!! Form::submit('UNENROLL', ['class'=>'btn btn-warning mr-5 px-5']) !!}
                             </div>
                         {!! Form::close() !!}
-                    @elsif (Auth::user()->package()->events->where('user_id', Auth::user()->id)->get()->contains($event))
-                        <p>You are enrolled in this event through the package.</p>
+                    @elseif (Auth::user()->package()->exists())
+                        @if (Auth::user()->package->events->where('user_id', Auth::user()->id)->get()->contains($event))
+                            <p>You are enrolled in this event through the package.</p>
+                        @endif
                     @else
                         {!! Form::open(['method'=>'POST', 'action'=>['EventController@enroll', $event->slug]]) !!}
                             <div class="form=group">

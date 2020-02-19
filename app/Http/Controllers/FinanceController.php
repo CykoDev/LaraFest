@@ -35,7 +35,7 @@ class FinanceController extends Controller
         $total = 0;
         foreach ($expenses as $expense) $total += $expense->price;
         $pdf = PDF::loadView('pdf.invoice', ['expenses' => $expenses, 'total' => $total])->setPaper('A4', 'landscape');
-        return $pdf->download('testfile.pdf');
+        return $pdf->download('invoice.pdf');
     }
 
     public function paymentStatus()

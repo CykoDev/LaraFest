@@ -41,7 +41,7 @@
                                                         break;
                                                     }
                                                 }
-                                                if (!$overlap) {
+                                                if (!$overlap && Auth::user()->package()->exists()) {
                                                     foreach (Auth::user()->package->events()->where('user_id', Auth::user()->id)->get() as $e) {
                                                         if ($event->event_date->lte($e->end_date) && $event->end_date->gte($e->event_date)) {
                                                             $overlap = true;

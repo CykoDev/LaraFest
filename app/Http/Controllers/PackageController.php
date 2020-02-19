@@ -32,7 +32,11 @@ class PackageController extends Controller
                 $user->package()->events()->save($event, ['user_id' => $user->id]);
             }
         }
-        $package->expense()->create(['price' => $package->price, 'user_id' => $user->id]);
+        $package->expense()->create([
+            'price' => $package->price,
+            'user_id' => $user->id,
+            'name' => 'Package: ' . $package->name,
+        ]);
         return redirect(route($route));
     }
 

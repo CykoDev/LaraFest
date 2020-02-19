@@ -94,10 +94,11 @@ class ProfileController extends Controller
         return redirect(route($route));
     }
 
-    public function updateProfile(ProfileUpdateRequest $request)
+    public function updateProfile(ProfileUpdateRequest $request, $route)
     {
         $input = $request->all();
         $user = Auth::user();
+
         if ($images = $request->file('data')) {
             foreach ($images as $key => $image) {
                 $type = substr($key, 0, strrpos($key, '_id'));
@@ -115,6 +116,7 @@ class ProfileController extends Controller
                 }
             }
         }
+
         if ($file = $request->file('photo_id')) {
 
             $name = time() . $file->getClientOriginalName();
@@ -132,9 +134,22 @@ class ProfileController extends Controller
                 Photo::findOrFail($user->photo->id)->delete();
             }
         }
+
+        if ($request->data['accomodation']) {
+            switch ($request->data['accomodation']) {
+                case 'yes':
+
+                    break;
+                case 'no':
+
+                    break;
+            }
+        }
+
         if (isset($input['data']) && isset($user->data)) {
             $input['data'] = array_merge($user->data, $input['data']);
         }
+
         $user->update($input);
 
         if ($route == 'packages.view') {

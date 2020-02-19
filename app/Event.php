@@ -12,6 +12,8 @@ class Event extends Model
     protected $defaultImage = 'defaults/event.png';
     protected $imageFolder = 'events/';
 
+    protected $currencySymbol = 'Rs.';
+
     protected $fillable = [
         'name', 'event_date', 'end_date', 'photo_id', 'data', 'details', 'event_type_id',
     ];
@@ -41,6 +43,11 @@ class Event extends Model
     * Mutators | Accessors
     *--------------------------------------------------------------------------
     */
+
+    public function getCurrencySymbolAttribute($value)
+    {
+        return $this->currencySymbol;
+    }
 
     public function getDefaultImageAttribute($value)
     {

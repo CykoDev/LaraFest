@@ -17,7 +17,7 @@ class CreateExpensesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('expendable_id')->index();
             $table->string('expendable_type');
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('price');
             $table->timestamps();
