@@ -6,6 +6,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Exports\UsersExport;
 use App\Exports\RoleUsersExport;
+use App\Exports\UserEventsExport;
 use App\Exports\EventsExport;
 use App\Exports\EventApplicantsExport;
 use App\Exports\PackagesExport;
@@ -26,6 +27,11 @@ class ExportController extends Controller
     public function exportRoleUsers($role)
     {
         return Excel::download(new RoleUsersExport($role), "$role users.xlsx");
+    }
+
+    public function exportUserEvents($id)
+    {
+        return Excel::download(new UserEventsExport($id), "users events.xlsx");
     }
 
     public function exportEvents()

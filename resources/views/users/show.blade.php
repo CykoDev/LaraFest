@@ -27,10 +27,17 @@
                         <div class="col-8">
                             <p class="text-primary">{{ ucwords($user->name) }}</p>
                             <p class="text-primary">{{ ucwords($user->email) }}</p>
-                            <sub>Email verified at {{ $user->email_verified_at->isoFormat('D MMMM, Y') }}</sub><br>
+                            <sub>Email verified at {{ isset($user->email_verified_at) ? $user->email_verified_at->isoFormat('D MMMM, Y') : 'N/A' }}</sub><br>
                             <sub>Signedup at {{ $user->created_at->isoFormat('D MMMM, Y') }}</sub><br>
                             <sub>Profile last updated at {{ $user->updated_at->isoFormat('D MMMM, Y') }}</sub><br>
                             <sub class="text-primary">Invoice ID: {{ substr(bin2hex($user->id.$user->name),0,10) }}</sub><br>
+                            @if($user->isApplicant())
+                                @if(isset($user->profile_completed_at))
+                                    <sub class="text-primary font-weight-bold">Profile Completed</sub>
+                                @else
+                                    <sub class="text-warning font-weight-bold">Profile Not Yet Completed</sub>
+                                @endif
+                            @endif
                         </div>
                         <div class="col-4">
                             <div class="text-center">
@@ -46,6 +53,19 @@
                         <h6 class="m-0 font-weight-bold text-primary">Profile Details</h6>
                     </div>
                     <div class="card-body">
+                        @if($user->package()->exists())
+                            <div class="form-row py-1">
+                                <div class="col-3">
+                                    <span class="text-primary font-weight-bold">
+                                        Package Name
+                                    </span>
+                                </div>
+                                <div class="col-7">
+                                    {{ ucwords($user->package->name) }}
+                                </div>
+                                <div class="col-2"></div>
+                            </div>
+                        @endif
                         @foreach($user->data as $key=>$value)
                             <div class="form-row py-1">
                                 <div class="col-3">
@@ -68,6 +88,57 @@
             @endif
         </div>
     </div>
+
+    @component('layouts.components.datatable')
+    @slot('title')
+        {!! Form::open(['method'=>'POST', 'action'=>['ExportController@exportUserEvents', $user->id]]) !!}
+        <span class="mr-3">Enrolled Events</span>
+        {!! Form::button('<i class="fas fa-download fa-sm text-white-50"></i> <small>Generate Excel</small>',
+            ['type'=>'submit', 'class'=>'d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm']) !!}
+        {!! Form::close() !!}
+    @endslot
+    @slot('headings')
+        <tr>
+        <th><small class="font-weight-bold">Photo</small></th>
+        <th><small class="font-weight-bold">Name</small></th>
+        <th><small class="font-weight-bold">Type</small></th>
+        <th><small class="font-weight-bold">Price</small></th>
+        <th><small class="font-weight-bold">Starts On</small></th>
+        <th><small class="font-weight-bold">Ends On</small></th>
+        <th><small class="font-weight-bold">Actions</small></th>
+        <th><small class="font-weight-bold">Get Excel</small></th>
+        </tr>
+    @endslot
+    @slot('body')
+        @if($user->events()->exists())
+            @foreach($user->events as $event)
+            <tr>
+                <td><img src='{{ is_null($event->photo) ? $event->defaultImage : $event->photo->path }}' class="rounded" width=50 height=30></td>
+                <td>
+                    <a href="{{ route('events.show', $event->slug) }}">
+                        <small>{{ $event->name }}</small>
+                    </a>
+                </td>
+                <td><small>{{ $event->type->name }}</small></td>
+                <td><small>{{ $event->currencySymbol . ' ' . $event->price }}</small></td>
+                <td><small>{{ $event->event_date->isoFormat('D/M/Y | h:m') }}</small></td>
+                <td><small>{{ $event->end_date->isoFormat('D/M/Y | h:m') }}</small></td>
+                <td>
+                    <a href="{{ route('events.edit', $event->slug) }}" class="btn btn-default p-0 text-primary">
+                        <small class="font-weight-bold">Edit</small>
+                    </a>
+                </td>
+                <td>
+                    {!! Form::open(['method'=>'POST', 'action'=>['ExportController@exportEventApplicants', $event->id]]) !!}
+                    {!! Form::button('<i class="fas fa-download fa-sm text-white-50"></i> <small>Get Excel</small>',
+                        ['type'=>'submit', 'class'=>'d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm']) !!}
+                    {!! Form::close() !!}
+                </td>
+            </tr>
+            @endforeach
+        @endif
+    @endslot
+    @endcomponent
 
 </div>
 

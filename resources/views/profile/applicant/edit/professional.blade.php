@@ -272,7 +272,7 @@
                     <div class="form-row py-2">
                         <div class="col-3 my-auto">
                             <span class="text-dark font-weight-bold">
-                                {!! Form::label('data[ambassador_name]', 'Ambassador Code (optional): ') !!}
+                                {!! Form::label('data[ambassador_name]', 'Ambassador Name (optional): ') !!}
                             </span>
                         </div>
                         <div class="col-7">
