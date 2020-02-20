@@ -331,12 +331,12 @@
                     <div class="form-row py-2">
                         <div class="col-3 my-auto">
                             <span class="text-dark font-weight-bold">
-                                {!! Form::label('data[ambassador_code]', 'Ambassador Code (optional): ') !!}
+                                {!! Form::label('data[ambassador_name]', 'Ambassador Code (optional): ') !!}
                             </span>
                         </div>
                         <div class="col-7">
-                            {!! Form::text('data[ambassador_code]', null, ['class'=>'form-control']) !!}
-                            @error('data.ambassador_code')
+                            {!! Form::text('data[ambassador_name]', null, ['class'=>'form-control']) !!}
+                            @error('data.ambassador_name')
                                 <span class="text-danger small">
                                     <strong>{{ $message }}</strong>
                                 </span>

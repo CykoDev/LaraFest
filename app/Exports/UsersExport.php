@@ -14,13 +14,19 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 class UsersExport implements FromCollection, ShouldAutoSize, WithHeadings, WithEvents, WithMapping
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         return User::select(
-            'name', 'email', 'email_verified_at', 'role_id', 'is_active', 'created_at', 'updated_at'
-            )->get();
+            'name',
+            'email',
+            'email_verified_at',
+            'role_id',
+            'is_active',
+            'created_at',
+            'updated_at'
+        )->get();
     }
 
     public function headings(): array
@@ -39,7 +45,7 @@ class UsersExport implements FromCollection, ShouldAutoSize, WithHeadings, WithE
     public function registerEvents(): array
     {
         return [
-            AfterSheet::class => function(AfterSheet $event) {
+            AfterSheet::class => function (AfterSheet $event) {
                 $cellRange = 'A1:W1';
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(14);
             },
@@ -47,8 +53,8 @@ class UsersExport implements FromCollection, ShouldAutoSize, WithHeadings, WithE
     }
 
     /**
-    * @var Invoice $invoice
-    */
+     * @var Invoice $invoice
+     */
     public function map($invoice): array
     {
         return [

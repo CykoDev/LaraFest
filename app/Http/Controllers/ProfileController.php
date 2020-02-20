@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\http\Requests\ApplicantProfileRequest;
-use App\http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\ApplicantProfileRequest;
+use App\Http\Requests\ProfileUpdateRequest;
 
 use App\User;
 use App\Photo;

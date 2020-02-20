@@ -25,7 +25,7 @@ class ExportController extends Controller
 
     public function exportRoleUsers($role)
     {
-        return Excel::download(new RoleUsersExport($role), 'role users.xlsx');
+        return Excel::download(new RoleUsersExport($role), "$role users.xlsx");
     }
 
     public function exportEvents()
