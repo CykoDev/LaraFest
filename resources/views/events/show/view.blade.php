@@ -36,23 +36,36 @@
                     {!! Form::open(['method'=>'POST', 'action'=>['EventController@unEnroll', $event->slug]]) !!}
                     {!! Form::submit('Un-enroll', ['class'=>'btn btn-sm btn-outline-warning']) !!}
                     {!! Form::close() !!}
-                @elseif (!Auth::user()->package->events()->where('user_id', '=', Auth::user()->id)->get()->contains($event))
-                    @if ($overlap = $event->checkConflict(Auth::user()->id))
-                        <h6 class="text-danger">
-                            This event clashes in timing with Event:
-                            <a href="{{ route('events.view', $overlap->slug) }}" target="_blank">
-                                {{ $overlap->name }}
-                            </a>
-                        </h6>
+                @elseif (Auth::user()->package()->exists())
+                    @if (!Auth::user()->package->events()->where('user_id', '=', Auth::user()->id)->get()->contains($event))
+                        @if ($overlap = $event->checkConflict(Auth::user()->id))
+                            <h6 class="text-danger">
+                                This event clashes in timing with Event:
+                                <a href="{{ route('events.view', $overlap->slug) }}" target="_blank">
+                                    {{ $overlap->name }}
+                                </a>
+                            </h6>
+                        @else
+                            {!! Form::open(['method'=>'POST', 'action'=>['EventController@enroll', $event->slug]]) !!}
+                            {!! Form::submit('Enroll', ['class'=>'btn btn-sm btn-outline-success']) !!}
+                            {!! Form::close() !!}
+                        @endif
                     @else
-                        {!! Form::open(['method'=>'POST', 'action'=>['EventController@enroll', $event->slug]]) !!}
-                        {!! Form::submit('Enroll', ['class'=>'btn btn-sm btn-outline-success']) !!}
-                        {!! Form::close() !!}
+                        <h6 class="text-success font-weight-bold">
+                            You are enrolled in this event through the package
+                        </h6>
                     @endif
-                @else
-                    <h6 class="text-success font-weight-bold">
-                        You are enrolled in this event through the package
+                @elseif ($overlap = $event->checkConflict(Auth::user()->id))
+                    <h6 class="text-danger">
+                        This event clashes in timing with Event:
+                        <a href="{{ route('events.view', $overlap->slug) }}" target="_blank">
+                            {{ $overlap->name }}
+                        </a>
                     </h6>
+                @else
+                    {!! Form::open(['method'=>'POST', 'action'=>['EventController@enroll', $event->slug]]) !!}
+                    {!! Form::submit('Enroll', ['class'=>'btn btn-sm btn-outline-success']) !!}
+                    {!! Form::close() !!}
                 @endif
             </div>
         </div>

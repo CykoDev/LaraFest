@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
-use App\http\Requests\UsersCreateRequest;
-use App\http\Requests\UsersUpdateRequest;
+use App\Http\Requests\UsersCreateRequest;
+use App\Http\Requests\UsersUpdateRequest;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 
@@ -137,7 +138,9 @@ class UserController extends Controller
 
             if ($user->photo) {
 
-                unlink(public_path() . $user->photo->path);
+                if (Storage::exists($user->photo->path)) {
+                    unlink(public_path() . $user->photo->path);
+                }
                 Photo::findOrFail($user->photo->id)->delete();
             }
         }
@@ -160,7 +163,9 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         if ($user->photo) {
-            unlink(public_path() . $user->photo->path);
+            if (Storage::exists($user->photo->path)) {
+                unlink(public_path() . $user->photo->path);
+            }
             Photo::findOrFail($user->photo->id)->delete();
         }
         $user->delete();

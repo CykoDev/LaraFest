@@ -37,12 +37,18 @@
                                                 {!! Form::open(['method'=>'POST', 'action'=>['EventController@unEnroll', $event->slug]]) !!}
                                                 {!! Form::submit('Un-enroll', ['class'=>'btn btn-sm btn-outline-warning']) !!}
                                                 {!! Form::close() !!}
-                                            @elseif (!Auth::user()->package->events()->where('user_id', '=', Auth::user()->id)->get()->contains($event))
-                                                @if (!$event->checkConflict(Auth::user()->id))
-                                                    {!! Form::open(['method'=>'POST', 'action'=>['EventController@enroll', $event->slug]]) !!}
-                                                    {!! Form::submit('Enroll', ['class'=>'btn btn-sm btn-outline-success']) !!}
-                                                    {!! Form::close() !!}
+                                            @elseif (Auth::user()->package()->exists())
+                                                @if (!Auth::user()->package->events()->where('user_id', '=', Auth::user()->id)->get()->contains($event))
+                                                    @if (!$event->checkConflict(Auth::user()->id))
+                                                        {!! Form::open(['method'=>'POST', 'action'=>['EventController@enroll', $event->slug]]) !!}
+                                                        {!! Form::submit('Enroll', ['class'=>'btn btn-sm btn-outline-success']) !!}
+                                                        {!! Form::close() !!}
+                                                    @endif
                                                 @endif
+                                            @elseif (!$event->checkConflict(Auth::user()->id))
+                                                {!! Form::open(['method'=>'POST', 'action'=>['EventController@enroll', $event->slug]]) !!}
+                                                {!! Form::submit('Enroll', ['class'=>'btn btn-sm btn-outline-success']) !!}
+                                                {!! Form::close() !!}
                                             @endif
                                         </div>
                                         <small class="text-muted">{{ $event->event_date->diffForHumans() }}</small>

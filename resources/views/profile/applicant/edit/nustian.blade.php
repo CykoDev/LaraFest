@@ -220,28 +220,12 @@
                     <div class="form-row py-2">
                         <div class="col-3 my-auto">
                             <span class="text-dark font-weight-bold">
-                                {!! Form::label('data[accommodation]', 'Do You Need Accomodation? ') !!}
+                                {!! Form::label('data[ambassador_name]', 'Ambassador Name (optional): ') !!}
                             </span>
                         </div>
                         <div class="col-7">
-                            {!! Form::select('data[accommodation]', [''=>'choose', 'yes'=> 'Sign me up!', 'no'=> 'Eh na I\'m fine'], null, ['class'=>'form-control']) !!}
-                            @error('data.accommodation')
-                                <span class="text-danger small">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <div class="col-2"></div>
-                    </div>
-                    <div class="form-row py-2">
-                        <div class="col-3 my-auto">
-                            <span class="text-dark font-weight-bold">
-                                {!! Form::label('data[ambassador_code]', 'Ambassador Code (optional): ') !!}
-                            </span>
-                        </div>
-                        <div class="col-7">
-                            {!! Form::text('data[ambassador_code]', null, ['class'=>'form-control']) !!}
-                            @error('data.ambassador_code')
+                            {!! Form::text('data[ambassador_name]', null, ['class'=>'form-control']) !!}
+                            @error('data.ambassador_name')
                                 <span class="text-danger small">
                                     <strong>{{ $message }}</strong>
                                 </span>
