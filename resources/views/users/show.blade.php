@@ -89,56 +89,109 @@
         </div>
     </div>
 
-    @component('layouts.components.datatable')
-    @slot('title')
-        {!! Form::open(['method'=>'POST', 'action'=>['ExportController@exportUserEvents', $user->id]]) !!}
-        <span class="mr-3">Enrolled Events</span>
-        {!! Form::button('<i class="fas fa-download fa-sm text-white-50"></i> <small>Generate Excel</small>',
-            ['type'=>'submit', 'class'=>'d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm']) !!}
-        {!! Form::close() !!}
-    @endslot
-    @slot('headings')
-        <tr>
-        <th><small class="font-weight-bold">Photo</small></th>
-        <th><small class="font-weight-bold">Name</small></th>
-        <th><small class="font-weight-bold">Type</small></th>
-        <th><small class="font-weight-bold">Price</small></th>
-        <th><small class="font-weight-bold">Starts On</small></th>
-        <th><small class="font-weight-bold">Ends On</small></th>
-        <th><small class="font-weight-bold">Actions</small></th>
-        <th><small class="font-weight-bold">Get Excel</small></th>
-        </tr>
-    @endslot
-    @slot('body')
-        @if($user->events()->exists())
-            @foreach($user->events as $event)
+    @if($user->isApplicant())
+        @component('layouts.components.datatable')
+        @slot('title')
+            {!! Form::open(['method'=>'POST', 'action'=>['ExportController@exportUserEvents', $user->id]]) !!}
+            <span class="mr-3">Enrolled Events</span>
+            {!! Form::button('<i class="fas fa-download fa-sm text-white-50"></i> <small>Generate Excel</small>',
+                ['type'=>'submit', 'class'=>'d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm']) !!}
+            {!! Form::close() !!}
+        @endslot
+        @slot('headings')
             <tr>
-                <td><img src='{{ is_null($event->photo) ? $event->defaultImage : $event->photo->path }}' class="rounded" width=50 height=30></td>
-                <td>
-                    <a href="{{ route('events.show', $event->slug) }}">
-                        <small>{{ $event->name }}</small>
-                    </a>
-                </td>
-                <td><small>{{ $event->type->name }}</small></td>
-                <td><small>{{ $event->currencySymbol . ' ' . $event->price }}</small></td>
-                <td><small>{{ $event->event_date->isoFormat('D/M/Y | h:m') }}</small></td>
-                <td><small>{{ $event->end_date->isoFormat('D/M/Y | h:m') }}</small></td>
-                <td>
-                    <a href="{{ route('events.edit', $event->slug) }}" class="btn btn-default p-0 text-primary">
-                        <small class="font-weight-bold">Edit</small>
-                    </a>
-                </td>
-                <td>
-                    {!! Form::open(['method'=>'POST', 'action'=>['ExportController@exportEventApplicants', $event->id]]) !!}
-                    {!! Form::button('<i class="fas fa-download fa-sm text-white-50"></i> <small>Get Excel</small>',
-                        ['type'=>'submit', 'class'=>'d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm']) !!}
-                    {!! Form::close() !!}
-                </td>
+            <th><small class="font-weight-bold">Photo</small></th>
+            <th><small class="font-weight-bold">Name</small></th>
+            <th><small class="font-weight-bold">Type</small></th>
+            <th><small class="font-weight-bold">Price</small></th>
+            <th><small class="font-weight-bold">Starts On</small></th>
+            <th><small class="font-weight-bold">Ends On</small></th>
+            <th><small class="font-weight-bold">Actions</small></th>
+            <th><small class="font-weight-bold">Get Excel</small></th>
             </tr>
-            @endforeach
+        @endslot
+        @slot('body')
+            @if($user->events()->exists())
+                @foreach($user->events as $event)
+                <tr>
+                    <td><img src='{{ is_null($event->photo) ? $event->defaultImage : $event->photo->path }}' class="rounded" width=50 height=30></td>
+                    <td>
+                        <a href="{{ route('events.show', $event->slug) }}">
+                            <small>{{ $event->name }}</small>
+                        </a>
+                    </td>
+                    <td><small>{{ $event->type->name }}</small></td>
+                    <td><small>{{ $event->currencySymbol . ' ' . $event->price }}</small></td>
+                    <td><small>{{ $event->event_date->isoFormat('D/M/Y | h:m') }}</small></td>
+                    <td><small>{{ $event->end_date->isoFormat('D/M/Y | h:m') }}</small></td>
+                    <td>
+                        <a href="{{ route('events.edit', $event->slug) }}" class="btn btn-default p-0 text-primary">
+                            <small class="font-weight-bold">Edit</small>
+                        </a>
+                    </td>
+                    <td>
+                        {!! Form::open(['method'=>'POST', 'action'=>['ExportController@exportEventApplicants', $event->id]]) !!}
+                        {!! Form::button('<i class="fas fa-download fa-sm text-white-50"></i> <small>Get Excel</small>',
+                            ['type'=>'submit', 'class'=>'d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm']) !!}
+                        {!! Form::close() !!}
+                    </td>
+                </tr>
+                @endforeach
+            @endif
+        @endslot
+        @endcomponent
+    @endif
+
+    <div class="mx-4">
+        @if($user->isApplicant() && $user->package()->exists())
+            @component('layouts.components.datatable')
+            @slot('title')
+                <span class="mr-3">Package Events</span>
+            @endslot
+            @slot('headings')
+                <tr>
+                <th><small class="font-weight-bold">Photo</small></th>
+                <th><small class="font-weight-bold">Name</small></th>
+                <th><small class="font-weight-bold">Type</small></th>
+                <th><small class="font-weight-bold">Price</small></th>
+                <th><small class="font-weight-bold">Starts On</small></th>
+                <th><small class="font-weight-bold">Ends On</small></th>
+                <th><small class="font-weight-bold">Actions</small></th>
+                <th><small class="font-weight-bold">Get Excel</small></th>
+                </tr>
+            @endslot
+            @slot('body')
+                @if($user->package->events($user->id))
+                    @foreach($user->package->events($user->id) as $event)
+                    <tr>
+                        <td><img src='{{ is_null($event->photo) ? $event->defaultImage : $event->photo->path }}' class="rounded" width=50 height=30></td>
+                        <td>
+                            <a href="{{ route('events.show', $event->slug) }}">
+                                <small>{{ $event->name }}</small>
+                            </a>
+                        </td>
+                        <td><small>{{ $event->type->name }}</small></td>
+                        <td><small>{{ $event->currencySymbol . ' ' . $event->price }}</small></td>
+                        <td><small>{{ $event->event_date->isoFormat('D/M/Y | h:m') }}</small></td>
+                        <td><small>{{ $event->end_date->isoFormat('D/M/Y | h:m') }}</small></td>
+                        <td>
+                            <a href="{{ route('events.edit', $event->slug) }}" class="btn btn-default p-0 text-primary">
+                                <small class="font-weight-bold">Edit</small>
+                            </a>
+                        </td>
+                        <td>
+                            {!! Form::open(['method'=>'POST', 'action'=>['ExportController@exportEventApplicants', $event->id]]) !!}
+                            {!! Form::button('<i class="fas fa-download fa-sm text-white-50"></i> <small>Get Excel</small>',
+                                ['type'=>'submit', 'class'=>'d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm']) !!}
+                            {!! Form::close() !!}
+                        </td>
+                    </tr>
+                    @endforeach
+                @endif
+            @endslot
+            @endcomponent
         @endif
-    @endslot
-    @endcomponent
+    </div>
 
 </div>
 

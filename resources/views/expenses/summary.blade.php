@@ -40,8 +40,8 @@
         @if($expenses)
             @foreach($expenses as $expense)
             <tr>
-                <td>{{ $expense->expendable->name }}</td>
-                <td>{{ $expense->expendable->currencySymbol }} {{ $expense->expendable->price }}</td>
+                <td>{{ $expense->name }}</td>
+                <td>Rs. {{ $expense->price }}</td>
                 <td>{{ $expense->created_at->diffForHumans() }}</td>
             </tr>
             @endforeach

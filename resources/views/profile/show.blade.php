@@ -97,39 +97,79 @@
         </div>
     </div>
 
-    @component('layouts.components.datatable')
-    @slot('title')
-        Enrolled Events
-    @endslot
-    @slot('headings')
-        <tr>
-        <th><small class="font-weight-bold">Photo</small></th>
-        <th><small class="font-weight-bold">Name</small></th>
-        <th><small class="font-weight-bold">Type</small></th>
-        <th><small class="font-weight-bold">Price</small></th>
-        <th><small class="font-weight-bold">Starts On</small></th>
-        <th><small class="font-weight-bold">Ends On</small></th>
-        </tr>
-    @endslot
-    @slot('body')
-        @if($user->events()->exists())
-            @foreach($user->events as $event)
+    @if ($user->isApplicant() && $user->events()->exists())
+        @component('layouts.components.datatable')
+        @slot('title')
+            Enrolled Events
+        @endslot
+        @slot('headings')
             <tr>
-                <td><img src='{{ is_null($event->photo) ? $event->defaultImage : $event->photo->path }}' class="rounded" width=50 height=30></td>
-                <td>
-                    <a href="{{ route('events.show', $event->slug) }}">
-                        <small>{{ $event->name }}</small>
-                    </a>
-                </td>
-                <td><small>{{ $event->type->name }}</small></td>
-                <td><small>{{ $event->currencySymbol . ' ' . $event->price }}</small></td>
-                <td><small>{{ $event->event_date->isoFormat('D/M/Y | h:m') }}</small></td>
-                <td><small>{{ $event->end_at->isoFormat('D/M/Y | h:m') }}</small></td>
+            <th><small class="font-weight-bold">Photo</small></th>
+            <th><small class="font-weight-bold">Name</small></th>
+            <th><small class="font-weight-bold">Type</small></th>
+            <th><small class="font-weight-bold">Price</small></th>
+            <th><small class="font-weight-bold">Starts On</small></th>
+            <th><small class="font-weight-bold">Ends On</small></th>
             </tr>
-            @endforeach
+        @endslot
+        @slot('body')
+            @if($user->events()->exists())
+                @foreach($user->events as $event)
+                <tr>
+                    <td><img src='{{ is_null($event->photo) ? $event->defaultImage : $event->photo->path }}' class="rounded" width=50 height=30></td>
+                    <td>
+                        <a href="{{ route('events.show', $event->slug) }}">
+                            <small>{{ $event->name }}</small>
+                        </a>
+                    </td>
+                    <td><small>{{ $event->type->name }}</small></td>
+                    <td><small>{{ $event->currencySymbol . ' ' . $event->price }}</small></td>
+                    <td><small>{{ $event->event_date->isoFormat('D/M/Y | h:m') }}</small></td>
+                    <td><small>{{ $event->end_at->isoFormat('D/M/Y | h:m') }}</small></td>
+                </tr>
+                @endforeach
+            @endif
+        @endslot
+        @endcomponent
+    @endif
+
+    <div class="mx-4">
+        @if($user->isApplicant() && $user->package()->exists())
+            @component('layouts.components.datatable')
+            @slot('title')
+                <span class="mr-3">Package Events</span>
+            @endslot
+            @slot('headings')
+                <tr>
+                <th><small class="font-weight-bold">Photo</small></th>
+                <th><small class="font-weight-bold">Name</small></th>
+                <th><small class="font-weight-bold">Type</small></th>
+                <th><small class="font-weight-bold">Price</small></th>
+                <th><small class="font-weight-bold">Starts On</small></th>
+                <th><small class="font-weight-bold">Ends On</small></th>
+                </tr>
+            @endslot
+            @slot('body')
+                @if($user->package->events($user->id))
+                    @foreach($user->package->events($user->id) as $event)
+                    <tr>
+                        <td><img src='{{ is_null($event->photo) ? $event->defaultImage : $event->photo->path }}' class="rounded" width=50 height=30></td>
+                        <td>
+                            <a href="{{ route('events.show', $event->slug) }}">
+                                <small>{{ $event->name }}</small>
+                            </a>
+                        </td>
+                        <td><small>{{ $event->type->name }}</small></td>
+                        <td><small>{{ $event->currencySymbol . ' ' . $event->price }}</small></td>
+                        <td><small>{{ $event->event_date->isoFormat('D/M/Y | h:m') }}</small></td>
+                        <td><small>{{ $event->end_date->isoFormat('D/M/Y | h:m') }}</small></td>
+                    </tr>
+                    @endforeach
+                @endif
+            @endslot
+            @endcomponent
         @endif
-    @endslot
-    @endcomponent
+    </div>
 
 </div>
 

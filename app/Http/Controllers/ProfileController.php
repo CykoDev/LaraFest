@@ -76,6 +76,25 @@ class ProfileController extends Controller
         if (isset($input['data']) && isset($user->data)) {
             $input['data'] = array_merge($user->data, $input['data']);
         }
+
+        if (isset($request->data['accommodation'])) {
+            switch ($request->data['accommodation']) {
+                case 'yes':
+                    if (!$user->expenses()->whereName('accommodation')->first()) {
+                        $user->expenses()->create([
+                            'name' => 'accommodation',
+                            'price' => $user->accommodationPrice,
+                        ]);
+                    }
+                    break;
+                default:
+                    if ($user->expenses()->whereName('accommodation')->first()) {
+                        $user->expenses()->whereName('accommodation')->delete();
+                    }
+                    break;
+            }
+        }
+
         $user->update($input);
 
         if ($route == 'packages.view') {
@@ -143,19 +162,19 @@ class ProfileController extends Controller
             }
         }
 
-        if ($request->data['accomodation']) {
-            switch ($request->data['accomodation']) {
+        if (isset($request->data['accommodation'])) {
+            switch ($request->data['accommodation']) {
                 case 'yes':
-                    if (!$user->expenses()->whereName('accomodation')->first()) {
-                        $user->expenses->create([
-                            'name' => 'accomodation',
-                            'price' => $user->accomodationPrice,
+                    if (!$user->expenses()->whereName('accommodation')->first()) {
+                        $user->expenses()->create([
+                            'name' => 'accommodation',
+                            'price' => $user->accommodationPrice,
                         ]);
                     }
                     break;
                 default:
-                    if ($user->expenses()->whereName('accomodation')->first()) {
-                        $user->expenses()->whereName('accomodation')->delete();
+                    if ($user->expenses()->whereName('accommodation')->first()) {
+                        $user->expenses()->whereName('accommodation')->delete();
                     }
                     break;
             }
@@ -230,6 +249,26 @@ class ProfileController extends Controller
             if ($user->data == null) $user->data = [];
             $input['data'] = array_merge($user->data, $input['data']);
         }
+
+        if (isset($request->data['accommodation'])) {
+            switch ($request->data['accommodation']) {
+                case 'yes':
+                    if (!$user->expenses()->whereName('accommodation')->first()) {
+                        $user->expenses()->create([
+                            'name' => 'accommodation',
+                            'price' => $user->accommodationPrice,
+                        ]);
+                    }
+                    break;
+                default:
+                    if ($user->expenses()->whereName('accommodation')->first()) {
+                        $user->expenses()->whereName('accommodation')->delete();
+                    }
+                    break;
+            }
+        }
+
+
         $user->update($input);
         return redirect(route($route));
     }
@@ -263,13 +302,19 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->events) {
+        if ($user->package()->exists()) {
+            foreach ($user->package->events($user->id) as $event) {
+                $user->package->events()->detach($event);
+            }
+        }
+
+        if ($user->events()->exists()) {
             foreach ($user->events as $event) {
                 $user->events()->detach($event);
             }
         }
 
-        if ($user->expenses) {
+        if ($user->expenses()->exists()) {
             foreach ($user->expenses as $expense) {
                 $user->expenses()->delete($expense);
             }
