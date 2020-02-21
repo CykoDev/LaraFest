@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use App\Expense;
 use App\Photo;
@@ -60,7 +61,9 @@ class FinanceController extends Controller
             $input['invoice_proof_id'] = $photo->id;
 
             if ($user->invoiceProof) {
-                unlink(public_path() . $user->invoiceProof->path);
+                if (Storage::exists($user->invoiceProof->path)) {
+                    unlink(public_path() . $user->invoiceProof->path);
+                }
                 Photo::findOrFail($user->invoiceProof->id)->delete();
             }
         }

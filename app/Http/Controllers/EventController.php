@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
 use \DOMDocument;
 
@@ -102,7 +103,7 @@ class EventController extends Controller
                     $mimetype = $groups['mime'];
 
                     $filename = uniqid();
-                    $filepath = "/img/$filename.$mimetype";
+                    $filepath = 'img/' . $event->imageFolder . "content/$filename.$mimetype";
 
                     $image = Image::make($src)
                         ->encode($mimetype, 100)
@@ -113,7 +114,7 @@ class EventController extends Controller
                     $img->setAttribute('src', $new_src);
 
                     Photo::create([
-                        'path' => $filename . '.' . $mimetype,
+                        'path' => $event->imageFolder . 'content/' . $filename . '.' . $mimetype,
                         'type' => 'event_content_media',
                         'uploaded_by_user_id' => Auth::user()->id,
                     ]);
@@ -168,7 +169,9 @@ class EventController extends Controller
 
             if ($event->photo) {
 
-                unlink(public_path() . $event->photo->path);
+                if (Storage::exists($event->photo->path)) {
+                    unlink(public_path() .  $event->photo->path);
+                }
                 Photo::findOrFail($event->photo->id)->delete();
             }
         }
@@ -188,7 +191,7 @@ class EventController extends Controller
                     $mimetype = $groups['mime'];
 
                     $filename = uniqid();
-                    $filepath = "/img/$filename.$mimetype";
+                    $filepath = 'img/' . $event->imageFolder . "content/$filename.$mimetype";
 
                     $image = Image::make($src)
                         ->encode($mimetype, 100)
@@ -199,7 +202,7 @@ class EventController extends Controller
                     $img->setAttribute('src', $new_src);
 
                     Photo::create([
-                        'path' => $filename . '.' . $mimetype,
+                        'path' => $event->imageFolder . 'content/' . $filename . '.' . $mimetype,
                         'type' => 'event_content_media',
                         'uploaded_by_user_id' => Auth::user()->id,
                     ]);
@@ -221,7 +224,9 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
         if ($event->photo) {
-            unlink(public_path() . $event->photo->path);
+            if (Storage::exists($event->photo->path)) {
+                unlink(public_path() .  $event->photo->path);
+            }
             Photo::findOrFail($event->photo->id)->delete();
         }
         $event->delete();
