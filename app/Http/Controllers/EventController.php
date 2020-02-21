@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
 use \DOMDocument;
 
 use App\Photo;
 use App\Event;
 use App\EventType;
+use App\Discount;
 
 class EventController extends Controller
 {
@@ -18,6 +20,7 @@ class EventController extends Controller
     {
         $this->middleware('applicant')->only('indexBrowse', 'enroll', 'unEnroll', 'showView');
         $this->middleware('monitor')->only('index', 'show');
+        $this->middleware('moderator')->only('createDiscount', 'storeDiscount', 'destroyDiscount');
         $this->middleware('moderator')->except('index', 'show', 'indexBrowse', 'enroll', 'unEnroll', 'showView');
     }
 
@@ -25,6 +28,11 @@ class EventController extends Controller
     {
         $event = Event::whereSlug($slug)->firstOrFail();
         Auth::user()->events()->save($event, ['user_id' => Auth::id()]);
+        $event->expense()->create([
+            'price' => $event->price,
+            'user_id' => Auth::id(),
+            'name' => 'Event: ' . $event->name,
+        ]);
         return redirect()->back();
     }
 
@@ -32,6 +40,7 @@ class EventController extends Controller
     {
         $event = Event::whereSlug($slug)->firstOrFail();
         Auth::user()->events()->detach($event);
+        Auth::user()->expenses()->where('expendable_id', '=', $event->id)->delete();
         return redirect()->back();
     }
 
@@ -43,8 +52,13 @@ class EventController extends Controller
 
     public function indexBrowse()
     {
-        $events = Event::paginate(9);
-        return view('events.index.browse', compact('events'));
+        if (Auth::user()->data['registration_type']) {
+            if (Auth::user()->data['registration_type'] == 'nustian' || Auth::user()->package()->exists()) {
+                $events = Event::paginate(9);
+                return view('events.index.browse', compact('events'));
+            }
+        }
+        return redirect()->back();
     }
 
     public function create()
@@ -56,6 +70,9 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
+        $input['event_date'] = strtotime($input['event_date']);
+        $input['end_date'] = strtotime($input['end_date']);
+
         $event = new Event;
 
         // Event Image
@@ -72,37 +89,39 @@ class EventController extends Controller
         }
 
         // Event Content Images
-        $dom = new DomDocument();
-        $dom->loadHtml($request->details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $images = $dom->getElementsByTagName('img');
+        if ($request->details) {
+            $dom = new DomDocument();
+            $dom->loadHtml($request->details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            $images = $dom->getElementsByTagName('img');
 
-        foreach ($images as $img) {
-            $src = $img->getAttribute('src');
+            foreach ($images as $img) {
+                $src = $img->getAttribute('src');
 
-            if (preg_match('/data:image/', $src)) {
+                if (preg_match('/data:image/', $src)) {
 
-                preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
-                $mimetype = $groups['mime'];
+                    preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
+                    $mimetype = $groups['mime'];
 
-                $filename = uniqid();
-                $filepath = "/img/$filename.$mimetype";
+                    $filename = uniqid();
+                    $filepath = 'img/' . $event->imageFolder . "content/$filename.$mimetype";
 
-                $image = Image::make($src)
-                    ->encode($mimetype, 100)
-                    ->save(public_path($filepath));
+                    $image = Image::make($src)
+                        ->encode($mimetype, 100)
+                        ->save(public_path($filepath));
 
-                $new_src = asset($filepath);
-                $img->removeAttribute('src');
-                $img->setAttribute('src', $new_src);
+                    $new_src = asset($filepath);
+                    $img->removeAttribute('src');
+                    $img->setAttribute('src', $new_src);
 
-                Photo::create([
-                    'path' => $filename . '.' . $mimetype,
-                    'type' => 'event_content_media',
-                    'uploaded_by_user_id' => Auth::user()->id,
-                ]);
+                    Photo::create([
+                        'path' => $event->imageFolder . 'content/' . $filename . '.' . $mimetype,
+                        'type' => 'event_content_media',
+                        'uploaded_by_user_id' => Auth::user()->id,
+                    ]);
+                }
             }
+            $input['details'] = $dom->saveHTML();
         }
-        $input['details'] = $dom->saveHTML();
 
         // Event creation
         $event->create($input);
@@ -131,6 +150,9 @@ class EventController extends Controller
     public function update(Request $request, $slug)
     {
         $input = $request->all();
+        $input['event_date'] = strtotime($input['event_date']);
+        $input['end_date'] = strtotime($input['end_date']);
+
         $event = Event::whereSlug($slug)->firstOrFail();
 
         // Event Image
@@ -147,43 +169,47 @@ class EventController extends Controller
 
             if ($event->photo) {
 
-                unlink(public_path() . $event->photo->path);
+                if (Storage::exists($event->photo->path)) {
+                    unlink(public_path() .  $event->photo->path);
+                }
                 Photo::findOrFail($event->photo->id)->delete();
             }
         }
 
         // Event Content Images
-        $dom = new DomDocument();
-        $dom->loadHtml($request->details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $images = $dom->getElementsByTagName('img');
+        if ($request->details) {
+            $dom = new DomDocument();
+            $dom->loadHtml($request->details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            $images = $dom->getElementsByTagName('img');
 
-        foreach ($images as $img) {
-            $src = $img->getAttribute('src');
+            foreach ($images as $img) {
+                $src = $img->getAttribute('src');
 
-            if (preg_match('/data:image/', $src)) {
+                if (preg_match('/data:image/', $src)) {
 
-                preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
-                $mimetype = $groups['mime'];
+                    preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
+                    $mimetype = $groups['mime'];
 
-                $filename = uniqid();
-                $filepath = "/img/$filename.$mimetype";
+                    $filename = uniqid();
+                    $filepath = 'img/' . $event->imageFolder . "content/$filename.$mimetype";
 
-                $image = Image::make($src)
-                    ->encode($mimetype, 100)
-                    ->save(public_path($filepath));
+                    $image = Image::make($src)
+                        ->encode($mimetype, 100)
+                        ->save(public_path($filepath));
 
-                $new_src = asset($filepath);
-                $img->removeAttribute('src');
-                $img->setAttribute('src', $new_src);
+                    $new_src = asset($filepath);
+                    $img->removeAttribute('src');
+                    $img->setAttribute('src', $new_src);
 
-                Photo::create([
-                    'path' => $filename . '.' . $mimetype,
-                    'type' => 'event_content_media',
-                    'uploaded_by_user_id' => Auth::user()->id,
-                ]);
+                    Photo::create([
+                        'path' => $event->imageFolder . 'content/' . $filename . '.' . $mimetype,
+                        'type' => 'event_content_media',
+                        'uploaded_by_user_id' => Auth::user()->id,
+                    ]);
+                }
             }
+            $input['details'] = $dom->saveHTML();
         }
-        $input['details'] = $dom->saveHTML();
 
         // Event update
         $event->update($input);
@@ -198,7 +224,9 @@ class EventController extends Controller
     {
         $event = Event::findOrFail($id);
         if ($event->photo) {
-            unlink(public_path() . $event->photo->path);
+            if (Storage::exists($event->photo->path)) {
+                unlink(public_path() .  $event->photo->path);
+            }
             Photo::findOrFail($event->photo->id)->delete();
         }
         $event->delete();
@@ -207,5 +235,25 @@ class EventController extends Controller
             'message' => 'Event successfully deleted',
         ]);
         return redirect(route('events.index'));
+    }
+
+    public function createDiscount($id)
+    {
+        $event = Event::findOrFail($id);
+        return view('events.discounts.create', compact('event'));
+    }
+
+    public function storeDiscount(Request $request)
+    {
+        $event = Event::findOrFail($request->eventId);
+        if ($event->discount) $event->discount()->delete();
+        $event->discount()->create($request->all());
+        return redirect(route('events.show', $event->slug));
+    }
+
+    public function destroyDiscount($id)
+    {
+        Discount::findOrFail($id)->delete();
+        return redirect()->back();
     }
 }

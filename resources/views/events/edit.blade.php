@@ -39,9 +39,31 @@
                 </div>
 
                 <div class="form-group">
-                    {!! Form::label('event_date', 'Event Date: ') !!}
-                    {!! Form::date('event_date', \Carbon\Carbon::now(), ['class'=>'form-control']) !!}
+                    {!! Form::label('price', 'Event Price (optional): ') !!}
+                    {!! Form::number('price', null, ['class'=>'form-control', 'min'=>0]) !!}
+                    @error('price')
+                        <span class="text-danger small">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="event_date">Event Date/Time: </label>
+                    <br>
+                    <input type="datetime-local" name="event_date" value="{{ $event->event_date->toDateTimeLocalString() }}">
                     @error('event_date')
+                        <span class="text-danger small">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="end_date">Ending Date/Time: </label>
+                    <br>
+                    <input type="datetime-local" name="end_date" value="{{ $event->end_date->toDateTimeLocalString() }}">
+                    @error('end_date')
                         <span class="text-danger small">
                             <strong>{{ $message }}</strong>
                         </span>

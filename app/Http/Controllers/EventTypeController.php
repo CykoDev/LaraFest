@@ -9,8 +9,8 @@ class EventTypeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('monitor')->only('index');
-        $this->middleware('moderator')->except('index', 'destroy');
+        $this->middleware('monitor')->only('index', 'show');
+        $this->middleware('moderator')->except('index', 'destroy', 'show');
         $this->middleware('admin')->only('destroy');
     }
 

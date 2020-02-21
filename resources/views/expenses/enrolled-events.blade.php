@@ -16,11 +16,28 @@
                 </div>
                 <div class="card-body">
                     <div class="text-center">
-                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="height: 10rem;" src="{{ asset('img/public/undraw_book_reading_kx9s.svg') }}" alt="">
+                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="height: 7rem;" src="{{ asset('img/public/undraw_book_reading_kx9s.svg') }}" alt="">
                     </div>
-                    @foreach(Auth::user()->package->events(Auth::id()) as $event)
-                        <p>{{ $event->name }}</p>
-                    @endforeach
+                    @if (Auth::user()->package()->exists())
+                        @if(Auth::user()->package->events()->exists())
+                                <table class="mx-5 mt-4">
+                                    @foreach(Auth::user()->package->events(Auth::id()) as $event)
+                                        <tr>
+                                            <td class="text-dark font-weight-bold pr-5">
+                                                <a href="{{ route('events.view', $event->slug) }}">
+                                                    {{ ucwords($event->name) }}
+                                                </a>
+                                            </td>
+                                            <td>{{ $event->currencySymbol.' '.$event->price }}</td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            @else
+                                <p class="text-center mt-4">N/A</p>
+                        @endif
+                    @else
+                        <p class="text-center mt-4">N/A</p>
+                    @endif
                 </div>
             </div>
         </div>
@@ -32,11 +49,24 @@
                 </div>
                 <div class="card-body">
                     <div class="text-center">
-                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="height: 10rem;" src="{{ asset('img/public/undraw_dev_productivity_umsq.svg') }}" alt="">
+                        <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="height: 7rem;" src="{{ asset('img/public/undraw_dev_productivity_umsq.svg') }}" alt="">
                     </div>
-                    @foreach(Auth::user()->events as $event)
-                        <p>{{ $event->name }}</p>
-                    @endforeach
+                    @if(Auth::user()->events()->exists())
+                        <table class="mx-5 mt-4">
+                            @foreach(Auth::user()->events as $event)
+                                <tr>
+                                    <td class="text-dark font-weight-bold pr-5">
+                                        <a href="{{ route('events.view', $event->slug) }}">
+                                            {{ ucwords($event->name) }}
+                                        </a>
+                                    </td>
+                                    <td>{{ $event->currencySymbol.' '.$event->price }}</td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    @else
+                        <p class="text-center mt-4">N/A</p>
+                    @endif
                 </div>
             </div>
         </div>

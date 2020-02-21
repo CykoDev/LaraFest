@@ -37,7 +37,7 @@ class HomeController extends Controller
                 $users = User::all();
                 $roles = Role::all();
                 for ($i = 0; $i < 12; $i++) {
-                    $userMonthCount[$i + 1] = User::whereMonth('created_at', $i + 1)->count();
+                    $userMonthCount[$i + 1] = Role::whereName('applicant')->firstOrFail()->users()->whereMonth('created_at', $i + 1)->count();
                 }
                 return view('home.moderator', compact(
                     'users',
@@ -51,7 +51,7 @@ class HomeController extends Controller
                 $users = User::all();
                 $roles = Role::all();
                 for ($i = 0; $i < 12; $i++) {
-                    $userMonthCount[$i + 1] = User::whereMonth('created_at', $i + 1)->count();
+                    $userMonthCount[$i + 1] = Role::whereName('applicant')->firstOrFail()->users()->whereMonth('created_at', $i + 1)->count();
                 }
                 return view('home.monitor', compact(
                     'users',

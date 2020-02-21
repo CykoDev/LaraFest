@@ -32,7 +32,7 @@
                     <h3>{{ ucwords($package->name) }}</h3>
                     <span class="font-weight-bold text-primary mt-2">Price:</span>
                     <span>{{ $package->currencySymbol.' '.$package->price }}</span>
-                    <p class="mt-3">{{ $package->description }}</p>
+                    <p class="mt-3">{!! $package->description !!}</p>
                 </div>
             </div>
         </div>
@@ -42,28 +42,30 @@
 
         {!! Form::hidden('packageId', $package->id) !!}
 
-        @foreach($package->quotas as $quota)
-            <div class="card shadow mb-4 mx-5">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">
-                        Select Your {{ ucwords($quota->eventType->name) }} Events
-                    </h6>
+        @if($package->quotas()->exists())
+            @foreach($package->quotas as $quota)
+                <div class="card shadow mb-4 mx-5">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            Select Your {{ ucwords($quota->eventType->name) }} Events
+                        </h6>
+                    </div>
+                    <div class="card-body px-5 mx-5">
+                        @for($i = 0; $i < $quota->quota_amount; $i++)
+                            <div class="form-group px-5 mx-5">
+                                {!! Form::label('eventIds[]', $quota->eventType->name . ': ') !!}
+                                {!! Form::select('eventIds[]', ['' => 'Choose'] + $quota->eventType->events->pluck('name', 'id')->all(), null, ['class'=>'form-control']) !!}
+                                @error('eventIds[]')
+                                    <span class="text-danger small">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        @endfor
+                    </div>
                 </div>
-                <div class="card-body px-5 mx-5">
-                    @for($i = 0; $i < $quota->quota_amount; $i++)
-                        <div class="form-group px-5 mx-5">
-                            {!! Form::label('eventIds[]', $quota->eventType->name . ': ') !!}
-                            {!! Form::select('eventIds[]', $quota->eventType->events->pluck('title', 'id'), null, ['class'=>'form-control']) !!}
-                            @error('eventIds[]')
-                                <span class="text-danger small">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    @endfor
-                </div>
-            </div>
-        @endforeach
+            @endforeach
+        @endif
 
         <div class="card shadow mb-4 mx-5">
             <div class="card-header py-3">
@@ -79,9 +81,24 @@
                         </div>
                     </div>
                     <div class="col my-auto">
-                        <div class="form=group text-center p-3">
+                        <div class="form-group text-center p-3">
                             {!! Form::submit('Enroll in Package', ['class'=>'btn btn-primary px-5 py-3']) !!}
                         </div>
+                        @if(isset(Auth::user()->data['registration_type']))
+                            @if (Auth::user()->data['registration_type'] == 'nustian')
+
+                            <div class="form-group text-right px-3 mt-5">
+                                <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm px-5 mr-2 mb-2" href="{{ route('profile.applicant.edit') }}">
+                                    <small>Skip</small>
+                                </a>
+                                <br>
+                                <small>
+                                    Since you're a Nustian, you can also skip enrollment in a package and directly enroll in individual events
+                                </small>
+                            </div>
+
+                            @endif
+                        @endif
                     </div>
                 </div>
             </div>

@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\http\Requests\ApplicantProfileRequest;
-use App\http\Requests\ProfileUpdateRequest;
-
+use App\Http\Requests\ApplicantProfileRequest;
+use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Support\Facades\Storage;
 use App\User;
 use App\Photo;
 use App\Package;
@@ -47,7 +47,9 @@ class ProfileController extends Controller
                 ]);
                 $input['data'][$key] = $photo->id;
                 if ($user->photo($type)) {
-                    unlink(public_path() . $user->photo($type)->path);
+                    if (Storage::exists($user->photo($type)->path)) {
+                        unlink(public_path() . $user->photo($type)->path);
+                    }
                     Photo::findOrFail($user->photo($type)->id)->delete();
                 }
             }
@@ -65,13 +67,34 @@ class ProfileController extends Controller
 
             if ($user->photo) {
 
-                unlink(public_path() . $user->photo->path);
+                if (Storage::exists($user->photo->path)) {
+                    unlink(public_path() . $user->photo->path);
+                }
                 Photo::findOrFail($user->photo->id)->delete();
             }
         }
         if (isset($input['data']) && isset($user->data)) {
             $input['data'] = array_merge($user->data, $input['data']);
         }
+
+        if (isset($request->data['accommodation'])) {
+            switch ($request->data['accommodation']) {
+                case 'yes':
+                    if (!$user->expenses()->whereName('accommodation')->first()) {
+                        $user->expenses()->create([
+                            'name' => 'accommodation',
+                            'price' => $user->accommodationPrice,
+                        ]);
+                    }
+                    break;
+                default:
+                    if ($user->expenses()->whereName('accommodation')->first()) {
+                        $user->expenses()->whereName('accommodation')->delete();
+                    }
+                    break;
+            }
+        }
+
         $user->update($input);
 
         if ($route == 'packages.view') {
@@ -94,10 +117,11 @@ class ProfileController extends Controller
         return redirect(route($route));
     }
 
-    public function updateProfile(ProfileUpdateRequest $request)
+    public function updateProfile(ProfileUpdateRequest $request, $route)
     {
         $input = $request->all();
         $user = Auth::user();
+
         if ($images = $request->file('data')) {
             foreach ($images as $key => $image) {
                 $type = substr($key, 0, strrpos($key, '_id'));
@@ -110,11 +134,14 @@ class ProfileController extends Controller
                 ]);
                 $input['data'][$key] = $photo->id;
                 if ($user->photo($type)) {
-                    unlink(public_path() . $user->photo($type)->path);
+                    if (Storage::exists($user->photo($type)->path)) {
+                        unlink(public_path() . $user->photo($type)->path);
+                    }
                     Photo::findOrFail($user->photo($type)->id)->delete();
                 }
             }
         }
+
         if ($file = $request->file('photo_id')) {
 
             $name = time() . $file->getClientOriginalName();
@@ -128,13 +155,35 @@ class ProfileController extends Controller
 
             if ($user->photo) {
 
-                unlink(public_path() . $user->photo->path);
+                if (Storage::exists($user->photo->path)) {
+                    unlink(public_path() . $user->photo->path);
+                }
                 Photo::findOrFail($user->photo->id)->delete();
             }
         }
+
+        if (isset($request->data['accommodation'])) {
+            switch ($request->data['accommodation']) {
+                case 'yes':
+                    if (!$user->expenses()->whereName('accommodation')->first()) {
+                        $user->expenses()->create([
+                            'name' => 'accommodation',
+                            'price' => $user->accommodationPrice,
+                        ]);
+                    }
+                    break;
+                default:
+                    if ($user->expenses()->whereName('accommodation')->first()) {
+                        $user->expenses()->whereName('accommodation')->delete();
+                    }
+                    break;
+            }
+        }
+
         if (isset($input['data']) && isset($user->data)) {
             $input['data'] = array_merge($user->data, $input['data']);
         }
+
         $user->update($input);
 
         if ($route == 'packages.view') {
@@ -173,7 +222,9 @@ class ProfileController extends Controller
                 ]);
                 $input['data'][$key] = $photo->id;
                 if ($user->photo($type)) {
-                    unlink(public_path() . $user->photo($type)->path);
+                    if (Storage::exists($user->photo($type)->path)) {
+                        unlink(public_path() . $user->photo($type)->path);
+                    }
                     Photo::findOrFail($user->photo($type)->id)->delete();
                 }
             }
@@ -188,7 +239,9 @@ class ProfileController extends Controller
             ]);
             $input['photo_id'] = $photo->id;
             if ($user->photo) {
-                unlink(public_path() . $user->photo->path);
+                if (Storage::exists($user->photo->path)) {
+                    unlink(public_path() . $user->photo->path);
+                }
                 Photo::findOrFail($user->photo->id)->delete();
             }
         }
@@ -196,6 +249,26 @@ class ProfileController extends Controller
             if ($user->data == null) $user->data = [];
             $input['data'] = array_merge($user->data, $input['data']);
         }
+
+        if (isset($request->data['accommodation'])) {
+            switch ($request->data['accommodation']) {
+                case 'yes':
+                    if (!$user->expenses()->whereName('accommodation')->first()) {
+                        $user->expenses()->create([
+                            'name' => 'accommodation',
+                            'price' => $user->accommodationPrice,
+                        ]);
+                    }
+                    break;
+                default:
+                    if ($user->expenses()->whereName('accommodation')->first()) {
+                        $user->expenses()->whereName('accommodation')->delete();
+                    }
+                    break;
+            }
+        }
+
+
         $user->update($input);
         return redirect(route($route));
     }
@@ -229,29 +302,44 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
-        $user->package()->detach();
+        if ($user->package()->exists()) {
+            foreach ($user->package->events($user->id) as $event) {
+                $user->package->events()->detach($event);
+            }
+        }
 
-        if ($user->events)
-        {
-            foreach($user->events as $event)
-            {
+        if ($user->events()->exists()) {
+            foreach ($user->events as $event) {
                 $user->events()->detach($event);
             }
         }
 
-        if ($user->expenses)
-        {
-            foreach($user->expenses as $expense)
-            {
+        if ($user->expenses()->exists()) {
+            foreach ($user->expenses as $expense) {
                 $user->expenses()->delete($expense);
             }
         }
+        if ($user->invoiceProof) {
+            $proof = Photo::findOrFail($user->invoiceProof->id);
+            if (Storage::exists($proof->path)) {
+                unlink(public_path() . $proof->path);
+            }
+            $user->invoiceProof->delete();
+        }
+        if ($user->photo) {
+            $photo = Photo::findOrFail($user->photo->id);
+            if (Storage::exists($photo->path)) {
+                unlink(public_path() . $photo->path);
+            }
+            $user->photo->delete();
+        }
 
-        $proof = Photo::findOrFail($user->invoiceProof->id);
-        unlink(public_path() . $proof->path);
-        $proof->delete();
-
-        $user->update(['payment_status' => 'unpaid', 'profile_created_at' => null]);
+        $user->update([
+            'payment_status' => 'unpaid',
+            'profile_completed_at' => null,
+            'package_id' => null,
+            'data' => null,
+        ]);
 
         return redirect(route('dashboard'));
     }

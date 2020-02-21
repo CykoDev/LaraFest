@@ -10,7 +10,7 @@
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <p class="mb-3">What a Coincidence, We're from NUST Too!
-            <br><small>Oh You Dont Care</small></p>
+            <br><small>Oh you don't care</small></p>
     </div>
 
     <div class="row">
@@ -101,7 +101,7 @@
                             @enderror
                         </div>
                         <div class="col-7">
-                            Non Nustian
+                            {{ ucwords(str_replace('_',' ', Auth::user()->data['registration_type'])) }}
                         </div>
                         <div class="col-2"></div>
                     </div>
@@ -220,28 +220,12 @@
                     <div class="form-row py-2">
                         <div class="col-3 my-auto">
                             <span class="text-dark font-weight-bold">
-                                {!! Form::label('data[accommodation]', 'Do You Need Accomodation? ') !!}
+                                {!! Form::label('data[ambassador_name]', 'Ambassador Name (optional): ') !!}
                             </span>
                         </div>
                         <div class="col-7">
-                            {!! Form::select('data[accommodation]', [''=>'choose', 'yes'=> 'Sign me up!', 'no'=> 'Eh na I\'m fine'], null, ['class'=>'form-control']) !!}
-                            @error('data.accommodation')
-                                <span class="text-danger small">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                        <div class="col-2"></div>
-                    </div>
-                    <div class="form-row py-2">
-                        <div class="col-3 my-auto">
-                            <span class="text-dark font-weight-bold">
-                                {!! Form::label('data[ambassador_code]', 'Ambassador Code (optional): ') !!}
-                            </span>
-                        </div>
-                        <div class="col-7">
-                            {!! Form::text('data[ambassador_code]', null, ['class'=>'form-control']) !!}
-                            @error('data.ambassador_code')
+                            {!! Form::text('data[ambassador_name]', null, ['class'=>'form-control']) !!}
+                            @error('data.ambassador_name')
                                 <span class="text-danger small">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -256,7 +240,7 @@
                             </span>
                         </div>
                         <div class="col-7">
-                            {!! Form::select('data[assistance]', [''=>'choose', 'yes'=> 'Uh Yea', 'no'=> 'No Go Away'], null, ['class'=>'form-control']) !!}
+                            {!! Form::text('data[assistance]', null, ['class'=>'form-control']) !!}
                             @error('data.assistance')
                                 <span class="text-danger small">
                                     <strong>{{ $message }}</strong>

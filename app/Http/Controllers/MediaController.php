@@ -67,24 +67,31 @@ class MediaController extends Controller
      */
     public function destroy($id)
     {
-        $photo = Photo::findOrFail($id);
-        unlink(public_path() . $photo->path);
-        $photo->delete();
+        $photo = Photo::findOrFail(hex2bin($id));
+        if (Storage::exists($photo->path)) {
+            unlink(public_path() . $photo->path);
+            $photo->delete();
+        }
         return redirect()->back();
     }
 
     public function delete($id)
     {
         $photo = Photo::findOrFail(hex2bin($id));
-        unlink(public_path() . $photo->path);
-        $photo->delete();
+        if (Storage::exists($photo->path)) {
+            unlink(public_path() . $photo->path);
+            $photo->delete();
+        }
         return redirect()->back();
     }
 
     public function download($filepath)
     {
-        $path = hex2bin($filepath);
-        return response()->download(public_path() . $path, str_replace('/', '', substr($path, -10)));
+        if (Storage::exists($filepath)) {
+            $path = hex2bin($filepath);
+            return response()->download(public_path() . $path, str_replace('/', '', substr($path, -10)));
+        }
+        return redirect()->back();
     }
 
     public function manageMany(Request $request)
@@ -97,7 +104,9 @@ class MediaController extends Controller
                 $photos = Photo::findOrFail($request->checkBoxArray);
                 foreach ($photos as $photo) {
 
-                    unlink(public_path() . $photo->path);
+                    if (Storage::exists($photo->path)) {
+                        unlink(public_path() . $photo->path);
+                    }
                     $photo->delete();
                 }
                 return redirect(route('media.index'));
@@ -108,7 +117,7 @@ class MediaController extends Controller
                 if ($zip->open(public_path($zipFile), ZipArchive::CREATE) === TRUE) {
                     $media = Photo::findOrFail($request->checkBoxArray);
                     foreach ($media as $mediaItem) {
-                        $zip->addFile(public_path() . $mediaItem->path, basename($mediaItem->path));
+                        $zip->addFile(public_path() . $mediaItem->path, $mediaItem->user->email);
                     }
                     $zip->close();
                 }

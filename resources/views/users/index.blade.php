@@ -53,28 +53,42 @@
     @endslot
     @slot('headings')
         <tr>
-        <th>ID</th>
-        <th>Photo</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Status</th>
-        <th>Created At</th>
-        <th>Updated At</th>
+        <th><small class="font-weight-bold">ID</small></th>
+        <th><small class="font-weight-bold">Photo</small></th>
+        <th><small class="font-weight-bold">Name</small></th>
+        <th><small class="font-weight-bold">Email</small></th>
+        <th><small class="font-weight-bold">Role</small></th>
+        <th><small class="font-weight-bold">Status</small></th>
+        <th><small class="font-weight-bold">Created At</small></th>
+        <th><small class="font-weight-bold">Updated At</small></th>
+        <th><small class="font-weight-bold">Actions</small></th>
         </tr>
     @endslot
     @slot('body')
         @if($users)
             @foreach($users as $user)
             <tr>
-                <td>{{ $user->id }}</td>
-                <td><img src='{{ is_null($user->photo) ? $user->defaultImage : $user->photo->path }}' class="rounded-circle" width=40 height=40></td>
-                <td><a href="{{ route('users.edit', $user->slug) }}">{{ $user->name }}</a></td>
-                <td>{{ $user->email }}</td>
-                <td>{{ $user->role->name }}</td>
-                <td>{{ $user->is_active ? 'Active' : 'Not Active' }}</td>
-                <td>{{ $user->created_at->diffForHumans() }}</td>
-                <td>{{ $user->updated_at->diffForHumans() }}</td>
+                <td><small>{{ $user->id }}</small></td>
+                <td><img src='{{ is_null($user->photo) ? $user->defaultImage : $user->photo->path }}' class="rounded-circle" width=30 height=30></td>
+                <td>
+                    <a href="{{ route('users.show', $user->slug) }}">
+                        <small>{{ $user->name }}</small>
+                    </a>
+                </td>
+                <td>
+                    <a href="mailto:{{ $user->email }}">
+                        <small>{{ $user->email }}</small>
+                    </a>
+                </td>
+                <td><small>{{ $user->role->name }}</small></td>
+                <td><small>{{ $user->is_active ? 'Active' : 'Not Active' }}</small></td>
+                <td><small>{{ $user->created_at->isoFormat('D / M / Y') }}</small></td>
+                <td><small>{{ $user->updated_at->isoFormat('D / M / Y') }}</small></td>
+                <td>
+                    <a href="{{ route('users.edit', $user->slug) }}" class="btn btn-default p-0 text-primary">
+                        <small class="font-weight-bold">Edit</small>
+                    </a>
+                </td>
             </tr>
             @endforeach
         @endif
