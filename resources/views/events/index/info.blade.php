@@ -54,7 +54,7 @@
                 <td><small>{{ $event->currencySymbol . ' ' . $event->price }}</small></td>
                 <td><small>{{ $event->users->count() }}</small></td>
                 <td><small>{{ $event->event_date->isoFormat('D/M/Y | h:m') }}</small></td>
-                <td><small>{{ $event->created_at->isoFormat('D/M/Y | h:m') }}</small></td>
+                <td><small>{{ $event->end_date->isoFormat('D/M/Y | h:m') }}</small></td>
                 <td>
                     <a href="{{ route('events.edit', $event->slug) }}" class="btn btn-default p-0 text-primary">
                         <small class="font-weight-bold">Edit</small>

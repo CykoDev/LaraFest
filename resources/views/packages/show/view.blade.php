@@ -42,28 +42,30 @@
 
         {!! Form::hidden('packageId', $package->id) !!}
 
-        @foreach($package->quotas as $quota)
-            <div class="card shadow mb-4 mx-5">
-                <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">
-                        Select Your {{ ucwords($quota->eventType->name) }} Events
-                    </h6>
+        @if($package->quotas()->exists())
+            @foreach($package->quotas as $quota)
+                <div class="card shadow mb-4 mx-5">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">
+                            Select Your {{ ucwords($quota->eventType->name) }} Events
+                        </h6>
+                    </div>
+                    <div class="card-body px-5 mx-5">
+                        @for($i = 0; $i < $quota->quota_amount; $i++)
+                            <div class="form-group px-5 mx-5">
+                                {!! Form::label('eventIds[]', $quota->eventType->name . ': ') !!}
+                                {!! Form::select('eventIds[]', ['' => 'Choose'] + $quota->eventType->events->pluck('name', 'id')->all(), null, ['class'=>'form-control']) !!}
+                                @error('eventIds[]')
+                                    <span class="text-danger small">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        @endfor
+                    </div>
                 </div>
-                <div class="card-body px-5 mx-5">
-                    @for($i = 0; $i < $quota->quota_amount; $i++)
-                        <div class="form-group px-5 mx-5">
-                            {!! Form::label('eventIds[]', $quota->eventType->name . ': ') !!}
-                            {!! Form::select('eventIds[]', ['' => 'Choose'] + $quota->eventType->events->pluck('name', 'id')->all(), null, ['class'=>'form-control']) !!}
-                            @error('eventIds[]')
-                                <span class="text-danger small">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    @endfor
-                </div>
-            </div>
-        @endforeach
+            @endforeach
+        @endif
 
         <div class="card shadow mb-4 mx-5">
             <div class="card-header py-3">

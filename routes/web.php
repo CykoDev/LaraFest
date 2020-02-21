@@ -127,6 +127,7 @@ Route::group(['middleware' => 'verified'], function () {
 
     Route::post('export/users', 'ExportController@exportAllUsers');
     Route::post('export/users-role/{role}', 'ExportController@exportRoleUsers');
+    Route::post('export/user-events/{id}', 'ExportController@exportUserEvents');
     Route::post('export/applicants', 'ExportController@exportApplicants');
     Route::post('export/admins', 'ExportController@exportAdmins');
     Route::post('export/monitors', 'ExportController@exportMonitors');
