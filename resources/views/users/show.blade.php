@@ -75,7 +75,7 @@
                                 </div>
                                 <div class="col-7">
                                     @if(strpos($key, 'photo_id'))
-                                        <a href="{{ $user->photo(str_replace('_id','',$key))->path }}" target="_blank">View</a>
+                                        <a href="{{ $user->photo(str_replace('_id','',$key)) ? $user->photo(str_replace('_id','',$key))->path : '#' }}" target="_blank">View</a>
                                     @else
                                         <span>{{ ucwords($value) }}</span>
                                     @endif

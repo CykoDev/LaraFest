@@ -94,7 +94,7 @@
             </section>
             <section class="my-5">
                 <h5 class="text-primary">Package Details</h5>
-                <p class="px-4">{{ $package->description }}</p>
+                <p class="px-4">{!! $package->description !!}</p>
             </section>
         </div>
     </div>

@@ -7,9 +7,12 @@ use App\PackageQuota;
 use App\EventType;
 use App\Event;
 use App\Discount;
+use App\Photo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
+use Intervention\Image\ImageManagerStatic as Image;
+use \DOMDocument;
 
 class PackageController extends Controller
 {
@@ -123,6 +126,7 @@ class PackageController extends Controller
         $package = Package::findOrFail($id);
         $quotas = $request->quotas;
 
+        // Package Quotas updation
         if ($request->quotas) {
             for ($i = 0; $i < sizeof($package->quotas); $i++) {
                 if (in_array($package->quotas[$i]->id, $quotas['id'])) {
@@ -141,7 +145,6 @@ class PackageController extends Controller
                 $quota->delete();
             }
         }
-
         if ($request->quotas['id']) {
             for ($i = 0; $i < sizeof($quotas['id']); $i++) {
                 if (is_null($quotas['id'][$i])) {
@@ -152,6 +155,41 @@ class PackageController extends Controller
                     'quota_amount' => $quotas['quota_amount'][$i],
                 ]);
             }
+        }
+
+        // Package Content Images
+        if ($request->details) {
+            $dom = new DomDocument();
+            $dom->loadHtml($request->details, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            $images = $dom->getElementsByTagName('img');
+
+            foreach ($images as $img) {
+                $src = $img->getAttribute('src');
+
+                if (preg_match('/data:image/', $src)) {
+
+                    preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
+                    $mimetype = $groups['mime'];
+
+                    $filename = uniqid();
+                    $filepath = "img/packages/content/$filename.$mimetype";
+
+                    $image = Image::make($src)
+                        ->encode($mimetype, 100)
+                        ->save(public_path($filepath));
+
+                    $new_src = asset($filepath);
+                    $img->removeAttribute('src');
+                    $img->setAttribute('src', $new_src);
+
+                    Photo::create([
+                        'path' => 'packages/content/' . $filename . '.' . $mimetype,
+                        'type' => 'package_content_media',
+                        'uploaded_by_user_id' => Auth::user()->id,
+                    ]);
+                }
+            }
+            $input['details'] = $dom->saveHTML();
         }
 
         $package->update([
