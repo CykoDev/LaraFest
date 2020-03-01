@@ -71,7 +71,6 @@ class ApplicantProfileRequest extends FormRequest
                     'data.gender' => 'required',
                     'data.mobile_no' => 'required|numeric',
                     'data.emergency_contact' => 'required|numeric',
-                    'data.accommodation' => 'required',
                 ];
                 break;
             case 'non_nustian':
