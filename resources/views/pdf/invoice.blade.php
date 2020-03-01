@@ -50,6 +50,11 @@
                 <td colspan="2">Invoice Code: {{ substr(bin2hex($user->id.$user->name),0,10) }}</td>
             </tr>
             <tr style="text-align: center;">
+                <td colspan="2">Name: {{ isset($user->data['full_name']) ? $user->data['full_name'] : $user->name }}</td>
+                <td colspan="2">Name: {{ isset($user->data['full_name']) ? $user->data['full_name'] : $user->name }}</td>
+                <td colspan="2">Name: {{ isset($user->data['full_name']) ? $user->data['full_name'] : $user->name }}</td>
+            </tr>
+            <tr style="text-align: center;">
                 <td>
                     <h4>Item</h4>
                 </td>

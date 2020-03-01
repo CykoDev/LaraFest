@@ -32,7 +32,7 @@ class UserEventsExport implements FromCollection, ShouldAutoSize, WithHeadings, 
             'Event Type',
             'Details',
             'Start Date/Time',
-            'Ending Data/Time',
+            'Ending Date/Time',
             'Created at',
         ];
     }
@@ -57,7 +57,7 @@ class UserEventsExport implements FromCollection, ShouldAutoSize, WithHeadings, 
             isset($invoice->type->name) ? $invoice->type->name : 'N/A',
             isset($invoice->details) ? $invoice->details : 'N/A',
             isset($invoice->event_date) ? $invoice->event_date->isoFormat('D/M/Y | h:m') : 'N/A',
-            isset($invoice->updated_at) ? $invoice->end_at->isoFormat('D/M/Y | h:m') : 'N/A',
+            isset($invoice->end_date) ? $invoice->end_date->isoFormat('D/M/Y | h:m') : 'N/A',
             isset($invoice->created_at) ? $invoice->created_at->isoFormat('D MMMM, Y') : 'N/A',
         ];
     }

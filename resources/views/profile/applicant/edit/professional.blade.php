@@ -288,7 +288,7 @@
                     <div class="form-row py-2">
                         <div class="col-3 my-auto">
                             <span class="text-dark font-weight-bold">
-                                {!! Form::label('data[assistance]','Do Your Require Additional Assistance?') !!}
+                                {!! Form::label('data[assistance]','Do You Require Additional Assistance?') !!}
                             </span>
                         </div>
                         <div class="col-7">

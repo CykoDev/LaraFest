@@ -125,7 +125,7 @@
                     <td><small>{{ $event->type->name }}</small></td>
                     <td><small>{{ $event->currencySymbol . ' ' . $event->price }}</small></td>
                     <td><small>{{ $event->event_date->isoFormat('D/M/Y | h:m') }}</small></td>
-                    <td><small>{{ $event->end_at->isoFormat('D/M/Y | h:m') }}</small></td>
+                    <td><small>{{ $event->end_date->isoFormat('D/M/Y | h:m') }}</small></td>
                 </tr>
                 @endforeach
             @endif
